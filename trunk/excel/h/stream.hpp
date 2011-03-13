@@ -53,7 +53,7 @@ public:
 	explicit Stream( ByteOrder byteOrder );
 	virtual ~Stream();
 
-	void operator = ( const Stream & stream );
+	Stream & operator = ( const Stream & stream );
 
 	//! \return Byte order in the stream.
 	ByteOrder byteOrder() const;

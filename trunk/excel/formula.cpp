@@ -61,7 +61,7 @@ Formula::Formula( Record & record )
 	parse( record );
 }
 
-void
+Formula &
 Formula::operator =( const Formula & f )
 {
 	m_valueType = f.valueType();
@@ -71,6 +71,8 @@ Formula::operator =( const Formula & f )
 	m_stringValue = f.getString();
 	m_row = f.getRow();
 	m_column = f.getColumn();
+
+	return *this;
 }
 
 Formula::ValueType

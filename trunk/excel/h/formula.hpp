@@ -52,7 +52,7 @@ public:
 	explicit Formula( Record & record );
 
 	//! Copy operator.
-	void operator = ( const Formula & f );
+	Formula & operator = ( const Formula & f );
 
 	//! Possible tpes of the formula's value.
 	enum ValueType {
