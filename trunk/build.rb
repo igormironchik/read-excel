@@ -17,5 +17,6 @@ Mxx_ru::setup_target(
 
 		required_prj( "excel/prj.rb" )
 		required_prj( "test/prj.rb" )
+		required_prj( "sample/prj.rb" )
 	}
 )
