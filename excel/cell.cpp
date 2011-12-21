@@ -44,6 +44,7 @@ namespace Excel {
 
 Cell::Cell()
 	:	m_doubleData( 0.0 )
+	,	m_isNull( true )
 {
 }
 
@@ -69,18 +70,27 @@ void
 Cell::setData( const std::wstring & d )
 {
 	m_stringData = d;
+	m_isNull = false;
 }
 
 void
 Cell::setData( const double & d )
 {
 	m_doubleData = d;
+	m_isNull = false;
 }
 
 void
 Cell::setData( const Formula & f )
 {
 	m_formula = f;
+	m_isNull = false;
+}
+
+bool
+Cell::isNull() const
+{
+	return m_isNull;
 }
 
 } /* namespace Excel */

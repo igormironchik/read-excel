@@ -65,9 +65,10 @@ public:
 	//! or NULL if there is no sheet with such index.
 	Sheet * sheet( size_t index ) const;
 
-private:
 	//! Load WorkBook from file.
 	void loadBook( const std::wstring & fileName );
+
+private:
 	//! Load sheets from file.
 	void loadGlobals( std::vector< BoundSheet > & boundSheets,
 		Stream & stream );
@@ -76,6 +77,8 @@ private:
 	//! Load WorkSheets.
 	void loadWorkSheets( const std::vector< BoundSheet > & boundSheets,
 		Stream & stream );
+	//! Clear book.
+	void clear();
 
 private:
 	//! Parsed WorkSheets.

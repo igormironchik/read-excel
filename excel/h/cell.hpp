@@ -68,6 +68,9 @@ public:
 	//! Set data.
 	void setData( const Formula & f );
 
+	//! \return true if there is no data.
+	bool isNull() const;
+
 private:
 	//! Cell's string data.
 	std::wstring m_stringData;
@@ -75,6 +78,8 @@ private:
 	double m_doubleData;
 	//! Cell's formula.
 	Formula m_formula;
+	//! Is data set.
+	bool m_isNull;
 }; // class Cell
 
 } /* namespace Excel */
