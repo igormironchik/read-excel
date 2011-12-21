@@ -61,7 +61,8 @@ Book::Book( const std::wstring & fileName )
 	loadBook( fileName );
 }
 
-Book::~Book()
+void
+Book::clear()
 {
 	for( std::vector< Sheet* >::iterator it = m_sheets.begin(),
 		last = m_sheets.end(); it != last; ++it )
@@ -69,6 +70,14 @@ Book::~Book()
 		delete *it;
 		*it = 0;
 	}
+
+	m_sheets.clear();
+	m_sst.clear();
+}
+
+Book::~Book()
+{
+	clear();
 }
 
 size_t
@@ -93,6 +102,8 @@ void
 Book::loadBook( const std::wstring & fileName )
 {
 	try {
+		clear();
+
 		CompoundFile::File file( fileName );
 		std::auto_ptr< Stream > stream = file.stream(
 			file.directory( L"Workbook" ) );
