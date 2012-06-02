@@ -50,6 +50,26 @@ public:
 		LittleEndian
 	}; // enum ByteOrder
 
+private:
+
+	//
+	// SystemByteOrder
+	//
+
+	//! System's byte order.
+	class SystemByteOrder {
+	public:
+		static ByteOrder byteOrder()
+		{
+			static const short int word = 0x0001;
+			static const char * byte = (const char *) &word;
+
+			return ( byte[0] ? LittleEndian : BigEndian );
+		}
+	}; // class SystemByteOrder
+
+public:
+
 	explicit Stream( ByteOrder byteOrder );
 	virtual ~Stream();
 
@@ -91,17 +111,10 @@ public:
 		{
 			Type c = (Type)(unsigned char) getByte();
 
-			#if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-				if( m_byteOrder == BigEndian )
-					retVal |= ( c << 8 * ( bytes - i ) );
-				else
-					retVal |= ( c << 8 * i );
-			#else
-				if( m_byteOrder == LittleEndian )
-					retVal |= ( c << 8 * ( bytes - i ) );
-				else
-					retVal |= ( c << 8 * i );
-			#endif
+			if( SystemByteOrder::byteOrder() != m_byteOrder )
+				retVal |= ( c << 8 * ( bytes - i ) );
+			else
+				retVal |= ( c << 8 * i );
 		}
 	}
 
