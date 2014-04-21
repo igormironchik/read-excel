@@ -1,11 +1,11 @@
 
 /*!
 	\file
-	\brief Exceptions of the excel document.
+	\brief Exceptions of the compound file.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -29,8 +29,8 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef EXCEL__EXCEPTIONS_HPP__INCLUDED
-#define EXCEL__EXCEPTIONS_HPP__INCLUDED
+#ifndef COMPOUNDFILE__EXCEPTIONS_HPP__INCLUDED
+#define COMPOUNDFILE__EXCEPTIONS_HPP__INCLUDED
 
 
 // C++ include.
@@ -38,13 +38,13 @@
 #include <string>
 
 
-namespace Excel {
+namespace CompoundFile {
 
 //
 // Exception
 //
 
-//! Base exception in the excel document.
+//! Base exception in the compound file.
 class Exception
 	:	public std::runtime_error
 {
@@ -60,6 +60,6 @@ private:
 	std::wstring m_what;
 }; // class Exception
 
-} /* namespace Excel */
+} /* namespace CompoundFile */
 
-#endif // EXCEL__EXCEPTIONS_HPP__INCLUDED
+#endif // COMPOUNDFILE__EXCEPTIONS_HPP__INCLUDED

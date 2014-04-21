@@ -3,9 +3,9 @@
 	\file
 	\brief Stream in the compound file.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -30,10 +30,10 @@
 */
 
 // CompoundFile include.
-#include <excel/compoundfile/h/stream.hpp>
-#include <excel/compoundfile/h/sat.hpp>
-#include <excel/compoundfile/h/directory.hpp>
-#include <excel/compoundfile/h/utils.hpp>
+#include "compoundfile_stream.hpp"
+#include "sat.hpp"
+#include "directory.hpp"
+#include "utils.hpp"
 
 
 namespace CompoundFile {
@@ -74,12 +74,13 @@ Stream::Stream( const Header & header,
 	:	Excel::Stream( header.byteOrder() )
 	,	m_header( header )
 	,	m_stream( cstream )
-	,	m_mode( ( dir.streamSize() < m_header.sectorSize() ?
-					ShortStream : LargeStream ) )
+	,	m_mode(
+		( static_cast< size_t > ( dir.streamSize() ) < m_header.sectorSize() ?
+			ShortStream : LargeStream ) )
 	,	m_bytesReaded( 0 )
-	,	m_sectorSize( ( dir.streamSize() < m_header.sectorSize() ?
-						m_header.shortSectorSize() :
-						m_header.sectorSize() ) )
+	,	m_sectorSize(
+		( static_cast< size_t > ( dir.streamSize() ) < m_header.sectorSize() ?
+			m_header.shortSectorSize() : m_header.sectorSize() ) )
 	,	m_sectorBytesReaded( 0 )
 	,	m_shortSecIDIdx( 0 )
 	,	m_largeSecIDIdx( 0 )
@@ -229,7 +230,7 @@ char
 Stream::getByte()
 {
 	if( eof() )
-		return 0xFF;
+		return 0xFFu;
 
 	if( m_sectorBytesReaded == m_sectorSize )
 	{

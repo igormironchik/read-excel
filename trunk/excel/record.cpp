@@ -3,9 +3,9 @@
 	\file
 	\brief Excel Record.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -30,7 +30,7 @@
 */
 
 // Excel include.
-#include <excel/h/record.hpp>
+#include "record.hpp"
 
 
 namespace Excel {
@@ -88,7 +88,7 @@ RecordSubstream::seek( int pos, SeekType type )
 int
 RecordSubstream::pos()
 {
-	return m_stream.tellg();
+	return static_cast< int > ( m_stream.tellg() );
 }
 
 void
@@ -131,8 +131,8 @@ Record::read( Stream & stream )
 	stream.read( m_code, 2 );
 	stream.read( m_length, 2 );
 
-	short nextRecordCode = 0;
-	short nextRecordLength = 0;
+	unsigned short nextRecordCode = 0;
+	unsigned short nextRecordLength = 0;
 
 	std::vector< char > data;
 
@@ -155,7 +155,7 @@ Record::read( Stream & stream )
 		data.reserve( data.size() + nextRecordLength );
 		if( nextRecordLength )
 		{
-			for( size_t i = 0; i < nextRecordLength; ++i )
+			for( unsigned short i = 0; i < nextRecordLength; ++i )
 				data.push_back( stream.getByte() );
 		}
 		m_length += nextRecordLength;

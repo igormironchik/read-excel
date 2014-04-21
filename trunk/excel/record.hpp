@@ -3,9 +3,9 @@
 	\file
 	\brief Excel Record.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -33,7 +33,7 @@
 #define EXCEL__RECORD_HPP__INCLUDED
 
 // Excel include.
-#include <excel/h/stream.hpp>
+#include "stream.hpp"
 
 // C++ include.
 #include <vector>
@@ -142,9 +142,9 @@ private:
 
 private:
 	//! Record's code.
-	short m_code;
+	unsigned short m_code;
 	//! Record's length.
-	int m_length;
+	size_t m_length;
 	//! Record's substream.
 	RecordSubstream m_stream;
 	//! Borders indexes of the continue records.

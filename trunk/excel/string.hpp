@@ -1,11 +1,11 @@
 
 /*!
 	\file
-	\brief Master sector allocation table in the compound file.
+	\brief Excel String.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -29,46 +29,28 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef COMPOUNDFILE__MSAT_HPP__INCLUDED
-#define COMPOUNDFILE__MSAT_HPP__INCLUDED
-
-// CompoundFile include.
-#include <excel/compoundfile/h/sat.hpp>
-#include <excel/compoundfile/h/header.hpp>
+#ifndef EXCEL__STRING_HPP__INCLUDED
+#define EXCEL__STRING_HPP__INCLUDED
 
 // C++ include.
-#include <iostream>
+#include <vector>
+#include <string>
 
 
-namespace CompoundFile {
+namespace Excel {
+
+class Stream;
+
 
 //
-// MSAT
+// loadString
 //
 
-//! MSAT.
-class MSAT {
+//! Load string from the stream.
+std::wstring loadString( Stream & stream,
+	const std::vector< int > & borders,
+	size_t lengthFieldSize = 2 );
 
-public:
-	MSAT( const Header & header,
-		 std::istream & stream );
+} /* namespace Excel */
 
-	//! \return SAT.
-	SAT buildSAT();
-
-private:
-	//! Load MSAT.
-	void loadMSAT();
-
-private:
-	//! Header.
-	const Header & m_header;
-	//! File.
-	std::istream & m_stream;
-	//! MSAT.
-	std::vector< SecID > m_msat;
-}; // class MSAT
-
-} /* namespace CompoundFile */
-
-#endif // COMPOUNDFILE__MSAT_HPP__INCLUDED
+#endif // EXCEL__STRING_HPP__INCLUDED

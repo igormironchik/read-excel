@@ -1,11 +1,11 @@
 
 /*!
 	\file
-	\brief Excel String.
+	\brief Excel BOF record.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -29,28 +29,61 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef EXCEL__STRING_HPP__INCLUDED
-#define EXCEL__STRING_HPP__INCLUDED
-
-// C++ include.
-#include <vector>
-#include <string>
+#ifndef EXCEL__BOF_HPP__INCLUDED
+#define EXCEL__BOF_HPP__INCLUDED
 
 
 namespace Excel {
 
-class Stream;
+class Record;
 
 
 //
-// loadString
+// BOF
 //
 
-//! Load string from the stream.
-std::wstring loadString( Stream & stream,
-	const std::vector< int > & borders,
-	size_t lengthFieldSize = 2 );
+//! BOF record in the Excel file.
+class BOF {
+public:
+	BOF();
+
+	//! Record's code for the BOF record.
+	static const unsigned short RecordCode = 0x0809;
+
+	//! BIFF version.
+	enum BiffVersion {
+		BIFF8 = 0x0600,
+		BIFF7 = 0x0500,
+		UnknownVersion = 0x0000
+	}; // enum BiffVersion
+
+	//! Types of the Excel's substream.
+	enum SubstreamType {
+		UnknownType = 0x0000,
+		WorkBookGlobals = 0x0005,
+		VisualBasicModule = 0x0006,
+		WorkSheet = 0x0010,
+		Chart = 0x0020,
+		MacroSheet = 0x0040,
+		WorkSpace = 0x0100
+	}; // enum SubstreamType
+
+	//! \return BIFF version.
+	BiffVersion version() const;
+
+	//! \return Substream type.
+	SubstreamType type() const;
+
+	//! Parse BOF record.
+	void parse( Record & record );
+
+private:
+	//! BIFF version.
+	BiffVersion m_version;
+	//! Substream type.
+	SubstreamType m_type;
+}; // class BOF
 
 } /* namespace Excel */
 
-#endif // EXCEL__STRING_HPP__INCLUDED
+#endif // EXCEL__BOF_HPP__INCLUDED

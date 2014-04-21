@@ -3,9 +3,9 @@
 	\file
 	\brief Excel WorkBook.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -30,16 +30,16 @@
 */
 
 // Excel include.
-#include <excel/h/book.hpp>
-#include <excel/h/record.hpp>
-#include <excel/h/string.hpp>
-#include <excel/h/bof.hpp>
-#include <excel/h/exceptions.hpp>
-#include <excel/h/stream.hpp>
+#include "book.hpp"
+#include "record.hpp"
+#include "string.hpp"
+#include "bof.hpp"
+#include "exceptions.hpp"
+#include "stream.hpp"
 
-#include <excel/compoundfile/h/compoundfile.hpp>
-#include <excel/compoundfile/h/directory.hpp>
-#include <excel/compoundfile/h/exceptions.hpp>
+#include "compoundfile/compoundfile.hpp"
+#include "compoundfile/directory.hpp"
+#include "compoundfile/compoundfile_exceptions.hpp"
 
 // C++ include.
 #include <memory>

@@ -3,9 +3,9 @@
 	\file
 	\brief Header of the compound file.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -30,10 +30,10 @@
 */
 
 // CompoundFile include.
-#include <excel/compoundfile/h/header.hpp>
-#include <excel/compoundfile/h/exceptions.hpp>
-#include <excel/compoundfile/h/msat.hpp>
-#include <excel/compoundfile/h/utils.hpp>
+#include "header.hpp"
+#include "compoundfile_exceptions.hpp"
+#include "msat.hpp"
+#include "utils.hpp"
 
 // C++ include.
 #include <iostream>
@@ -139,11 +139,11 @@ namespace /* anonymous */ {
 
 //! Compound document file identifier
 static const char cIdentifier[] =
-	{ 0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1, 0x00 };
+	{ 0xD0u, 0xCFu, 0x11u, 0xE0u, 0xA1u, 0xB1u, 0x1Au, 0xE1u, 0x00u };
 
 //! Byte order identifier.
 static const char cLittleEndian[] =
-	{ 0xFE, 0xFF, 0x00 };
+	{ 0xFEu, 0xFFu, 0x00u };
 
 } /* namespace anonymous */
 
