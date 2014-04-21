@@ -3,9 +3,9 @@
 	\file
 	\brief Compound file.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -30,11 +30,11 @@
 */
 
 // CompoundFile include.
-#include <excel/compoundfile/h/compoundfile.hpp>
-#include <excel/compoundfile/h/msat.hpp>
-#include <excel/compoundfile/h/utils.hpp>
-#include <excel/compoundfile/h/stream.hpp>
-#include <excel/compoundfile/h/exceptions.hpp>
+#include "compoundfile.hpp"
+#include "msat.hpp"
+#include "utils.hpp"
+#include "compoundfile_stream.hpp"
+#include "compoundfile_exceptions.hpp"
 
 
 namespace CompoundFile {

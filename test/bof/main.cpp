@@ -1,9 +1,9 @@
 
 /*!
 	\file
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -28,20 +28,20 @@
 */
 
 // Excel include.
-#include <excel/h/bof.hpp>
-#include <excel/h/record.hpp>
+#include <excel/bof.hpp>
+#include <excel/record.hpp>
 
 // unit test helper.
 #include <test/helper/helper.hpp>
-#include <test/stream/h/stream.hpp>
+#include <test/stream/stream.hpp>
 
 
 UNIT_TEST_START
 
 	const char data[] = {
-		0x09, 0x08, 0x10, 0x00,
-		0x00, 0x06, 0x10, 0x00, 0xBB, 0x0D, 0xCC, 0x07,
-		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+		0x09u, 0x08u, 0x10u, 0x00u,
+		0x00u, 0x06u, 0x10u, 0x00u, 0xBBu, 0x0Du, 0xCCu, 0x07u,
+		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 	}; // data
 
 

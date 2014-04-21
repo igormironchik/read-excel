@@ -3,9 +3,9 @@
 	\file
 	\brief Excel Record.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -30,8 +30,8 @@
 */
 
 // Excel include.
-#include <excel/h/record.hpp>
-#include <excel/h/formula.hpp>
+#include "record.hpp"
+#include "formula.hpp"
 
 
 namespace Excel {
@@ -152,7 +152,9 @@ Formula::parse( Record & record )
 
 	if( isError == 0xFFFF000000000002 )
 	{
-		char error = ( doubleAsLongLong.m_long & 0x0000000000FF0000 ) >> 16;
+		unsigned char error =
+			static_cast< unsigned char >
+				( ( doubleAsLongLong.m_long & 0x0000000000FF0000 ) >> 16 );
 
 		m_errorValue = (ErrorValues) error;
 		m_valueType = ErrorValue;

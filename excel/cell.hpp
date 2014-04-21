@@ -1,11 +1,11 @@
 
 /*!
 	\file
-	\brief Excel BOF record.
+	\brief Excel Cell.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -29,61 +29,59 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef EXCEL__BOF_HPP__INCLUDED
-#define EXCEL__BOF_HPP__INCLUDED
+#ifndef EXCEL__CELL_HPP__INCLUDED
+#define EXCEL__CELL_HPP__INCLUDED
+
+// Excel include.
+#include "formula.hpp"
+
+// C++ include
+#include <string>
 
 
 namespace Excel {
 
-class Record;
-
-
 //
-// BOF
+// Cell
 //
 
-//! BOF record in the Excel file.
-class BOF {
+//! Excel's cell.
+class Cell {
 public:
-	BOF();
+	Cell();
 
-	//! Record's code for the BOF record.
-	static const unsigned short RecordCode = 0x0809;
+	//! \return String data in the cell.
+	const std::wstring & getString() const;
 
-	//! BIFF version.
-	enum BiffVersion {
-		BIFF8 = 0x0600,
-		BIFF7 = 0x0500,
-		UnknownVersion = 0x0000
-	}; // enum BiffVersion
+	//! \return Double data in the cell.
+	const double & getDouble() const;
 
-	//! Types of the Excel's substream.
-	enum SubstreamType {
-		UnknownType = 0x0000,
-		WorkBookGlobals = 0x0005,
-		VisualBasicModule = 0x0006,
-		WorkSheet = 0x0010,
-		Chart = 0x0020,
-		MacroSheet = 0x0040,
-		WorkSpace = 0x0100
-	}; // enum SubstreamType
+	//! \return Formula.
+	const Formula & getFormula() const;
 
-	//! \return BIFF version.
-	BiffVersion version() const;
+	//! Set data.
+	void setData( const std::wstring & d );
 
-	//! \return Substream type.
-	SubstreamType type() const;
+	//! Set data.
+	void setData( const double & d );
 
-	//! Parse BOF record.
-	void parse( Record & record );
+	//! Set data.
+	void setData( const Formula & f );
+
+	//! \return true if there is no data.
+	bool isNull() const;
 
 private:
-	//! BIFF version.
-	BiffVersion m_version;
-	//! Substream type.
-	SubstreamType m_type;
-}; // class BOF
+	//! Cell's string data.
+	std::wstring m_stringData;
+	//! Cell's double data.
+	double m_doubleData;
+	//! Cell's formula.
+	Formula m_formula;
+	//! Is data set.
+	bool m_isNull;
+}; // class Cell
 
 } /* namespace Excel */
 
-#endif // EXCEL__BOF_HPP__INCLUDED
+#endif // EXCEL__CELL_HPP__INCLUDED

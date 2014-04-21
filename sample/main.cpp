@@ -3,9 +3,9 @@
 	\file
 	\brief Sample.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -31,33 +31,43 @@
 
 
 // Excel include.
-#include <excel/h/book.hpp>
-#include <excel/h/exceptions.hpp>
+#include <excel/book.hpp>
+#include <excel/exceptions.hpp>
+#include <excel/compoundfile/compoundfile_exceptions.hpp>
 
 // C++ include.
 #include <iostream>
 
 
-using namespace Excel;
-
-
 void main()
 {
-	Book book( L"sample.xls" );
+	try {
+		Excel::Book book( L"sample.xls" );
 
-	Sheet * sheet = book.sheet( 0 );
+		Excel::Sheet * sheet = book.sheet( 0 );
 
-	std::wcout << L"There is output of the \"sample.xls\" Excel file."
-		<< std::endl << std::endl;
+		std::wcout << L"There is output of the \"sample.xls\" Excel file."
+			<< std::endl << std::endl;
 
-	std::wcout << L"A1 : " << sheet->cell( 0, 0 ).getString() << std::endl;
-	std::wcout << L"A2 : " << sheet->cell( 1, 0 ).getString()
-		<< L" B2 : " << sheet->cell( 1, 1 ).getDouble() << std::endl;
-	std::wcout << L"A3 : " << sheet->cell( 2, 0 ).getString()
-		<< L" B3 : " << sheet->cell( 2, 1 ).getDouble() << std::endl;
-	std::wcout << L"A4 : " << sheet->cell( 3, 0 ).getString()
-		<< L" B4 : " << sheet->cell( 3, 1 ).getFormula().getDouble() << std::endl;
+		std::wcout << L"A1 : " << sheet->cell( 0, 0 ).getString()
+			<< std::endl;
+		std::wcout << L"A2 : " << sheet->cell( 1, 0 ).getString()
+			<< L" B2 : " << sheet->cell( 1, 1 ).getDouble() << std::endl;
+		std::wcout << L"A3 : " << sheet->cell( 2, 0 ).getString()
+			<< L" B3 : " << sheet->cell( 2, 1 ).getDouble() << std::endl;
+		std::wcout << L"A4 : " << sheet->cell( 3, 0 ).getString()
+			<< L" B4 : " << sheet->cell( 3, 1 ).getFormula().getDouble()
+			<< std::endl;
 
-	std::wcout << std::endl << L"Thats all. And thanks for using this library."
-		<< std::endl;
+		std::wcout << std::endl << L"Thats all. And thanks for using this library."
+			<< std::endl;
+	}
+	catch( const Excel::Exception & x )
+	{
+		std::wcout << x.whatAsWString() << std::endl;
+	}
+	catch( const CompoundFile::Exception & x )
+	{
+		std::wcout << x.whatAsWString() << std::endl;
+	}
 }

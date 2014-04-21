@@ -3,9 +3,9 @@
 	\file
 	\brief Utils.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -33,7 +33,7 @@
 #define COMPOUNDFILE__UTILS_HPP__INCLUDED
 
 // CompoundFile include.
-#include <excel/compoundfile/h/sat.hpp>
+#include "sat.hpp"
 
 // C++ include.
 #include <iostream>
@@ -52,7 +52,7 @@ void readData( std::istream & stream, Type & data, size_t bytes = 0 )
 	data = Type(0);
 	if( bytes == 0 ) bytes = sizeof( Type );
 
-	for( int i = 0; i < bytes; ++i )
+	for( size_t i = 0; i < bytes; ++i )
 	{
 		char c = 0x00;
 		stream.get( c );

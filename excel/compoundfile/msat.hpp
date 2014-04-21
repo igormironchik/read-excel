@@ -1,11 +1,11 @@
 
 /*!
 	\file
-	\brief Excel Cell.
+	\brief Master sector allocation table in the compound file.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -29,59 +29,46 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef EXCEL__CELL_HPP__INCLUDED
-#define EXCEL__CELL_HPP__INCLUDED
+#ifndef COMPOUNDFILE__MSAT_HPP__INCLUDED
+#define COMPOUNDFILE__MSAT_HPP__INCLUDED
 
-// Excel include.
-#include <excel/h/formula.hpp>
+// CompoundFile include.
+#include "sat.hpp"
+#include "header.hpp"
 
-// C++ include
-#include <string>
+// C++ include.
+#include <iostream>
 
 
-namespace Excel {
+namespace CompoundFile {
 
 //
-// Cell
+// MSAT
 //
 
-//! Excel's cell.
-class Cell {
+//! MSAT.
+class MSAT {
+
 public:
-	Cell();
+	MSAT( const Header & header,
+		 std::istream & stream );
 
-	//! \return String data in the cell.
-	const std::wstring & getString() const;
-
-	//! \return Double data in the cell.
-	const double & getDouble() const;
-
-	//! \return Formula.
-	const Formula & getFormula() const;
-
-	//! Set data.
-	void setData( const std::wstring & d );
-
-	//! Set data.
-	void setData( const double & d );
-
-	//! Set data.
-	void setData( const Formula & f );
-
-	//! \return true if there is no data.
-	bool isNull() const;
+	//! \return SAT.
+	SAT buildSAT();
 
 private:
-	//! Cell's string data.
-	std::wstring m_stringData;
-	//! Cell's double data.
-	double m_doubleData;
-	//! Cell's formula.
-	Formula m_formula;
-	//! Is data set.
-	bool m_isNull;
-}; // class Cell
+	//! Load MSAT.
+	void loadMSAT();
 
-} /* namespace Excel */
+private:
+	//! Header.
+	const Header & m_header;
+	//! File.
+	std::istream & m_stream;
+	//! MSAT.
+	std::vector< SecID > m_msat;
+}; // class MSAT
 
-#endif // EXCEL__CELL_HPP__INCLUDED
+} /* namespace CompoundFile */
+
+#endif // COMPOUNDFILE__MSAT_HPP__INCLUDED

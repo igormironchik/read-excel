@@ -3,9 +3,9 @@
 	\file
 	\brief Directory in the compound file.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -33,7 +33,7 @@
 #define COMPOUNDFILE__DIRECTORY_HPP__INCLUDE
 
 // CompoundFile include.
-#include <excel/compoundfile/h/sat.hpp>
+#include "sat.hpp"
 
 // C++ include
 #include <string>

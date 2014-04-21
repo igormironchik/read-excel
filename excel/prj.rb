@@ -15,11 +15,11 @@ Mxx_ru::Cpp::lib_target {
 
 	sources_root( "compoundfile" ) {
 		cpp_source( "directory.cpp" )
-		cpp_source( "exceptions.cpp" )
+		cpp_source( "compoundfile_exceptions.cpp" )
 		cpp_source( "header.cpp" )
 		cpp_source( "msat.cpp" )
 		cpp_source( "sat.cpp" )
-		cpp_source( "stream.cpp" )
+		cpp_source( "compoundfile_stream.cpp" )
 		cpp_source( "compoundfile.cpp" )
 	}
 

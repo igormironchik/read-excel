@@ -3,9 +3,9 @@
 	\file
 	\brief Sector allocation table in the compound file.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -30,8 +30,8 @@
 */
 
 // CompoundFile include.
-#include <excel/compoundfile/h/sat.hpp>
-#include <excel/compoundfile/h/exceptions.hpp>
+#include "sat.hpp"
+#include "compoundfile_exceptions.hpp"
 
 // C++ include.
 #include <string>
@@ -81,7 +81,7 @@ SAT::sat() const
 std::vector< SecID >
 SAT::sectors( const SecID & firstSector ) const
 {
-	if( firstSector < m_sat.size() )
+	if( firstSector < static_cast< int > ( m_sat.size() ) )
 	{
 		std::vector< SecID > result;
 

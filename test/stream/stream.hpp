@@ -1,11 +1,9 @@
 
 /*!
 	\file
-	\brief Excel SharedStringTable.
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
-
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -29,31 +27,40 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef EXCEL__SST_HPP__INCLUDED
-#define EXCEL__SST_HPP__INCLUDED
 
-// C++ include.
-#include <vector>
-#include <string>
-
-
-namespace Excel {
-
-class Record;
+#include <excel/stream.hpp>
 
 
 //
-// SharedStringTable.
+// TestStream
 //
 
-//! Shared string table in the Excel file.
-class SharedStringTable {
+//! Test stream.
+class TestStream
+	:	public Excel::Stream
+{
 public:
-	//! Parse Excel SST.
-	static std::vector< std::wstring > parse( Record & record );
-}; // class SharedStringTable
+	TestStream( const char * data, size_t size );
+	virtual ~TestStream();
 
-} /* namespace Excel */
+	//! Read one byte from the stream.
+	virtual char getByte();
 
-#endif // EXCEL__SST_HPP__INCLUDED
+	//! \return true if EOF reached.
+	virtual bool eof() const;
 
+	//! Seek stream to new position.
+	virtual void seek( int pos, Excel::Stream::SeekType type =
+		Excel::Stream::FromBeginning );
+
+	//! \return Position in the stream.
+	virtual int pos();
+
+private:
+	//! Data.
+	const char * m_data;
+	//! Position in the stream.
+	size_t m_pos;
+	//! Size of the stream;
+	size_t m_size;
+}; // class TestStream
