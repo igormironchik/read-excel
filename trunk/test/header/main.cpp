@@ -1,9 +1,9 @@
 
 /*!
 	\file
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -28,15 +28,15 @@
 */
 
 // Excel include.
-#include <excel/compoundfile/h/header.hpp>
-#include <excel/compoundfile/h/sat.hpp>
-#include <excel/compoundfile/h/exceptions.hpp>
+#include <excel/compoundfile/header.hpp>
+#include <excel/compoundfile/sat.hpp>
+#include <excel/compoundfile/compoundfile_exceptions.hpp>
 
 // unit test helper.
 #include <test/helper/helper.hpp>
 
 // TestDocument include.
-#include <test/testdocument/h/document.hpp>
+#include <test/testdocument/document.hpp>
 
 // C++ include.
 #include <sstream>
@@ -72,7 +72,7 @@ UNIT_TEST_START
 			std::ios::binary );
 
 		const char headerData[] = {
-			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+			0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
 		};
 
 		stream.write( headerData, 8 );

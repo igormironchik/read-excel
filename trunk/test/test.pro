@@ -3,6 +3,14 @@ TEMPLATE = subdirs
 
 CONFIG += ordered
 
-SUBDIRS = TestRunner \
-          stream \
-          bof
+SUBDIRS = stream \
+          testdocument \
+          bof \
+          book \
+          cell \
+          compoundfile \
+          formula \
+          header \
+          record \
+          sst \
+          string

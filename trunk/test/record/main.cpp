@@ -1,9 +1,9 @@
 
 /*!
 	\file
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2011 Igor P. Mironchik
+	Copyright (c) 2011-2014 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -28,37 +28,37 @@
 */
 
 // Excel include.
-#include <excel/h/record.hpp>
+#include <excel/record.hpp>
 
 // unit test helper.
 #include <test/helper/helper.hpp>
-#include <test/stream/h/stream.hpp>
+#include <test/stream/stream.hpp>
 
 
 UNIT_TEST_START
 
 	const char data[] = {
-		0xFC, 0x00, 0x13, 0x00,
-		0x03, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
-		0x10, 0x00, 0x00,
-		0x53, 0x54, 0x53, 0x54, 0x53, 0x54, 0x53, 0x54,
+		0xFCu, 0x00u, 0x13u, 0x00u,
+		0x03u, 0x00u, 0x00u, 0x00u, 0x03u, 0x00u, 0x00u, 0x00u,
+		0x10u, 0x00u, 0x00u,
+		0x53u, 0x54u, 0x53u, 0x54u, 0x53u, 0x54u, 0x53u, 0x54u,
 
-		0x3C, 0x00, 0x11, 0x00,
-		0x01,
-		0x53, 0x00, 0x54, 0x00, 0x53, 0x00, 0x54, 0x00,
-		0x53, 0x00, 0x54, 0x00, 0x53, 0x00, 0x54, 0x00,
+		0x3Cu, 0x00u, 0x11u, 0x00u,
+		0x01u,
+		0x53u, 0x00u, 0x54u, 0x00u, 0x53u, 0x00u, 0x54u, 0x00u,
+		0x53u, 0x00u, 0x54u, 0x00u, 0x53u, 0x00u, 0x54u, 0x00u,
 
-		0x3C, 0x00, 0x13, 0x00,
-		0x10, 0x00, 0x00,
-		0x51, 0x52, 0x51, 0x52, 0x51, 0x52, 0x51, 0x52,
-		0x51, 0x52, 0x51, 0x52, 0x51, 0x52, 0x51, 0x52,
+		0x3Cu, 0x00u, 0x13u, 0x00u,
+		0x10u, 0x00u, 0x00u,
+		0x51u, 0x52u, 0x51u, 0x52u, 0x51u, 0x52u, 0x51u, 0x52u,
+		0x51u, 0x52u, 0x51u, 0x52u, 0x51u, 0x52u, 0x51u, 0x52u,
 
-		0x3C, 0x00, 0x23, 0x00,
-		0x10, 0x00, 0x01,
-		0x51, 0x00, 0x52, 0x00, 0x51, 0x00, 0x52, 0x00,
-		0x51, 0x00, 0x52, 0x00, 0x51, 0x00, 0x52, 0x00,
-		0x51, 0x00, 0x52, 0x00, 0x51, 0x00, 0x52, 0x00,
-		0x51, 0x00, 0x52, 0x00, 0x51, 0x00, 0x52, 0x00
+		0x3Cu, 0x00u, 0x23u, 0x00u,
+		0x10u, 0x00u, 0x01u,
+		0x51u, 0x00u, 0x52u, 0x00u, 0x51u, 0x00u, 0x52u, 0x00u,
+		0x51u, 0x00u, 0x52u, 0x00u, 0x51u, 0x00u, 0x52u, 0x00u,
+		0x51u, 0x00u, 0x52u, 0x00u, 0x51u, 0x00u, 0x52u, 0x00u,
+		0x51u, 0x00u, 0x52u, 0x00u, 0x51u, 0x00u, 0x52u, 0x00u
 	};
 
 
@@ -84,96 +84,96 @@ UNIT_TEST_START
 
 		Excel::Stream & stream = record.dataStream();
 
-		CHECK_CONDITION( stream.getByte() == (char) 0x03 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x03 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x10 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x53 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x54 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x53 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x54 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x53 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x54 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x53 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x54 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x01 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x53 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x54 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x53 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x54 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x53 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x54 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x53 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x54 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x10 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x51 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x52 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x51 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x52 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x51 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x52 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x51 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x52 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x51 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x52 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x51 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x52 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x51 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x52 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x51 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x52 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x10 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x01 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x51 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x52 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x51 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x52 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x51 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x52 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x51 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x52 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x51 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x52 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x51 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x52 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x51 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x52 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x51 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x52 );
-		CHECK_CONDITION( stream.getByte() == (char) 0x00 );
+		CHECK_CONDITION( stream.getByte() == (char) 0x03u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x03u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x10u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x53u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x54u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x53u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x54u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x53u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x54u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x53u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x54u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x01u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x53u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x54u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x53u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x54u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x53u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x54u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x53u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x54u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x10u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x51u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x52u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x51u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x52u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x51u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x52u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x51u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x52u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x51u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x52u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x51u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x52u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x51u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x52u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x51u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x52u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x10u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x01u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x51u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x52u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x51u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x52u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x51u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x52u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x51u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x52u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x51u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x52u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x51u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x52u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x51u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x52u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x51u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x52u );
+		CHECK_CONDITION( stream.getByte() == (char) 0x00u );
 
 	UNIT_FINISH( test_record )
 
