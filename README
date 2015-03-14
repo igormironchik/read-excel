@@ -2,14 +2,6 @@ This is very simple implementation of the Excel 97-2003 format written in C++.
 Supported reading only.
 
 
-REQUIREMENTS
-
-For compiling ProcessLife you should have installed:
- * Qt 4 framework (http://qt.nokia.com/)
- * Ruby programming language (http://www.ruby-lang.org/en/)
- * mxx_ru Ruby gem (http://rubyforge.org/projects/mxx-ru/)
-
-
 COMPILING
 
  * You should have installed Ruby programming language and installed Mxx_ru gem.
