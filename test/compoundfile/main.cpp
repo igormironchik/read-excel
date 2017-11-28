@@ -31,117 +31,113 @@
 #include <excel/compoundfile/compoundfile.hpp>
 
 // unit test helper.
-#include <test/helper/helper.hpp>
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include <test/doctest/doctest.h>
 
 
-UNIT_TEST_START
+//
+// test_directory
+//
 
-	//
-	// test_directory
-	//
+TEST_CASE( "test_directory" )
+{
+	CompoundFile::File file( "./test/data/test.xls" );
 
-	UNIT_START( test_directory )
+	{
+		CompoundFile::Directory dir = file.directory( L"Workbook" );
 
-		CompoundFile::File file( L"./test/data/test.xls" );
+		REQUIRE( dir.name() == L"Workbook" );
+		REQUIRE( dir.type() == CompoundFile::Directory::UserStream );
+		REQUIRE( dir.streamSecID() == 0x02 );
+		REQUIRE( dir.streamSize() == 0x3480 );
+		REQUIRE( dir.rightChild() == 0xFFFFFFFF );
+		REQUIRE( dir.leftChild() == 0x04 );
+		REQUIRE( dir.rootNode() == 0xFFFFFFFF );
+	}
 
-		{
-			CompoundFile::Directory dir = file.directory( L"Workbook" );
+	{
+		const wchar_t data[] = {
+			0x01, 0x43, 0x6F, 0x6D, 0x70, 0x4F, 0x62, 0x6A, 0x00
+		};
 
-			CHECK_CONDITION( dir.name() == L"Workbook" );
-			CHECK_CONDITION( dir.type() == CompoundFile::Directory::UserStream );
-			CHECK_CONDITION( dir.streamSecID() == 0x02 );
-			CHECK_CONDITION( dir.streamSize() == 0x3480 );
-			CHECK_CONDITION( dir.rightChild() == 0xFFFFFFFF );
-			CHECK_CONDITION( dir.leftChild() == 0x04 );
-			CHECK_CONDITION( dir.rootNode() == 0xFFFFFFFF );
-		}
+		CompoundFile::Directory dir = file.directory( data );
 
-		{
-			const wchar_t data[] = {
-				0x01, 0x43, 0x6F, 0x6D, 0x70, 0x4F, 0x62, 0x6A, 0x00
-			};
+		REQUIRE( dir.name() == data );
+		REQUIRE( dir.type() == CompoundFile::Directory::UserStream );
+		REQUIRE( dir.streamSecID() == 0x08 );
+		REQUIRE( dir.streamSize() == 0x6D );
+		REQUIRE( dir.rightChild() == 0xFFFFFFFF );
+		REQUIRE( dir.leftChild() == 0xFFFFFFFF );
+		REQUIRE( dir.rootNode() == 0xFFFFFFFF );
+	}
 
-			CompoundFile::Directory dir = file.directory( data );
+	{
+		const wchar_t data[] = {
+			0x05, 0x44, 0x6F, 0x63, 0x75, 0x6D, 0x65, 0x6E,
+			0x74, 0x53, 0x75, 0x6D, 0x6D, 0x61, 0x72, 0x79,
+			0x49, 0x6E, 0x66, 0x6F, 0x72, 0x6D, 0x61, 0x74,
+			0x69, 0x6F, 0x6E, 0x00
+		};
 
-			CHECK_CONDITION( dir.name() == data );
-			CHECK_CONDITION( dir.type() == CompoundFile::Directory::UserStream );
-			CHECK_CONDITION( dir.streamSecID() == 0x08 );
-			CHECK_CONDITION( dir.streamSize() == 0x6D );
-			CHECK_CONDITION( dir.rightChild() == 0xFFFFFFFF );
-			CHECK_CONDITION( dir.leftChild() == 0xFFFFFFFF );
-			CHECK_CONDITION( dir.rootNode() == 0xFFFFFFFF );
-		}
+		CompoundFile::Directory dir = file.directory( data );
 
-		{
-			const wchar_t data[] = {
-				0x05, 0x44, 0x6F, 0x63, 0x75, 0x6D, 0x65, 0x6E,
-				0x74, 0x53, 0x75, 0x6D, 0x6D, 0x61, 0x72, 0x79,
-				0x49, 0x6E, 0x66, 0x6F, 0x72, 0x6D, 0x61, 0x74,
-				0x69, 0x6F, 0x6E, 0x00
-			};
+		REQUIRE( dir.name() == data );
+		REQUIRE( dir.type() == CompoundFile::Directory::UserStream );
+		REQUIRE( dir.streamSecID() == 0x04 );
+		REQUIRE( dir.streamSize() == 0xEC );
+		REQUIRE( dir.rightChild() == 0xFFFFFFFF );
+		REQUIRE( dir.leftChild() == 0xFFFFFFFF );
+		REQUIRE( dir.rootNode() == 0xFFFFFFFF );
+	}
 
-			CompoundFile::Directory dir = file.directory( data );
+	{
+		const wchar_t data[] = {
+			0x05, 0x53, 0x75, 0x6D, 0x6D, 0x61, 0x72, 0x79,
+			0x49, 0x6E, 0x66, 0x6F, 0x72, 0x6D, 0x61, 0x74,
+			0x69, 0x6F, 0x6E, 0x00
+		};
 
-			CHECK_CONDITION( dir.name() == data );
-			CHECK_CONDITION( dir.type() == CompoundFile::Directory::UserStream );
-			CHECK_CONDITION( dir.streamSecID() == 0x04 );
-			CHECK_CONDITION( dir.streamSize() == 0xEC );
-			CHECK_CONDITION( dir.rightChild() == 0xFFFFFFFF );
-			CHECK_CONDITION( dir.leftChild() == 0xFFFFFFFF );
-			CHECK_CONDITION( dir.rootNode() == 0xFFFFFFFF );
-		}
+		CompoundFile::Directory dir = file.directory( data );
 
-		{
-			const wchar_t data[] = {
-				0x05, 0x53, 0x75, 0x6D, 0x6D, 0x61, 0x72, 0x79,
-				0x49, 0x6E, 0x66, 0x6F, 0x72, 0x6D, 0x61, 0x74,
-				0x69, 0x6F, 0x6E, 0x00
-			};
+		REQUIRE( dir.name() == data );
+		REQUIRE( dir.type() == CompoundFile::Directory::UserStream );
+		REQUIRE( dir.streamSecID() == 0x00 );
+		REQUIRE( dir.streamSize() == 0xE0 );
+		REQUIRE( dir.rightChild() == 0x03 );
+		REQUIRE( dir.leftChild() == 0x01 );
+		REQUIRE( dir.rootNode() == 0xFFFFFFFF );
+	}
 
-			CompoundFile::Directory dir = file.directory( data );
-
-			CHECK_CONDITION( dir.name() == data );
-			CHECK_CONDITION( dir.type() == CompoundFile::Directory::UserStream );
-			CHECK_CONDITION( dir.streamSecID() == 0x00 );
-			CHECK_CONDITION( dir.streamSize() == 0xE0 );
-			CHECK_CONDITION( dir.rightChild() == 0x03 );
-			CHECK_CONDITION( dir.leftChild() == 0x01 );
-			CHECK_CONDITION( dir.rootNode() == 0xFFFFFFFF );
-		}
-
-	UNIT_FINISH( test_directory )
+}
 
 
-	//
-	// test_stream
-	//
+//
+// test_stream
+//
 
-	UNIT_START( test_stream )
+TEST_CASE( "test_stream" )
+{
+	CompoundFile::File file( "./test/data/test.xls" );
 
-		CompoundFile::File file( L"./test/data/test.xls" );
+	std::unique_ptr< Excel::Stream > stream( file.stream(
+		file.directory( L"Workbook" ) ) );
 
-		std::auto_ptr< Excel::Stream > stream( file.stream(
-			file.directory( L"Workbook" ) ) );
+	stream->seek( 512, Excel::Stream::FromBeginning );
 
-		stream->seek( 512, Excel::Stream::FromBeginning );
+	REQUIRE( stream->getByte() == (char) 0x01 );
+	REQUIRE( stream->getByte() == (char) 0x00 );
+	REQUIRE( stream->getByte() == (char) 0x3F );
+	REQUIRE( stream->getByte() == (char) 0x00 );
 
-		CHECK_CONDITION( stream->getByte() == (char) 0x01 );
-		CHECK_CONDITION( stream->getByte() == (char) 0x00 );
-		CHECK_CONDITION( stream->getByte() == (char) 0x3F );
-		CHECK_CONDITION( stream->getByte() == (char) 0x00 );
+	stream->seek( -6, Excel::Stream::FromCurrent );
 
-		stream->seek( -6, Excel::Stream::FromCurrent );
+	REQUIRE( stream->getByte() == (char) 0xDC );
+	REQUIRE( stream->getByte() == (char) 0x00 );
 
-		CHECK_CONDITION( stream->getByte() == (char) 0xDC );
-		CHECK_CONDITION( stream->getByte() == (char) 0x00 );
+	stream->seek( 128, Excel::Stream::FromEnd );
 
-		stream->seek( 128, Excel::Stream::FromEnd );
-
-		CHECK_CONDITION( stream->getByte() == (char) 0x66 );
-		CHECK_CONDITION( stream->getByte() == (char) 0x0A );
-		CHECK_CONDITION( stream->getByte() == (char) 0x40 );
-		CHECK_CONDITION( stream->getByte() == (char) 0x08 );
-
-	UNIT_FINISH( test_stream )
-
-UNIT_TEST_FINISH
+	REQUIRE( stream->getByte() == (char) 0x66 );
+	REQUIRE( stream->getByte() == (char) 0x0A );
+	REQUIRE( stream->getByte() == (char) 0x40 );
+	REQUIRE( stream->getByte() == (char) 0x08 );
+}

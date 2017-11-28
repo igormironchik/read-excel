@@ -79,7 +79,7 @@ public:
 	const std::wstring & sheetName() const;
 
 	//! Convert 2-bytes type field to the SheetType.
-	static SheetType convertSheetType( short type );
+	static SheetType convertSheetType( int16_t type );
 
 private:
 	//! BOF position.

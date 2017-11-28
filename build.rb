@@ -11,6 +11,7 @@ Mxx_ru::setup_target(
 		global_include_path( "." )
 		default_runtime_mode( MxxRu::Cpp::RUNTIME_RELEASE )
 		MxxRu::enable_show_brief
+		toolset.force_cpp11
 
 #		global_compiler_option '-Zi'
 #		global_linker_option '/DEBUG'

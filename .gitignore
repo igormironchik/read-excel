@@ -3,3 +3,6 @@
 /**/release/
 /lib/
 /**/Makefile*
+*.user
+/**/o
+/**/test.*

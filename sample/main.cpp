@@ -39,25 +39,17 @@
 #include <iostream>
 
 
-void main()
+int main()
 {
 	try {
-		Excel::Book book( L"sample.xls" );
+		Excel::Book book( "date.xls" );
 
 		Excel::Sheet * sheet = book.sheet( 0 );
 
 		std::wcout << L"There is output of the \"sample.xls\" Excel file."
 			<< std::endl << std::endl;
 
-		std::wcout << L"A1 : " << sheet->cell( 0, 0 ).getString()
-			<< std::endl;
-		std::wcout << L"A2 : " << sheet->cell( 1, 0 ).getString()
-			<< L" B2 : " << sheet->cell( 1, 1 ).getDouble() << std::endl;
-		std::wcout << L"A3 : " << sheet->cell( 2, 0 ).getString()
-			<< L" B3 : " << sheet->cell( 2, 1 ).getDouble() << std::endl;
-		std::wcout << L"A4 : " << sheet->cell( 3, 0 ).getString()
-			<< L" B4 : " << sheet->cell( 3, 1 ).getFormula().getDouble()
-			<< std::endl;
+		std::wcout << sheet->cell( 0, 0 ).getString() << std::endl;
 
 		std::wcout << std::endl << L"Thats all. And thanks for using this library."
 			<< std::endl;
@@ -70,4 +62,6 @@ void main()
 	{
 		std::wcout << x.whatAsWString() << std::endl;
 	}
+
+	return 0;
 }

@@ -99,16 +99,16 @@ void
 Directory::load( Stream & stream )
 {
 	{
-		const short maxSymbolsInName = 32;
+		const int16_t maxSymbolsInName = 32;
 
-		short i = 1;
+		int16_t i = 1;
 
-		std::vector< unsigned short > data;
+		std::vector< uint16_t > data;
 		data.reserve( maxSymbolsInName - 1 );
 
 		for( ; i <= maxSymbolsInName; ++i )
 		{
-			unsigned short symbol = 0;
+			uint16_t symbol = 0;
 			stream.read( symbol, 2 );
 
 			if( symbol != 0 )

@@ -55,7 +55,7 @@ class Stream;
 class Book {
 public:
 	Book();
-	explicit Book( const std::wstring & fileName );
+	explicit Book( const std::string & fileName );
 	~Book();
 
 	//! \return Count of the sheets.
@@ -66,7 +66,7 @@ public:
 	Sheet * sheet( size_t index ) const;
 
 	//! Load WorkBook from file.
-	void loadBook( const std::wstring & fileName );
+	void loadBook( const std::string & fileName );
 
 private:
 	//! Load sheets from file.

@@ -107,10 +107,10 @@ public:
 	void setString( const std::wstring & str );
 
 	//! \return Row index.
-	short getRow() const;
+	int16_t getRow() const;
 
 	//! \return Column index.
-	short getColumn() const;
+	int16_t getColumn() const;
 
 private:
 	//! Parse record.
@@ -128,9 +128,9 @@ private:
 	//! String value.
 	std::wstring m_stringValue;
 	//! Row index.
-	short m_row;
+	int16_t m_row;
 	//! Column index.
-	short m_column;
+	int16_t m_column;
 }; // class Formula
 
 } /* namespace Excel */

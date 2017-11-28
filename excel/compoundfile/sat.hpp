@@ -45,14 +45,16 @@ namespace CompoundFile {
 //! Sector identifier.
 class SecID {
 public:
-	//! Free sector identifier.
-	static const int FreeSecID = -1;
-	//! End of chain of sectors identifier.
-	static const int EndOfChain = -2;
-	//! SAT sector identifier.
-	static const int SATSecID = -3;
-	//! MSAT sector identifier.
-	static const int MSATSecID = -4;
+	enum Ids {
+		//! Free sector identifier.
+		FreeSecID = -1,
+		//! End of chain of sectors identifier.
+		EndOfChain = -2,
+		//! SAT sector identifier.
+		SATSecID = -3,
+		//! MSAT sector identifier.
+		MSATSecID = -4
+	}; // enum Ids
 
 public:
 	SecID();
@@ -84,7 +86,7 @@ public:
 	std::vector< SecID > sectors( const SecID & firstSector ) const;
 
 	//! \return Index for the given SecID in the chain.
-	static size_t indexOfTheSecID( const SecID & id,
+	static std::size_t indexOfTheSecID( const SecID & id,
 		const std::vector< SecID > & chain );
 
 private:

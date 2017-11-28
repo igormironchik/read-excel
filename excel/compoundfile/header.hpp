@@ -38,6 +38,9 @@
 // Excel include.
 #include "../stream.hpp"
 
+// C++ include.
+#include <istream>
+
 
 namespace CompoundFile {
 
@@ -58,31 +61,31 @@ public:
 	Excel::Stream::ByteOrder byteOrder() const;
 
 	//! \return Size of a sector.
-	size_t sectorSize() const;
+	std::size_t sectorSize() const;
 
 	//! \return Size of a short-sector.
-	size_t shortSectorSize() const;
+	std::size_t shortSectorSize() const;
 
 	//! \return Total number of sectors used for the sector allocation table.
-	size_t sectorsInSAT() const;
+	std::size_t sectorsInSAT() const;
 
 	//! \return SecID of first sector of the directory stream.
 	SecID dirStreamSecID() const;
 
 	//! \return Minimum size of a standard stream.
-	size_t streamMinSize() const;
+	std::size_t streamMinSize() const;
 
 	//! \return SecID of first sector of the short-sector allocation table.
 	SecID ssatFirstSecID() const;
 
 	//! \return Total number of sectors used for the short-sector allocation table.
-	size_t sectorsInSSAT() const;
+	std::size_t sectorsInSSAT() const;
 
 	//! \return SecID of first sector of the master sector allocation table.
 	SecID msatFirstSecID() const;
 
 	//! \return Total number of sectors used for the master sector allocation table.
-	size_t sectorsInMSAT() const;
+	std::size_t sectorsInMSAT() const;
 
 protected:
 	//! Load header from the file.
@@ -92,23 +95,23 @@ private:
 	//! Byte order.
 	Excel::Stream::ByteOrder m_byteOrder;
 	//! Size of a sector.
-	size_t m_sectorSize;
+	std::size_t m_sectorSize;
 	//! Size of a short-sector.
-	size_t m_shortSectorSize;
+	std::size_t m_shortSectorSize;
 	//! Total number of sectors used for the sector allocation table.
-	size_t m_sectorsInSAT;
+	std::size_t m_sectorsInSAT;
 	//! SecID of first sector of the directory stream.
 	SecID m_dirStreamSecID;
 	//! Minimum size of a standard stream.
-	size_t m_streamMinSize;
+	std::size_t m_streamMinSize;
 	//! SecID of first sector of the short-sector allocation table.
 	SecID m_ssatFirstSecID;
 	//! Total number of sectors used for the short-sector allocation table.
-	size_t m_sectorsInSSAT;
+	std::size_t m_sectorsInSSAT;
 	//! SecID of first sector of the master sector allocation table.
 	SecID m_msatFirstSecID;
 	//! Total number of sectors used for the master sector allocation table.
-	size_t m_sectorsInMSAT;
+	std::size_t m_sectorsInMSAT;
 }; // class Header
 
 } /* namespace CompoundFile */

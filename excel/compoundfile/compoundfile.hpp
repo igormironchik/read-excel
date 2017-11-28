@@ -57,14 +57,14 @@ namespace CompoundFile {
 //! Compound file.
 class File {
 public:
-	explicit File( const std::wstring & fileName );
+	explicit File( const std::string & fileName );
 	~File();
 
 	//! \return Directory entry by its name.
 	Directory directory( const std::wstring & name ) const;
 
 	//! \return Stream in the directory.
-	std::auto_ptr< Excel::Stream > stream( const Directory & dir );
+	std::unique_ptr< Excel::Stream > stream( const Directory & dir );
 
 private:
 	//! Stream.

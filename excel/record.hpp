@@ -125,7 +125,7 @@ public:
 	Record & operator = ( const Record & record );
 
 	//! \return Record's code.
-	short code() const;
+	int16_t code() const;
 
 	//! \return Record's length.
 	int length() const;
@@ -142,7 +142,7 @@ private:
 
 private:
 	//! Record's code.
-	unsigned short m_code;
+	uint16_t m_code;
 	//! Record's length.
 	size_t m_length;
 	//! Record's substream.

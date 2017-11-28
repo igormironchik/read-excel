@@ -32,6 +32,8 @@
 #ifndef EXCEL__STREAM_HPP__INCLUDED
 #define EXCEL__STREAM_HPP__INCLUDED
 
+// C++ include.
+#include <cstdint>
 
 namespace Excel {
 
@@ -61,7 +63,7 @@ private:
 	public:
 		static ByteOrder byteOrder()
 		{
-			static const short int word = 0x0001;
+			static const int16_t word = 0x0001;
 			static const char * byte = (const char *) &word;
 
 			return ( byte[0] ? LittleEndian : BigEndian );

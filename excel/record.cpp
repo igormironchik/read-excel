@@ -131,8 +131,8 @@ Record::read( Stream & stream )
 	stream.read( m_code, 2 );
 	stream.read( m_length, 2 );
 
-	unsigned short nextRecordCode = 0;
-	unsigned short nextRecordLength = 0;
+	uint16_t nextRecordCode = 0;
+	uint16_t nextRecordLength = 0;
 
 	std::vector< char > data;
 
@@ -155,7 +155,7 @@ Record::read( Stream & stream )
 		data.reserve( data.size() + nextRecordLength );
 		if( nextRecordLength )
 		{
-			for( unsigned short i = 0; i < nextRecordLength; ++i )
+			for( uint16_t i = 0; i < nextRecordLength; ++i )
 				data.push_back( stream.getByte() );
 		}
 		m_length += nextRecordLength;
@@ -168,7 +168,7 @@ Record::read( Stream & stream )
 		m_stream.write( &data[ 0 ], data.size() );
 }
 
-short
+int16_t
 Record::code() const
 {
 	return m_code;

@@ -119,9 +119,9 @@ loadString( Stream & stream,
 	const std::vector< int > & borders,
 	size_t lengthFieldSize )
 {
-	short charactersCount = 0;
+	int16_t charactersCount = 0;
 	char options = 0;
-	short formattingRuns = 0;
+	int16_t formattingRuns = 0;
 	int extStringLength = 0;
 
 	stream.read( charactersCount, lengthFieldSize );
@@ -133,11 +133,11 @@ loadString( Stream & stream,
 	if( isExtString( options ) )
 		stream.read( extStringLength, 4 );
 
-	short bytesPerChar = ( isHighByte( options ) ? 2 : 1 );
+	int16_t bytesPerChar = ( isHighByte( options ) ? 2 : 1 );
 
-	std::vector< unsigned short > stringData( charactersCount );
+	std::vector< unsigned int16_t > stringData( charactersCount );
 
-	for( short i = 0; i < charactersCount; ++i )
+	for( int16_t i = 0; i < charactersCount; ++i )
 	{
 		if( isSkipByte( stream.pos(), borders ) )
 		{

@@ -138,12 +138,22 @@ Header::sectorsInMSAT() const
 namespace /* anonymous */ {
 
 //! Compound document file identifier
-static const char cIdentifier[] =
-	{ 0xD0u, 0xCFu, 0x11u, 0xE0u, 0xA1u, 0xB1u, 0x1Au, 0xE1u, 0x00u };
+static const char cIdentifier[] = {
+	static_cast< char > ( 0xD0u ),
+	static_cast< char > ( 0xCFu ),
+	static_cast< char > ( 0x11u ),
+	static_cast< char > ( 0xE0u ),
+	static_cast< char > ( 0xA1u ),
+	static_cast< char > ( 0xB1u ),
+	static_cast< char > ( 0x1Au ),
+	static_cast< char > ( 0xE1u ),
+	static_cast< char > ( 0x00u ) };
 
 //! Byte order identifier.
-static const char cLittleEndian[] =
-	{ 0xFEu, 0xFFu, 0x00u };
+static const char cLittleEndian[] = {
+	static_cast< char > ( 0xFEu ),
+	static_cast< char > ( 0xFFu ),
+	static_cast< char > ( 0x00u ) };
 
 } /* namespace anonymous */
 
@@ -175,7 +185,7 @@ Header::load( std::istream & stream )
 	}
 
 	{
-		short sectorSizePower = 0;
+		int16_t sectorSizePower = 0;
 
 		readData( stream, sectorSizePower, 2 );
 
@@ -183,7 +193,7 @@ Header::load( std::istream & stream )
 	}
 
 	{
-		short shortSectorSizePower = 0;
+		int16_t shortSectorSizePower = 0;
 
 		readData( stream, shortSectorSizePower, 2 );
 

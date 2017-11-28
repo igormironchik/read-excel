@@ -111,13 +111,13 @@ Formula::setString( const std::wstring & str )
 	m_stringValue = str;
 }
 
-short
+int16_t
 Formula::getRow() const
 {
 	return m_row;
 }
 
-short
+int16_t
 Formula::getColumn() const
 {
 	return m_column;
@@ -138,7 +138,7 @@ Formula::parse( Record & record )
 
 	record.dataStream().read( doubleAsLongLong.m_long, 8 );
 
-	long long isBool = doubleAsLongLong.m_long & 0xFFFFFFFFFF00FFFF;
+	unsigned long long isBool = doubleAsLongLong.m_long & 0xFFFFFFFFFF00FFFF;
 
 	if( isBool == 0xFFFF000000000001 )
 	{
@@ -148,7 +148,7 @@ Formula::parse( Record & record )
 		return;
 	}
 
-	long long isError = doubleAsLongLong.m_long & 0xFFFFFFFFFF00FFFF;
+	unsigned long long isError = doubleAsLongLong.m_long & 0xFFFFFFFFFF00FFFF;
 
 	if( isError == 0xFFFF000000000002 )
 	{
@@ -162,7 +162,7 @@ Formula::parse( Record & record )
 		return;
 	}
 
-	long long isString = doubleAsLongLong.m_long & 0xFFFFFFFFFFFFFFFF;
+	unsigned long long isString = doubleAsLongLong.m_long & 0xFFFFFFFFFFFFFFFF;
 
 	if( isString == 0xFFFF000000000000 )
 	{

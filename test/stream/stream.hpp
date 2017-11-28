@@ -27,8 +27,11 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-
+// Excel include.
 #include <excel/stream.hpp>
+
+// C++ include.
+#include <cstddef>
 
 
 //
@@ -40,7 +43,7 @@ class TestStream
 	:	public Excel::Stream
 {
 public:
-	TestStream( const char * data, size_t size );
+	TestStream( const char * data, std::size_t size );
 	virtual ~TestStream();
 
 	//! Read one byte from the stream.
@@ -60,7 +63,7 @@ private:
 	//! Data.
 	const char * m_data;
 	//! Position in the stream.
-	size_t m_pos;
+	std::size_t m_pos;
 	//! Size of the stream;
-	size_t m_size;
+	std::size_t m_size;
 }; // class TestStream

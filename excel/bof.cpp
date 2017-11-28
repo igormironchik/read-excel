@@ -61,8 +61,8 @@ BOF::type() const
 void
 BOF::parse( Record & record )
 {
-	short version = 0;
-	short type = 0;
+	int16_t version = 0;
+	int16_t type = 0;
 
 	record.dataStream().read( version, 2 );
 	record.dataStream().read( type, 2 );

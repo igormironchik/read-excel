@@ -21,6 +21,7 @@ Mxx_ru::Cpp::lib_target {
 		cpp_source( "sat.cpp" )
 		cpp_source( "compoundfile_stream.cpp" )
 		cpp_source( "compoundfile.cpp" )
+		cpp_source( "utils.cpp" )
 	}
 
 	cpp_source( "exceptions.cpp" )

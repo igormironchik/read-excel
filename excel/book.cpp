@@ -56,7 +56,7 @@ Book::Book()
 {
 }
 
-Book::Book( const std::wstring & fileName )
+Book::Book( const std::string & fileName )
 {
 	loadBook( fileName );
 }
@@ -99,13 +99,13 @@ Book::sheet( size_t index ) const
 }
 
 void
-Book::loadBook( const std::wstring & fileName )
+Book::loadBook( const std::string & fileName )
 {
 	try {
 		clear();
 
 		CompoundFile::File file( fileName );
-		std::auto_ptr< Stream > stream = file.stream(
+		std::unique_ptr< Stream > stream = file.stream(
 			file.directory( L"Workbook" ) );
 
 		std::vector< BoundSheet > boundSheets;
@@ -151,7 +151,7 @@ BoundSheet
 Book::parseBoundSheet( Record & record )
 {
 	int pos = 0;
-	short sheetType = 0;
+	int16_t sheetType = 0;
 	std::wstring sheetName;
 
 	record.dataStream().read( pos, 4 );
@@ -174,7 +174,7 @@ Book::loadWorkSheets( const std::vector< BoundSheet > & boundSheets,
 	{
 		if( it->sheetType() == BoundSheet::WorkSheet )
 		{
-			std::auto_ptr< Sheet > sheet( new Sheet( m_sst ) );
+			std::unique_ptr< Sheet > sheet( new Sheet( m_sst ) );
 			sheet->load( *it, stream );
 			m_sheets.push_back( sheet.release() );
 		}

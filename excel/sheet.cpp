@@ -82,7 +82,7 @@ BoundSheet::sheetName() const
 }
 
 BoundSheet::SheetType
-BoundSheet::convertSheetType( short type )
+BoundSheet::convertSheetType( int16_t type )
 {
 	return ( (SheetType) ( type & 0xFF00 ) );
 }
@@ -216,8 +216,8 @@ Sheet::handleDimensions( const BOF & bof,
 	{
 		int firstRow = 0;
 		int lastRow = 0;
-		short firstColumn = 0;
-		short lastColumn = 0;
+		int16_t firstColumn = 0;
+		int16_t lastColumn = 0;
 
 		record.dataStream().read( firstRow, 4 );
 		record.dataStream().read( lastRow, 4 );
@@ -228,10 +228,10 @@ Sheet::handleDimensions( const BOF & bof,
 	}
 	else
 	{
-		short firstRow = 0;
-		short lastRow = 0;
-		short firstColumn = 0;
-		short lastColumn = 0;
+		int16_t firstRow = 0;
+		int16_t lastRow = 0;
+		int16_t firstColumn = 0;
+		int16_t lastColumn = 0;
 
 		record.dataStream().read( firstRow, 2 );
 		record.dataStream().read( lastRow, 2 );
@@ -245,9 +245,9 @@ Sheet::handleDimensions( const BOF & bof,
 void
 Sheet::handleLabelSST( Record & record )
 {
-	short row = 0;
-	short column = 0;
-	short xfIndex = 0;
+	int16_t row = 0;
+	int16_t column = 0;
+	int16_t xfIndex = 0;
 	int sstIndex = 0;
 
 	record.dataStream().read( row, 2 );
@@ -268,7 +268,7 @@ namespace /* anonymous */ {
 //
 
 double
-doubleFromRK( long rk )
+doubleFromRK( uint32_t rk )
 {
 	double num = 0;
 
@@ -280,8 +280,8 @@ doubleFromRK( long rk )
 	else
 	{
 		// hi words of IEEE num
-		*((long *)&num+1) = rk & 0xFFFFFFFC;
-		*((long *)&num) = 0;
+		*((uint32_t *)&num+1) = rk & 0xFFFFFFFC;
+		*((uint32_t *)&num) = 0;
 	}
 
 	if( rk & 0x01 )
@@ -296,9 +296,9 @@ doubleFromRK( long rk )
 void
 Sheet::handleRK( Record & record )
 {
-	short row = 0;
-	short column = 0;
-	long rk = 0;
+	int16_t row = 0;
+	int16_t column = 0;
+	uint32_t rk = 0;
 
 	record.dataStream().read( row, 2 );
 	record.dataStream().read( column, 2 );
@@ -314,9 +314,9 @@ Sheet::handleRK( Record & record )
 void
 Sheet::handleMULRK( Record & record )
 {
-	short row = 0;
-	short colFirst = 0;
-	short colLast = 0;
+	int16_t row = 0;
+	int16_t colFirst = 0;
+	int16_t colLast = 0;
 
 	record.dataStream().read( row, 2 );
 	record.dataStream().read( colFirst, 2 );
@@ -329,13 +329,13 @@ Sheet::handleMULRK( Record & record )
 
 	record.dataStream().seek( pos, Stream::FromBeginning );
 
-	const short rkCount = colLast - colFirst + 1;
+	const int16_t rkCount = colLast - colFirst + 1;
 
 	initCell( row, colLast );
 
-	for( short i = 0; i < rkCount; ++i )
+	for( int16_t i = 0; i < rkCount; ++i )
 	{
-		long rk = 0;
+		uint32_t rk = 0;
 
 		record.dataStream().seek( 2, Stream::FromCurrent );
 
@@ -348,8 +348,8 @@ Sheet::handleMULRK( Record & record )
 void
 Sheet::handleNUMBER( Record & record )
 {
-	short row = 0;
-	short column = 0;
+	int16_t row = 0;
+	int16_t column = 0;
 
 	record.dataStream().read( row, 2 );
 	record.dataStream().read( column, 2 );

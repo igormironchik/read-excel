@@ -31,35 +31,28 @@
 #include <excel/cell.hpp>
 
 // unit test helper.
-#include <test/helper/helper.hpp>
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include <test/doctest/doctest.h>
 
 
-UNIT_TEST_START
+TEST_CASE( "test_cell" )
+{
+	Excel::Cell cell;
 
-	//
-	// test_cell
-	//
+	cell.setData( 0.123456789 );
 
-	UNIT_START( test_cell )
+	REQUIRE( cell.getDouble() == 0.123456789 );
 
-		Excel::Cell cell;
+	cell.setData( L"1234567890" );
 
-		cell.setData( 0.123456789 );
+	REQUIRE( cell.getString() == L"1234567890" );
 
-		CHECK_CONDITION( cell.getDouble() == 0.123456789 );
+	cell.setData( 1234.0 );
 
-		cell.setData( L"1234567890" );
+	REQUIRE( cell.getDouble() == 1234.0 );
 
-		CHECK_CONDITION( cell.getString() == L"1234567890" );
+	cell.setData( L"qwerty" );
 
-		cell.setData( 1234.0 );
+	REQUIRE( cell.getString() == L"qwerty" );
 
-		CHECK_CONDITION( cell.getDouble() == 1234.0 );
-
-		cell.setData( L"qwerty" );
-
-		CHECK_CONDITION( cell.getString() == L"qwerty" );
-
-	UNIT_FINISH( test_cell )
-
-UNIT_TEST_FINISH
+}

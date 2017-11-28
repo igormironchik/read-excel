@@ -33,7 +33,8 @@
 #include <excel/compoundfile/compoundfile_exceptions.hpp>
 
 // unit test helper.
-#include <test/helper/helper.hpp>
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include <test/doctest/doctest.h>
 
 // TestDocument include.
 #include <test/testdocument/document.hpp>
@@ -42,29 +43,23 @@
 #include <sstream>
 
 
-UNIT_TEST_START
-
-	//
-	// test_header
-	//
-
-	UNIT_START( test_header )
-
+TEST_CASE( "test_header" )
+{
 	{
 		Document doc;
 
 		CompoundFile::Header header( doc.stream() );
 
-		CHECK_CONDITION( header.byteOrder() == Excel::Stream::LittleEndian );
-		CHECK_CONDITION( header.sectorSize() == 512 );
-		CHECK_CONDITION( header.shortSectorSize() == 64 );
-		CHECK_CONDITION( header.sectorsInSAT() == 0x01 );
-		CHECK_CONDITION( header.dirStreamSecID() == 0x01 );
-		CHECK_CONDITION( header.streamMinSize() == 0x1000 );
-		CHECK_CONDITION( header.ssatFirstSecID() == 0x1D );
-		CHECK_CONDITION( header.sectorsInSSAT() == 0x01 );
-		CHECK_CONDITION( header.msatFirstSecID() == CompoundFile::SecID::EndOfChain );
-		CHECK_CONDITION( header.sectorsInMSAT() == 0x00 );
+		REQUIRE( header.byteOrder() == Excel::Stream::LittleEndian );
+		REQUIRE( header.sectorSize() == 512 );
+		REQUIRE( header.shortSectorSize() == 64 );
+		REQUIRE( header.sectorsInSAT() == 0x01 );
+		REQUIRE( header.dirStreamSecID() == 0x01 );
+		REQUIRE( header.streamMinSize() == 0x1000 );
+		REQUIRE( header.ssatFirstSecID() == 0x1D );
+		REQUIRE( header.sectorsInSSAT() == 0x01 );
+		REQUIRE( header.msatFirstSecID() == CompoundFile::SecID::EndOfChain );
+		REQUIRE( header.sectorsInMSAT() == 0x00 );
 	}
 
 	{
@@ -77,12 +72,7 @@ UNIT_TEST_START
 
 		stream.write( headerData, 8 );
 
-		CHECK_THROW( CompoundFile::Exception,
-			{
-				CompoundFile::Header header( stream );
-			} )
+		REQUIRE_THROWS_AS( CompoundFile::Header header( stream ),
+			CompoundFile::Exception );
 	}
-
-	UNIT_FINISH( test_header )
-
-UNIT_TEST_FINISH
+}

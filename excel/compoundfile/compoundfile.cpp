@@ -117,9 +117,9 @@ loadChildDirectories( std::vector< Directory > & dirs,
 // File
 //
 
-File::File( const std::wstring & fileName )
+File::File( const std::string & fileName )
 {
-	m_stream.open( fileName.c_str(), std::ios::in | std::ios::binary );
+	m_stream.open( fileName, std::ios::in | std::ios::binary );
 
 	if( m_stream.good() )
 	{
@@ -146,7 +146,8 @@ File::File( const std::wstring & fileName )
 		loadChildDirectories( m_dirs, rootEntry, stream );
 	}
 	else
-		throw Exception( std::wstring( L"Unable to open file : " ) + fileName );
+		throw Exception( std::wstring( L"Unable to open file : " ) +
+			std::wstring( fileName.cbegin(), fileName.cend() ) );
 }
 
 File::~File()
@@ -167,10 +168,10 @@ File::directory( const std::wstring & name ) const
 	throw Exception( std::wstring( L"There is no such directory : " ) + name );
 }
 
-std::auto_ptr< Excel::Stream >
+std::unique_ptr< Excel::Stream >
 File::stream( const Directory & dir )
 {
-	return std::auto_ptr< Excel::Stream > ( new Stream( m_header,
+	return std::unique_ptr< Excel::Stream > ( new Stream( m_header,
 		m_sat, m_ssat, dir, m_shortStreamFirstSector, m_stream ) );
 }
 

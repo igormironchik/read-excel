@@ -11,7 +11,7 @@ Mxx_ru::Cpp::exe_target {
 	required_prj( "excel/prj.rb" )
 	required_prj( "test/stream/prj.rb" )
 
-	target( "test/string/test" )
+	target( "test/string/test.string" )
 
 	cpp_source( "main.cpp" )
 }

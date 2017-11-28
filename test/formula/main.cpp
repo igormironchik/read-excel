@@ -33,150 +33,147 @@
 #include <excel/string.hpp>
 
 // unit test helper.
-#include <test/helper/helper.hpp>
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include <test/doctest/doctest.h>
 #include <test/stream/stream.hpp>
+#include <test/helper/helper.hpp>
 
 
-UNIT_TEST_START
+const auto data1 = make_data(
+	0x06u, 0x00u, 0x16u, 0x00u,
+	0x01u, 0x00u, 0x02u, 0x00u, 0x00u, 0x00u,
+	0x08u, 0x07u, 0x06u, 0x05u, 0x04u, 0x03u, 0x02u, 0x01u,
+	0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
+); // data1
 
-	const char data1[] = {
-		0x06u, 0x00u, 0x16u, 0x00u,
-		0x01u, 0x00u, 0x02u, 0x00u, 0x00u, 0x00u,
-		0x08u, 0x07u, 0x06u, 0x05u, 0x04u, 0x03u, 0x02u, 0x01u,
-		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
-	}; // data1
+const auto data2 = make_data(
+	0x06u, 0x00u, 0x16u, 0x00u,
+	0x02u, 0x00u, 0x03u, 0x00u, 0x00u, 0x00u,
+	0x01u, 0x00u, 0x01u, 0x00u, 0x00u, 0x00u, 0xFFu, 0xFFu,
+	0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
+); // data2
 
-	const char data2[] = {
-		0x06u, 0x00u, 0x16u, 0x00u,
-		0x02u, 0x00u, 0x03u, 0x00u, 0x00u, 0x00u,
-		0x01u, 0x00u, 0x01u, 0x00u, 0x00u, 0x00u, 0xFFu, 0xFFu,
-		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
-	}; // data2
+const auto data3 = make_data(
+	0x06u, 0x00u, 0x16u, 0x00u,
+	0x03u, 0x00u, 0x04u, 0x00u, 0x00u, 0x00u,
+	0x02u, 0x00u, 0x2Au, 0x00u, 0x00u, 0x00u, 0xFFu, 0xFFu,
+	0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
+); // data3
 
-	const char data3[] = {
-		0x06u, 0x00u, 0x16u, 0x00u,
-		0x03u, 0x00u, 0x04u, 0x00u, 0x00u, 0x00u,
-		0x02u, 0x00u, 0x2Au, 0x00u, 0x00u, 0x00u, 0xFFu, 0xFFu,
-		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
-	}; // data3
+const auto data4 = make_data(
+	0x06u, 0x00u, 0x16u, 0x00u,
+	0x04u, 0x00u, 0x05u, 0x00u, 0x00u, 0x00u,
+	0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0xFFu, 0xFFu,
+	0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
 
-	const char data4[] = {
-		0x06u, 0x00u, 0x16u, 0x00u,
-		0x04u, 0x00u, 0x05u, 0x00u, 0x00u, 0x00u,
-		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0xFFu, 0xFFu,
-		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+	0x07u, 0x02u, 0x12u, 0x00u,
+	0x0Fu, 0x00u, 0x00u, 0x74u, 0x68u, 0x69u, 0x73u, 0x20u,
+	0x69u, 0x73u, 0x20u, 0x72u, 0x65u, 0x64u, 0x20u, 0x69u,
+	0x6Eu, 0x6Bu
+); // data4
 
-		0x07u, 0x02u, 0x12u, 0x00u,
-		0x0Fu, 0x00u, 0x00u, 0x74u, 0x68u, 0x69u, 0x73u, 0x20u,
-		0x69u, 0x73u, 0x20u, 0x72u, 0x65u, 0x64u, 0x20u, 0x69u,
-		0x6Eu, 0x6Bu
-	}; // data4
-
-	const char data5[] = {
-		0x06u, 0x00u, 0x16u, 0x00u,
-		0x02u, 0x00u, 0x03u, 0x00u, 0x00u, 0x00u,
-		0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0xFFu, 0xFFu,
-		0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
-	}; // data5
+const auto data5 = make_data(
+	0x06u, 0x00u, 0x16u, 0x00u,
+	0x02u, 0x00u, 0x03u, 0x00u, 0x00u, 0x00u,
+	0x01u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0xFFu, 0xFFu,
+	0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
+); // data5
 
 
-	//
-	// test_formula
-	//
+//
+// test_formula
+//
 
-	UNIT_START( test_formula )
+TEST_CASE( "test_formula" )
+{
+	union {
+		double asDouble;
+		long long asLongLong;
+	} un;
 
-		union {
-			double asDouble;
-			long long asLongLong;
-		} un;
+	{
+		TestStream stream( &data1[ 0 ], 26 );
 
-		{
-			TestStream stream( data1, 26 );
+		Excel::Record record( stream );
 
-			Excel::Record record( stream );
+		Excel::Formula formula( record );
 
-			Excel::Formula formula( record );
+		REQUIRE( formula.valueType() == Excel::Formula::DoubleValue );
+		REQUIRE( formula.getRow() == 0x01 );
+		REQUIRE( formula.getColumn() == 0x02 );
 
-			CHECK_CONDITION( formula.valueType() == Excel::Formula::DoubleValue );
-			CHECK_CONDITION( formula.getRow() == 0x01 );
-			CHECK_CONDITION( formula.getColumn() == 0x02 );
+		un.asLongLong = 0x0102030405060708;
 
-			un.asLongLong = 0x0102030405060708;
+		REQUIRE( formula.getDouble() == un.asDouble );
+	}
 
-			CHECK_CONDITION( formula.getDouble() == un.asDouble );
-		}
+	{
+		TestStream stream( &data2[ 0 ], 26 );
 
-		{
-			TestStream stream( data2, 26 );
+		Excel::Record record( stream );
 
-			Excel::Record record( stream );
+		Excel::Formula formula( record );
 
-			Excel::Formula formula( record );
+		REQUIRE( formula.valueType() == Excel::Formula::BooleanValue );
+		REQUIRE( formula.getRow() == 0x02 );
+		REQUIRE( formula.getColumn() == 0x03 );
 
-			CHECK_CONDITION( formula.valueType() == Excel::Formula::BooleanValue );
-			CHECK_CONDITION( formula.getRow() == 0x02 );
-			CHECK_CONDITION( formula.getColumn() == 0x03 );
+		un.asLongLong = 0xFFFF000000010001;
 
-			un.asLongLong = 0xFFFF000000010001;
+		REQUIRE( formula.getBoolean() == true );
+	}
 
-			CHECK_CONDITION( formula.getBoolean() == true );
-		}
+	{
+		TestStream stream( &data3[ 0 ], 26 );
 
-		{
-			TestStream stream( data3, 26 );
+		Excel::Record record( stream );
 
-			Excel::Record record( stream );
+		Excel::Formula formula( record );
 
-			Excel::Formula formula( record );
+		REQUIRE( formula.valueType() == Excel::Formula::ErrorValue );
+		REQUIRE( formula.getRow() == 0x03 );
+		REQUIRE( formula.getColumn() == 0x04 );
 
-			CHECK_CONDITION( formula.valueType() == Excel::Formula::ErrorValue );
-			CHECK_CONDITION( formula.getRow() == 0x03 );
-			CHECK_CONDITION( formula.getColumn() == 0x04 );
+		un.asLongLong = 0xFFFF0000002A0002;
 
-			un.asLongLong = 0xFFFF0000002A0002;
+		REQUIRE( formula.getErrorValue() == Excel::Formula::NA );
+	}
 
-			CHECK_CONDITION( formula.getErrorValue() == Excel::Formula::NA );
-		}
+	{
+		TestStream stream( &data4[ 0 ], 48 );
 
-		{
-			TestStream stream( data4, 48 );
+		Excel::Record record( stream );
 
-			Excel::Record record( stream );
+		Excel::Formula formula( record );
 
-			Excel::Formula formula( record );
+		Excel::Record stringRecord( stream );
+		std::vector< int > borders;
 
-			Excel::Record stringRecord( stream );
-			std::vector< int > borders;
+		formula.setString( Excel::loadString( stringRecord.dataStream(),
+			borders ) );
 
-			formula.setString( Excel::loadString( stringRecord.dataStream(),
-				borders ) );
+		REQUIRE( formula.valueType() == Excel::Formula::StringValue );
+		REQUIRE( formula.getRow() == 0x04 );
+		REQUIRE( formula.getColumn() == 0x05 );
 
-			CHECK_CONDITION( formula.valueType() == Excel::Formula::StringValue );
-			CHECK_CONDITION( formula.getRow() == 0x04 );
-			CHECK_CONDITION( formula.getColumn() == 0x05 );
+		un.asLongLong = 0xFFFF000000000000;
 
-			un.asLongLong = 0xFFFF000000000000;
+		REQUIRE( formula.getString() == L"this is red ink" );
+	}
 
-			CHECK_CONDITION( formula.getString() == L"this is red ink" );
-		}
+	{
+		TestStream stream( &data5[ 0 ], 26 );
 
-		{
-			TestStream stream( data5, 26 );
+		Excel::Record record( stream );
 
-			Excel::Record record( stream );
+		Excel::Formula formula( record );
 
-			Excel::Formula formula( record );
+		REQUIRE( formula.valueType() == Excel::Formula::BooleanValue );
+		REQUIRE( formula.getRow() == 0x02 );
+		REQUIRE( formula.getColumn() == 0x03 );
 
-			CHECK_CONDITION( formula.valueType() == Excel::Formula::BooleanValue );
-			CHECK_CONDITION( formula.getRow() == 0x02 );
-			CHECK_CONDITION( formula.getColumn() == 0x03 );
+		un.asLongLong = 0xFFFF000000010001;
 
-			un.asLongLong = 0xFFFF000000010001;
-
-			CHECK_CONDITION( formula.getBoolean() == false );
-		}
-
-	UNIT_FINISH( test_formula )
-
-UNIT_TEST_FINISH
+		REQUIRE( formula.getBoolean() == false );
+	}
+}

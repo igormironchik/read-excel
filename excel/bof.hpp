@@ -32,6 +32,9 @@
 #ifndef EXCEL__BOF_HPP__INCLUDED
 #define EXCEL__BOF_HPP__INCLUDED
 
+// C++ include.
+#include <cstdint>
+
 
 namespace Excel {
 
@@ -48,7 +51,7 @@ public:
 	BOF();
 
 	//! Record's code for the BOF record.
-	static const unsigned short RecordCode = 0x0809;
+	static const uint16_t RecordCode = 0x0809;
 
 	//! BIFF version.
 	enum BiffVersion {
