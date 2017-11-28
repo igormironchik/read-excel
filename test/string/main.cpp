@@ -75,7 +75,7 @@ const auto data = make_data(
 
 TEST_CASE( "test_string" )
 {
-	std::vector< int > borders;
+	std::vector< int32_t > borders;
 	std::wstring str;
 
 	TestStream stream( &data[ 0 ], 159 );

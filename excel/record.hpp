@@ -64,10 +64,10 @@ public:
 	bool eof() const;
 
 	//! Seek stream to new position.
-	void seek( int pos, SeekType type = FromBeginning );
+	void seek( int32_t pos, SeekType type = FromBeginning );
 
 	//! \return Position in the stream.
-	int pos();
+	int32_t pos();
 
 protected:
 	//! Write data to the stream.
@@ -128,13 +128,13 @@ public:
 	int16_t code() const;
 
 	//! \return Record's length.
-	int length() const;
+	int32_t length() const;
 
 	//! \return Stream with record's data.
 	Stream & dataStream();
 
 	//! \return Borders indexes of the continue records.
-	const std::vector< int > & borders() const;
+	const std::vector< int32_t > & borders() const;
 
 private:
 	//! Read record from the stream.
@@ -148,7 +148,7 @@ private:
 	//! Record's substream.
 	RecordSubstream m_stream;
 	//! Borders indexes of the continue records.
-	std::vector< int > m_borders;
+	std::vector< int32_t > m_borders;
 }; // class Record
 
 } /* namespace Excel */

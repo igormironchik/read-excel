@@ -80,17 +80,17 @@ public:
 	bool eof() const;
 
 	//! Seek stream to new position.
-	void seek( int pos, SeekType type = FromBeginning );
+	void seek( int32_t pos, SeekType type = FromBeginning );
 
 	//! \return Position in the stream.
-	int pos();
+	int32_t pos();
 
 private:
 	//! Seek internal stream to the next sector.
 	void seekToNextSector();
 	//! \return Offset in sectors from the beginning of the large
 	//! stream sector.
-	int whereIsShortSector( const SecID & shortSector,
+	int32_t whereIsShortSector( const SecID & shortSector,
 		SecID & largeSector );
 
 private:
@@ -114,17 +114,17 @@ private:
 	//! Mode of the stream.
 	Mode m_mode;
 	//! Bytes readed from the stream.
-	int m_bytesReaded;
+	int32_t m_bytesReaded;
 	//! Size of the sector for this stream.
-	int m_sectorSize;
+	int32_t m_sectorSize;
 	//! Bytes readed from the current sector.
-	int m_sectorBytesReaded;
+	int32_t m_sectorBytesReaded;
 	//! Current SecID in the short stream.
-	int m_shortSecIDIdx;
+	int32_t m_shortSecIDIdx;
 	//! Current SecID in the large stream.
-	int m_largeSecIDIdx;
+	int32_t m_largeSecIDIdx;
 	//! Size of the stream.
-	int m_streamSize;
+	int32_t m_streamSize;
 }; // class Stream
 
 } /* namespace CompoundFile */

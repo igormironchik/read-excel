@@ -150,7 +150,7 @@ Book::loadGlobals( std::vector< BoundSheet > & boundSheets,
 BoundSheet
 Book::parseBoundSheet( Record & record )
 {
-	int pos = 0;
+	int32_t pos = 0;
 	int16_t sheetType = 0;
 	std::wstring sheetName;
 

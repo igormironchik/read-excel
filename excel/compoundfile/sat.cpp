@@ -48,12 +48,12 @@ SecID::SecID()
 	:	m_id( EndOfChain )
 {}
 
-SecID::SecID( int id )
+SecID::SecID( int32_t id )
 	:	m_id( id )
 {
 }
 
-SecID::operator int () const
+SecID::operator int32_t () const
 {
 	return m_id;
 }
@@ -81,7 +81,7 @@ SAT::sat() const
 std::vector< SecID >
 SAT::sectors( const SecID & firstSector ) const
 {
-	if( firstSector < static_cast< int > ( m_sat.size() ) )
+	if( firstSector < static_cast< int32_t > ( m_sat.size() ) )
 	{
 		std::vector< SecID > result;
 

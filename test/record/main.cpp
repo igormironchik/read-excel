@@ -71,7 +71,7 @@ TEST_CASE( "test_record" )
 	REQUIRE( record.code() == 0xFC );
 	REQUIRE( record.length() == 0x5A );
 
-	const std::vector< int > & borders = record.borders();
+	const std::vector< int32_t > & borders = record.borders();
 
 	REQUIRE( borders[ 0 ] == 0x13 );
 	REQUIRE( borders[ 1 ] == 0x24 );

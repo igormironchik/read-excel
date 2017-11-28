@@ -147,7 +147,7 @@ TEST_CASE( "test_formula" )
 		Excel::Formula formula( record );
 
 		Excel::Record stringRecord( stream );
-		std::vector< int > borders;
+		std::vector< int32_t > borders;
 
 		formula.setString( Excel::loadString( stringRecord.dataStream(),
 			borders ) );

@@ -10,7 +10,7 @@ Mxx_ru::Cpp::exe_target {
 
 	required_prj( "excel/prj.rb" )
 
-	target( "sample/sample" )
+	target( "sample/sample.excel" )
 
 	cpp_source( "main.cpp" )
 }

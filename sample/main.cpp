@@ -39,7 +39,7 @@
 #include <iostream>
 
 
-int main()
+int32_t main()
 {
 	try {
 		Excel::Book book( "date.xls" );

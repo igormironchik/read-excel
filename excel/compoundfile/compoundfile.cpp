@@ -69,7 +69,7 @@ loadSSAT( const Header & header, std::istream & stream,
 
 
 //! Size of the dir record.
-static const int dirRecordSize = 128;
+static const int32_t dirRecordSize = 128;
 
 
 //
@@ -78,7 +78,7 @@ static const int dirRecordSize = 128;
 
 bool
 loadChildDir( std::vector< Directory > & dirs,
-	int dirID, Stream & stream )
+	int32_t dirID, Stream & stream )
 {
 	if( dirID != -1 )
 	{

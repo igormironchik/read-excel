@@ -71,25 +71,25 @@ Directory::streamSecID() const
 	return m_secID;
 }
 
-int
+int32_t
 Directory::streamSize() const
 {
 	return m_streamSize;
 }
 
-int
+int32_t
 Directory::rightChild() const
 {
 	return m_rightChild;
 }
 
-int
+int32_t
 Directory::leftChild() const
 {
 	return m_leftChild;
 }
 
-int
+int32_t
 Directory::rootNode() const
 {
 	return m_rootNode;
@@ -124,7 +124,7 @@ Directory::load( Stream & stream )
 	}
 
 	stream.seek( 2, Stream::FromCurrent );
-	m_type = (Type)(int) stream.getByte();
+	m_type = (Type)(int32_t) stream.getByte();
 	stream.seek( 1, Stream::FromCurrent );
 	stream.read( m_leftChild, 4 );
 	stream.read( m_rightChild, 4 );
@@ -132,7 +132,7 @@ Directory::load( Stream & stream )
 	stream.seek( 36, Stream::FromCurrent );
 
 	{
-		int sec = 0;
+		int32_t sec = 0;
 		stream.read( sec, 4 );
 		m_secID = sec;
 	}

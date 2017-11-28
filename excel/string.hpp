@@ -48,7 +48,7 @@ class Stream;
 
 //! Load string from the stream.
 std::wstring loadString( Stream & stream,
-	const std::vector< int > & borders,
+	const std::vector< int32_t > & borders,
 	size_t lengthFieldSize = 2 );
 
 } /* namespace Excel */

@@ -55,7 +55,7 @@ enum SheetType {
 	VisualBasicModule = 0x0600
 }; // enum SheetType
 
-BoundSheet::BoundSheet( int pos,
+BoundSheet::BoundSheet( int32_t pos,
 	SheetType type, const std::wstring & name )
 	:	m_BOFPosition( pos )
 	,	m_sheetType( type )
@@ -63,7 +63,7 @@ BoundSheet::BoundSheet( int pos,
 {
 }
 
-int
+int32_t
 BoundSheet::BOFPosition() const
 {
 	return m_BOFPosition;
@@ -214,8 +214,8 @@ Sheet::handleDimensions( const BOF & bof,
 {
 	if( bof.version() == BOF::BIFF8 )
 	{
-		int firstRow = 0;
-		int lastRow = 0;
+		int32_t firstRow = 0;
+		int32_t lastRow = 0;
 		int16_t firstColumn = 0;
 		int16_t lastColumn = 0;
 
@@ -248,7 +248,7 @@ Sheet::handleLabelSST( Record & record )
 	int16_t row = 0;
 	int16_t column = 0;
 	int16_t xfIndex = 0;
-	int sstIndex = 0;
+	int32_t sstIndex = 0;
 
 	record.dataStream().read( row, 2 );
 	record.dataStream().read( column, 2 );
@@ -274,7 +274,7 @@ doubleFromRK( uint32_t rk )
 
 	if( rk & 0x02 )
 	{
-		// int
+		// int32_t
 		num = (double) (rk >> 2);
 	}
 	else
@@ -321,7 +321,7 @@ Sheet::handleMULRK( Record & record )
 	record.dataStream().read( row, 2 );
 	record.dataStream().read( colFirst, 2 );
 
-	int pos = record.dataStream().pos();
+	int32_t pos = record.dataStream().pos();
 
 	record.dataStream().seek( -2, Stream::FromEnd );
 
@@ -380,7 +380,7 @@ Sheet::handleFORMULA( Record & record, Stream & stream )
 		if( stringRecord.code() == 0x0221 )
 			stringRecord = Record( stream );
 
-		std::vector< int > borders;
+		std::vector< int32_t > borders;
 
 		formula.setString( loadString( stringRecord.dataStream(), borders ) );
 	}

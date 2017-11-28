@@ -79,16 +79,16 @@ public:
 	SecID streamSecID() const;
 
 	//! \return Stream size.
-	int streamSize() const;
+	int32_t streamSize() const;
 
 	//! \return DirID of the right child node.
-	int rightChild() const;
+	int32_t rightChild() const;
 
 	//! \return DirID of the left child node.
-	int leftChild() const;
+	int32_t leftChild() const;
 
 	//! \return DirID of the root node.
-	int rootNode() const;
+	int32_t rootNode() const;
 
 	//! Load directory.
 	void load( Stream & stream );
@@ -101,13 +101,13 @@ private:
 	//! SecID of the first sector.
 	SecID m_secID;
 	//! Stream size.
-	int m_streamSize;
+	int32_t m_streamSize;
 	//! DirID of the right child node.
-	int m_rightChild;
+	int32_t m_rightChild;
 	//! DirID of the left child node.
-	int m_leftChild;
+	int32_t m_leftChild;
 	//! DirID of the root node.
-	int m_rootNode;
+	int32_t m_rootNode;
 }; // class Directory
 
 } /* namespace CompoundFile */

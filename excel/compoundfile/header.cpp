@@ -203,7 +203,7 @@ Header::load( std::istream & stream )
 	stream.seekg( 10, std::ios::cur );
 
 	{
-		int sectorsInSAT = 0;
+		int32_t sectorsInSAT = 0;
 
 		readData( stream, sectorsInSAT, 4 );
 
@@ -211,7 +211,7 @@ Header::load( std::istream & stream )
 	}
 
 	{
-		int dirStreamSecID = 0;
+		int32_t dirStreamSecID = 0;
 
 		readData( stream, dirStreamSecID, 4 );
 
@@ -221,7 +221,7 @@ Header::load( std::istream & stream )
 	stream.seekg( 4, std::ios::cur );
 
 	{
-		int streamMinSize = 0;
+		int32_t streamMinSize = 0;
 
 		readData( stream, streamMinSize, 4 );
 
@@ -229,7 +229,7 @@ Header::load( std::istream & stream )
 	}
 
 	{
-		int ssatFirstSecID = 0;
+		int32_t ssatFirstSecID = 0;
 
 		readData( stream, ssatFirstSecID, 4 );
 
@@ -237,7 +237,7 @@ Header::load( std::istream & stream )
 	}
 
 	{
-		int sectorsInSSAT = 0;
+		int32_t sectorsInSSAT = 0;
 
 		readData( stream, sectorsInSSAT, 4 );
 
@@ -245,7 +245,7 @@ Header::load( std::istream & stream )
 	}
 
 	{
-		int msatFirstSecID = 0;
+		int32_t msatFirstSecID = 0;
 
 		readData( stream, msatFirstSecID, 4 );
 
@@ -253,7 +253,7 @@ Header::load( std::istream & stream )
 	}
 
 	{
-		int sectorsInMSAT = 0;
+		int32_t sectorsInMSAT = 0;
 
 		readData( stream, sectorsInMSAT, 4 );
 

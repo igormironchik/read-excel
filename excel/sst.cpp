@@ -44,15 +44,15 @@ namespace Excel {
 std::vector< std::wstring >
 SharedStringTable::parse( Record & record )
 {
-	int totalStrings = 0;
-	int uniqueStrings = 0;
+	int32_t totalStrings = 0;
+	int32_t uniqueStrings = 0;
 
 	record.dataStream().read( totalStrings, 4 );
 	record.dataStream().read( uniqueStrings, 4 );
 
 	std::vector< std::wstring > sst( uniqueStrings );
 
-	for( int i = 0; i < uniqueStrings; ++i )
+	for( int32_t i = 0; i < uniqueStrings; ++i )
 		sst[ i ] = loadString( record.dataStream(), record.borders() );
 
 	return sst;

@@ -67,7 +67,7 @@ TestStream::eof() const
 }
 
 void
-TestStream::seek( int pos, Excel::Stream::SeekType type )
+TestStream::seek( int32_t pos, Excel::Stream::SeekType type )
 {
 	if( type == Excel::Stream::FromCurrent )
 	{
@@ -92,7 +92,7 @@ TestStream::seek( int pos, Excel::Stream::SeekType type )
 	m_pos = pos;
 }
 
-int
+int32_t
 TestStream::pos()
 {
 	return m_pos;

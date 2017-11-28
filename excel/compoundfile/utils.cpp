@@ -57,11 +57,11 @@ void
 loadSATSector( std::istream & stream, std::vector< SecID > & sat,
 	size_t sectorSize )
 {
-	const int secIDCount = sectorSize / 4;
+	const int32_t secIDCount = sectorSize / 4;
 
-	for( int i = 0; i < secIDCount; ++i )
+	for( int32_t i = 0; i < secIDCount; ++i )
 	{
-		int secID = 0;
+		int32_t secID = 0;
 
 		readData( stream, secID, 4 );
 

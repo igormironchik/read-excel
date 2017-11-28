@@ -53,11 +53,11 @@ public:
 	virtual bool eof() const;
 
 	//! Seek stream to new position.
-	virtual void seek( int pos, Excel::Stream::SeekType type =
+	virtual void seek( int32_t pos, Excel::Stream::SeekType type =
 		Excel::Stream::FromBeginning );
 
 	//! \return Position in the stream.
-	virtual int pos();
+	virtual int32_t pos();
 
 private:
 	//! Data.

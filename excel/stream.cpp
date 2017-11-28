@@ -75,12 +75,12 @@ Stream::eof() const
 }
 
 void
-Stream::seek( int, SeekType )
+Stream::seek( int32_t, SeekType )
 {
 	// Implementation needed?
 }
 
-int
+int32_t
 Stream::pos()
 {
 	return -1;

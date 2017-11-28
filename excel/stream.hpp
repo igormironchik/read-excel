@@ -97,19 +97,19 @@ public:
 	}; // enum SeekType
 
 	//! Seek stream to new position.
-	virtual void seek( int pos, SeekType type = FromBeginning );
+	virtual void seek( int32_t pos, SeekType type = FromBeginning );
 
 	//! \return Position in the stream.
-	virtual int pos();
+	virtual int32_t pos();
 
 	//! Read data from the stream.
 	template< typename Type >
-	void read( Type & retVal, int bytes = 0 )
+	void read( Type & retVal, int32_t bytes = 0 )
 	{
 		retVal = Type(0);
 		if( bytes == 0 ) bytes = sizeof( Type );
 
-		for( int i = 0; i < bytes; ++i )
+		for( int32_t i = 0; i < bytes; ++i )
 		{
 			Type c = (Type)(unsigned char) getByte();
 

@@ -76,9 +76,9 @@ loadFirst109SecIDs( std::istream & stream )
 {
 	std::vector< SecID > msat;
 
-	for( int i = 0; i < 109; ++i )
+	for( int32_t i = 0; i < 109; ++i )
 	{
-		int secID = 0;
+		int32_t secID = 0;
 
 		readData( stream, secID, 4 );
 
@@ -98,18 +98,18 @@ void
 loadMSATSector( std::istream & stream, std::vector< SecID > & msat,
 	SecID & nextMSATSectorID, size_t sectorSize )
 {
-	const int secIDCount = ( sectorSize - 4 ) / 4;
+	const int32_t secIDCount = ( sectorSize - 4 ) / 4;
 
-	for( int i = 0; i < secIDCount; ++i )
+	for( int32_t i = 0; i < secIDCount; ++i )
 	{
-		int secID = 0;
+		int32_t secID = 0;
 
 		readData( stream, secID, 4 );
 
 		msat.push_back( secID );
 	}
 
-	int nextSecID = 0;
+	int32_t nextSecID = 0;
 
 	readData( stream, nextSecID, 4 );
 

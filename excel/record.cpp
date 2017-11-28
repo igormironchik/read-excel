@@ -71,7 +71,7 @@ RecordSubstream::eof() const
 }
 
 void
-RecordSubstream::seek( int pos, SeekType type )
+RecordSubstream::seek( int32_t pos, SeekType type )
 {
 	std::ios::seekdir dir;
 
@@ -85,10 +85,10 @@ RecordSubstream::seek( int pos, SeekType type )
 	m_stream.seekg( pos, dir );
 }
 
-int
+int32_t
 RecordSubstream::pos()
 {
-	return static_cast< int > ( m_stream.tellg() );
+	return static_cast< int32_t > ( m_stream.tellg() );
 }
 
 void
@@ -174,7 +174,7 @@ Record::code() const
 	return m_code;
 }
 
-int
+int32_t
 Record::length() const
 {
 	return m_length;
@@ -186,7 +186,7 @@ Record::dataStream()
 	return m_stream;
 }
 
-const std::vector< int > &
+const std::vector< int32_t > &
 Record::borders() const
 {
 	return m_borders;

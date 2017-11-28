@@ -34,6 +34,7 @@
 
 // C++ include.
 #include <vector>
+#include <cstdint>
 
 
 namespace CompoundFile {
@@ -58,14 +59,14 @@ public:
 
 public:
 	SecID();
-	SecID( int id );
+	SecID( int32_t id );
 
 	//! Convert SecID into integral value.
-	operator int () const;
+	operator int32_t () const;
 
 private:
 	//! Integral sector identifier.
-	int m_id;
+	int32_t m_id;
 }; // class SecID
 
 

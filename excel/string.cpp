@@ -101,7 +101,7 @@ isRichString( char options )
 */
 
 inline bool
-isSkipByte( int pos, const std::vector< int > & borders )
+isSkipByte( int32_t pos, const std::vector< int32_t > & borders )
 {
 	return( std::find( borders.begin(), borders.end(), pos ) != borders.end() );
 } // isSkipByte
@@ -116,13 +116,13 @@ isSkipByte( int pos, const std::vector< int > & borders )
 //! Load string from the stream.
 std::wstring
 loadString( Stream & stream,
-	const std::vector< int > & borders,
+	const std::vector< int32_t > & borders,
 	size_t lengthFieldSize )
 {
 	int16_t charactersCount = 0;
 	char options = 0;
 	int16_t formattingRuns = 0;
-	int extStringLength = 0;
+	int32_t extStringLength = 0;
 
 	stream.read( charactersCount, lengthFieldSize );
 	stream.read( options, 1 );

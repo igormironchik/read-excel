@@ -66,11 +66,11 @@ public:
 		VisualBasicModule = 0x0600
 	}; // enum SheetType
 
-	BoundSheet( int pos,
+	BoundSheet( int32_t pos,
 		SheetType type, const std::wstring & name );
 
 	//! \return BOF position.
-	int BOFPosition() const;
+	int32_t BOFPosition() const;
 
 	//! \return Sheet's type.
 	SheetType sheetType() const;
@@ -83,7 +83,7 @@ public:
 
 private:
 	//! BOF position.
-	int m_BOFPosition;
+	int32_t m_BOFPosition;
 	//! Sheet's type.
 	SheetType m_sheetType;
 	//! Sheet's name.
