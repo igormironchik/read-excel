@@ -35,6 +35,7 @@
 #include "bof.hpp"
 #include "formula.hpp"
 #include "string.hpp"
+#include "exceptions.hpp"
 
 
 namespace Excel {
@@ -167,6 +168,9 @@ Sheet::load( const BoundSheet & boundSheet,
 
 		bof.parse( record );
 	}
+
+	if( bof.version() != BOF::BIFF8 )
+		throw Exception( L"Unsupported BIFF version. BIFF8 is supported only." );
 
 	while( true )
 	{
