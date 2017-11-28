@@ -88,7 +88,7 @@ TEST_CASE( "test_formula" )
 {
 	union {
 		double asDouble;
-		long long asLongLong;
+		uint64_t asLongLong;
 	} un;
 
 	{

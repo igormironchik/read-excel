@@ -55,11 +55,16 @@ namespace Excel {
 Book::Book()
 	:	m_dateMode( DateMode::Unknown )
 {
+	static_assert( sizeof( double ) == 8,
+		"Unsupported platform: double has to be 8 bytes." );
 }
 
 Book::Book( const std::string & fileName )
 	:	m_dateMode( DateMode::Unknown )
 {
+	static_assert( sizeof( double ) == 8,
+		"Unsupported platform: double has to be 8 bytes." );
+
 	loadBook( fileName );
 }
 
@@ -113,8 +118,7 @@ Book::loadBook( const std::string & fileName )
 		clear();
 
 		CompoundFile::File file( fileName );
-		std::unique_ptr< Stream > stream = file.stream(
-			file.directory( L"Workbook" ) );
+		auto stream = file.stream( file.directory( L"Workbook" ) );
 
 		std::vector< BoundSheet > boundSheets;
 

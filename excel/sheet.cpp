@@ -362,7 +362,7 @@ Sheet::handleNUMBER( Record & record )
 
 	union {
 		double m_asDouble;
-		long long m_asLongLong;
+		uint64_t m_asLongLong;
 	} doubleAndLongLong;
 
 	record.dataStream().read( doubleAndLongLong.m_asLongLong, 8 );
