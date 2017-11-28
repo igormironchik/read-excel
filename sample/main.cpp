@@ -58,6 +58,13 @@ int main()
 		std::wcout << L"A4 : " << sheet->cell( 3, 0 ).getString()
 			<< L" B4 : " << sheet->cell( 3, 1 ).getFormula().getDouble()
 			<< std::endl;
+		std::wcout << L"A5 : " << sheet->cell( 4, 0 ).getString()
+			<< std::endl << L"Date mode is : "
+			<< ( book.dateMode() == Excel::Book::DateMode::Dec31_1899 ?
+					L"count of days since 31 December 1899 :" :
+					L"count of days since 01 January 1904 :" )
+			<< L" B5 : " << sheet->cell( 4, 1 ).getDouble()
+			<< " days." << std::endl;
 
 		std::wcout << std::endl << L"Thats all. And thanks for using this library."
 			<< std::endl;
@@ -69,6 +76,10 @@ int main()
 	catch( const CompoundFile::Exception & x )
 	{
 		std::wcout << x.whatAsWString() << std::endl;
+	}
+	catch( const std::exception & )
+	{
+		std::wcout << L"Can't open file. Possible wrong format." << std::endl;
 	}
 
 	return 0;

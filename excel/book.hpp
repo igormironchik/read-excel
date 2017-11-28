@@ -54,9 +54,24 @@ class Stream;
 //! Excel WorkBook.
 class Book {
 public:
+	//! Mode of the day. The base date for displaying date values.
+	//! All dates are stored as count of days past this base date.
+	enum class DateMode {
+		//! Unknown.
+		Unknown = -1,
+		//!  Base date is 1899-Dec-31 (the date value 1 represents 1900-Jan-01)
+		Dec31_1899 = 0,
+		//! Base date is 1904-Jan-01 (the date value 1 represents 1904-Jan-02)
+		Jan01_1904 = 1
+	}; // enum DateMode
+
+public:
 	Book();
 	explicit Book( const std::string & fileName );
 	~Book();
+
+	//! \return Date mode.
+	DateMode dateMode() const;
 
 	//! \return Count of the sheets.
 	size_t sheetsCount() const;
@@ -79,12 +94,16 @@ private:
 		Stream & stream );
 	//! Clear book.
 	void clear();
+	//! Handle date mode.
+	void handleDateMode( Record & r );
 
 private:
 	//! Parsed WorkSheets.
 	std::vector< Sheet* > m_sheets;
 	//! Shared string table.
 	std::vector< std::wstring > m_sst;
+	//! Date mode.
+	DateMode m_dateMode;
 }; // class Book
 
 } /* namespace Excel */

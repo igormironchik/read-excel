@@ -53,10 +53,12 @@ namespace Excel {
 //
 
 Book::Book()
+	:	m_dateMode( DateMode::Unknown )
 {
 }
 
 Book::Book( const std::string & fileName )
+	:	m_dateMode( DateMode::Unknown )
 {
 	loadBook( fileName );
 }
@@ -78,6 +80,12 @@ Book::clear()
 Book::~Book()
 {
 	clear();
+}
+
+Book::DateMode
+Book::dateMode() const
+{
+	return m_dateMode;
 }
 
 size_t
@@ -121,6 +129,19 @@ Book::loadBook( const std::string & fileName )
 }
 
 void
+Book::handleDateMode( Record & r )
+{
+	uint16_t mode = 0;
+
+	r.dataStream().read( mode, 2 );
+
+	if( mode )
+		m_dateMode = DateMode::Jan01_1904;
+	else
+		m_dateMode = DateMode::Dec31_1899;
+}
+
+void
 Book::loadGlobals( std::vector< BoundSheet > & boundSheets,
 	Stream & stream )
 {
@@ -130,15 +151,19 @@ Book::loadGlobals( std::vector< BoundSheet > & boundSheets,
 
 		switch( r.code() )
 		{
-			case XL_SST:
+			case XL_SST :
 				m_sst = SharedStringTable::parse( r );
 				break;
 
-			case XL_BOUNDSHEET:
+			case XL_BOUNDSHEET :
 				boundSheets.push_back( parseBoundSheet( r ) );
 				break;
 
-			case XL_EOF:
+			case XL_DATEMODE :
+				handleDateMode( r );
+				break;
+
+			case XL_EOF :
 				return;
 
 			default:

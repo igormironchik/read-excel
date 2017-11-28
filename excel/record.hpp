@@ -109,6 +109,7 @@ enum RecordType {
 	XL_FORMAT = 0x41E,
 	XL_XF = 0xE0,
 	XL_BOOLERR = 0x205,
+	XL_DATEMODE = 0x22,
 	XL_UNKNOWN = 0xFFFF
 }; // enum RecordType
 
