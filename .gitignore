@@ -1,7 +1,8 @@
 
 /**/debug/
 /**/release/
-/lib/
+/lib/*.*
+!/lib/.empty
 /**/Makefile*
 *.user
 /**/o
