@@ -66,7 +66,7 @@ private:
 			static const int16_t word = 0x0001;
 			static const char * byte = (const char *) &word;
 
-			return ( byte[0] ? LittleEndian : BigEndian );
+			return ( byte[ 0 ] ? LittleEndian : BigEndian );
 		}
 	}; // class SystemByteOrder
 

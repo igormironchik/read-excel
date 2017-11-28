@@ -110,9 +110,9 @@ Book::loadBook( const std::string & fileName )
 
 		std::vector< BoundSheet > boundSheets;
 
-		loadGlobals( boundSheets, *stream.get() );
+		loadGlobals( boundSheets, *stream );
 
-		loadWorkSheets( boundSheets, *stream.get() );
+		loadWorkSheets( boundSheets, *stream );
 	}
 	catch( const CompoundFile::Exception & x )
 	{

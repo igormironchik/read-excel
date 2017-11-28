@@ -75,11 +75,11 @@ Stream::Stream( const Header & header,
 	,	m_header( header )
 	,	m_stream( cstream )
 	,	m_mode(
-		( static_cast< size_t > ( dir.streamSize() ) < m_header.sectorSize() ?
+		( static_cast< size_t > ( dir.streamSize() ) < m_header.streamMinSize() ?
 			ShortStream : LargeStream ) )
 	,	m_bytesReaded( 0 )
 	,	m_sectorSize(
-		( static_cast< size_t > ( dir.streamSize() ) < m_header.sectorSize() ?
+		( static_cast< size_t > ( dir.streamSize() ) < m_header.streamMinSize() ?
 			m_header.shortSectorSize() : m_header.sectorSize() ) )
 	,	m_sectorBytesReaded( 0 )
 	,	m_shortSecIDIdx( 0 )
@@ -148,12 +148,12 @@ Stream::seek( int32_t pos, SeekType type )
 	{
 		m_largeSecIDIdx = sectorIdx;
 		
-		m_stream.seekg( calcFileOffset( m_largeStreamChain[ m_largeSecIDIdx ],
+		m_stream.seekg( calcFileOffset( m_largeStreamChain.at( m_largeSecIDIdx ),
 			m_sectorSize ) + offset, std::ios::beg );
 	}
 	else
 	{
-		const SecID shortSector = m_shortStreamChain[ sectorIdx ];
+		const SecID shortSector = m_shortStreamChain.at( sectorIdx );
 		
 		SecID largeSector;
 		const int32_t offsetInLargeSector = whereIsShortSector( shortSector,
@@ -183,7 +183,7 @@ int32_t
 Stream::whereIsShortSector( const SecID & shortSector,
 	SecID & largeSector )
 {
-	static const int32_t shortSectorsInLarge =
+	const int32_t shortSectorsInLarge =
 		m_header.sectorSize() / m_header.shortSectorSize();
 
 	const int32_t idxOfTheShortSector =
@@ -191,10 +191,9 @@ Stream::whereIsShortSector( const SecID & shortSector,
 
 	const int32_t offset = idxOfTheShortSector % shortSectorsInLarge;
 
-	const int32_t largeSectorIdx = idxOfTheShortSector / shortSectorsInLarge +
-		( offset > 0 ? 1 : 0 );
+	const int32_t largeSectorIdx = idxOfTheShortSector / shortSectorsInLarge;
 
-	largeSector = m_largeStreamChain[ largeSectorIdx ];
+	largeSector = m_largeStreamChain.at( largeSectorIdx );
 
 	return offset;
 }
@@ -206,7 +205,7 @@ Stream::seekToNextSector()
 	{
 		++m_largeSecIDIdx;
 
-		m_stream.seekg( calcFileOffset( m_largeStreamChain[ m_largeSecIDIdx ],
+		m_stream.seekg( calcFileOffset( m_largeStreamChain.at( m_largeSecIDIdx ),
 			m_sectorSize ), std::ios::beg );
 	}
 	else
@@ -215,7 +214,7 @@ Stream::seekToNextSector()
 
 		SecID largeSector;
 		const int32_t offset =
-			whereIsShortSector( m_shortStreamChain[ m_shortSecIDIdx ],
+			whereIsShortSector( m_shortStreamChain.at( m_shortSecIDIdx ),
 				largeSector );
 
 		std::streampos pos = calcFileOffset( largeSector,

@@ -87,16 +87,16 @@ SAT::sectors( const SecID & firstSector ) const
 
 		result.push_back( firstSector );
 
-		SecID id = m_sat[ firstSector ];
+		SecID id = m_sat.at( firstSector );
 
 		while( true )
 		{
-			if( id != SecID::EndOfChain )
+			if( id >= 0 )
 				result.push_back( id );
 			else
 				break;
 
-			id = m_sat[ id ];
+			id = m_sat.at( id );
 		}
 
 		return result;
