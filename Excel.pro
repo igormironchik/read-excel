@@ -7,7 +7,8 @@ SUBDIRS = excel \
           sample \
           test
           
-OTHER_FILES += .travis.yml
+OTHER_FILES += .travis.yml \
+	build.rb
           
 libDir.commands = mkdir lib
 

@@ -20,5 +20,5 @@ before_script:
   - sudo gem install Mxx_ru
 
 script:
-  - ruby build.rb
+  - ruby build.rb enable_coverage
   - coveralls --build-root . --gcov-options '\-lp' -e sample -e test -e lib

@@ -13,6 +13,11 @@ Mxx_ru::setup_target(
 		MxxRu::enable_show_brief
 		toolset.force_cpp11
 
+		if ARGV[ 0 ] == 'enable_coverage'
+			global_compiler_option '-g -O0 -fprofile-arcs -ftest-coverage'
+			global_linker_option '--coverage'
+		end
+
 #		global_compiler_option '-Zi'
 #		global_linker_option '/DEBUG'
 
