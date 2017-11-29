@@ -6,8 +6,10 @@ require 'mxx_ru/cpp'
 
 MxxRu::Cpp::composite_target() {
 
-	required_prj( "test/header/prj.ut.rb" )
-	required_prj( "test/compoundfile/prj.ut.rb" )
+	if( "vc" != toolset.name )
+		required_prj( "test/header/prj.ut.rb" )
+		required_prj( "test/compoundfile/prj.ut.rb" )
+	end
 
 	required_prj( "test/bof/prj.ut.rb" )
 	required_prj( "test/book/prj.ut.rb" )

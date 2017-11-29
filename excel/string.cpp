@@ -135,7 +135,7 @@ loadString( Stream & stream,
 
 	int16_t bytesPerChar = ( isHighByte( options ) ? 2 : 1 );
 
-	std::vector< unsigned int16_t > stringData( charactersCount );
+	std::vector< uint16_t > stringData( charactersCount );
 
 	for( int16_t i = 0; i < charactersCount; ++i )
 	{
