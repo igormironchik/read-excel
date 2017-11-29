@@ -1,0 +1,24 @@
+
+sudo: required
+dist: trusty
+
+language:
+  - cpp
+
+compiler:
+  - gcc
+
+before_install:
+  - pip install --user cpp-coveralls
+
+addons:
+  apt:
+    packages:
+      - ruby
+
+before_script:
+  - sudo gem install Mxx_ru
+
+script:
+  - ruby build.rb
+  - coveralls --build-root . --gcov-options '\-lp' -e sample -e test -e lib

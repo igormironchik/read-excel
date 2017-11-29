@@ -59,7 +59,7 @@ public:
 	enum class DateMode {
 		//! Unknown.
 		Unknown = -1,
-		//!  Base date is 1899-Dec-31 (the date value 1 represents 1900-Jan-01)
+		//! Base date is 1899-Dec-31 (the date value 1 represents 1900-Jan-01)
 		Dec31_1899 = 0,
 		//! Base date is 1904-Jan-01 (the date value 1 represents 1904-Jan-02)
 		Jan01_1904 = 1
