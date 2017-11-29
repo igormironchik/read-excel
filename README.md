@@ -1,8 +1,10 @@
+[![Build Status](https://travis-ci.org/igormironchik/read-excel.svg?branch=master)](https://travis-ci.org/igormironchik/read-excel)[![Coverage Status](https://coveralls.io/repos/github/igormironchik/read-excel/badge.svg?branch=master)](https://coveralls.io/github/igormironchik/read-excel?branch=master)
+
 This is very simple implementation of the Excel 97-2003 format written in C++.
 Supported reading only.
 
 
-COMPILING
+# COMPILING
 
  * You should have installed Ruby programming language and installed Mxx_ru gem.
    Run in the command prompt: gem install Mxx_ru.
