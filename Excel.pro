@@ -9,7 +9,8 @@ SUBDIRS = excel \
           
 OTHER_FILES += .travis.yml \
 	build.rb \
-	README.md
+	README.md \
+	COPYING
           
 libDir.commands = mkdir lib
 

@@ -15,3 +15,5 @@ SUBDIRS = stream \
 	sst \
 	string \
 	datetime
+
+HEADERS += helper/helper.hpp
