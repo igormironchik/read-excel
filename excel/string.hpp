@@ -35,6 +35,7 @@
 // C++ include.
 #include <vector>
 #include <string>
+#include <cstdint>
 
 
 namespace Excel {
