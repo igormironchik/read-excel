@@ -21,7 +21,7 @@ addons:
       name: "igormironchik/read-excel"
       description: "Build submitted via Travis CI"
     notification_email: igor.mironchik@gmail.com
-    build_command_prepend: echo 'Starting prebuild step...'; gem install Mxx_ru; echo 'Prebuild step finished...';
+    build_command_prepend: echo 'Starting prebuild step...'; sudo gem install Mxx_ru; echo 'Prebuild step finished...';
     build_command: ruby build.rb
     branch_pattern: coverity_scan
 
@@ -29,5 +29,8 @@ before_script:
   - sudo gem install Mxx_ru
 
 script:
-  - ruby build.rb enable_coverage
-  - coveralls --build-root . --gcov-options '\-lp' -e sample -e test -e lib
+- |
+  if [ ${COVERITY_SCAN_BRANCH} != 1 ]; then \
+    ruby build.rb enable_coverage || { exit 1; }; \
+    coveralls --build-root . --gcov-options '\-lp' -e sample -e test -e lib || { exit 1; }; \
+    fi
