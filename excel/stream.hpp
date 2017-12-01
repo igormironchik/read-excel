@@ -114,7 +114,7 @@ public:
 			Type c = (Type)(unsigned char) getByte();
 
 			if( SystemByteOrder::byteOrder() != m_byteOrder )
-				retVal |= ( c << 8 * ( bytes - i ) );
+				retVal |= ( c << 8 * ( bytes - i - 1 ) );
 			else
 				retVal |= ( c << 8 * i );
 		}
