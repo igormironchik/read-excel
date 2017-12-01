@@ -21,7 +21,6 @@ addons:
       name: "igormironchik/read-excel"
       description: "Build submitted via Travis CI"
     notification_email: igor.mironchik@gmail.com
-    build_command_prepend: echo 'Starting prebuild step...'; sudo gem install Mxx_ru; echo 'Prebuild step finished...';
     build_command: ruby build.rb
     branch_pattern: coverity_scan
 
