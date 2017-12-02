@@ -11,7 +11,7 @@ Supported reading only.
 
  * After this you have to configure MxxRu: make "MXX_RU_CPP_TOOLSET" system enveronment
    with "vc9" value, for example if you have Microsoft Visual Studio 9.0 installed. All
-   possible values for this enveronment you can see in the documentation by MxxRu
+   possible values for this enveronment you can see in the documentation for MxxRu
    (https://sourceforge.net/projects/mxxru/files/).
 
  * And now just run build.rb which is a Ruby program and compillation process will start.
