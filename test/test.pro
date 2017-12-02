@@ -14,6 +14,7 @@ SUBDIRS = stream \
 	record \
 	sst \
 	string \
-	datetime
+	datetime \
+	complex
 
 HEADERS += helper/helper.hpp

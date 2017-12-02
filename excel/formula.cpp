@@ -61,20 +61,6 @@ Formula::Formula( Record & record )
 	parse( record );
 }
 
-Formula &
-Formula::operator =( const Formula & f )
-{
-	m_valueType = f.valueType();
-	m_doubleValue = f.getDouble();
-	m_errorValue = f.getErrorValue();
-	m_boolValue = f.getBoolean();
-	m_stringValue = f.getString();
-	m_row = f.getRow();
-	m_column = f.getColumn();
-
-	return *this;
-}
-
 Formula::ValueType
 Formula::valueType() const
 {

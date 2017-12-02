@@ -48,7 +48,22 @@ namespace Excel {
 //! Excel's cell.
 class Cell {
 public:
+	//! Type of the data.
+	enum class DataType {
+		//! Unknown.
+		Unknown,
+		//! String.
+		String,
+		//! Double.
+		Double,
+		//! Formula.
+		Formula
+	}; // enum class DataType
+
 	Cell();
+
+	//! \return Data type.
+	DataType dataType() const;
 
 	//! \return String data in the cell.
 	const std::wstring & getString() const;
@@ -80,6 +95,8 @@ private:
 	Formula m_formula;
 	//! Is data set.
 	bool m_isNull;
+	//! Type of the data.
+	DataType m_type;
 }; // class Cell
 
 } /* namespace Excel */

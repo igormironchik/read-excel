@@ -49,11 +49,11 @@ class Exception
 	:	public std::runtime_error
 {
 public:
-	explicit Exception( const std::wstring & what ) throw();
-	virtual ~Exception() throw();
+	explicit Exception( const std::wstring & what );
+	virtual ~Exception() noexcept;
 
 	//! \return Reason of the exception.
-	const std::wstring & whatAsWString() const throw();
+	const std::wstring & whatAsWString() const noexcept;
 
 private:
 	//! Reason of the exception.

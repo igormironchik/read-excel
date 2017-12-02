@@ -52,9 +52,6 @@ public:
 	Formula();
 	explicit Formula( Record & record );
 
-	//! Copy operator.
-	Formula & operator = ( const Formula & f );
-
 	//! Possible tpes of the formula's value.
 	enum ValueType {
 		//! Unknown value type.

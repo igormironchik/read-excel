@@ -19,4 +19,5 @@ MxxRu::Cpp::composite_target() {
 	required_prj( "test/string/prj.ut.rb" )
 	required_prj( "test/formula/prj.ut.rb" )
 	required_prj( "test/datetime/prj.ut.rb" )
+	required_prj( "test/complex/prj.ut.rb" )
 }
