@@ -39,18 +39,18 @@ namespace Excel {
 // Exception
 //
 
-Exception::Exception( const std::wstring & what ) throw()
+Exception::Exception( const std::wstring & what )
 	:	std::runtime_error( std::string( what.begin(), what.end() ) )
 	,	m_what( what )
 {
 }
 
-Exception::~Exception() throw()
+Exception::~Exception() noexcept
 {
 }
 
 const std::wstring &
-Exception::whatAsWString() const throw()
+Exception::whatAsWString() const noexcept
 {
 	return m_what;
 }
