@@ -128,7 +128,7 @@ TEST_CASE( "test_complex" )
 
 		Excel::Sheet * sheet = book.sheet( 0 );
 
-		REQUIRE( sheet->rowsCount() == 1 );
+		REQUIRE( sheet->rowsCount() == 2 );
 		REQUIRE( sheet->columnsCount() == 3 );
 
 		REQUIRE( sheet->cell( 0, 0 ).dataType() == Excel::Cell::DataType::String );
@@ -140,5 +140,14 @@ TEST_CASE( "test_complex" )
 		REQUIRE( sheet->cell( 0, 2 ).dataType() == Excel::Cell::DataType::Formula );
 		REQUIRE( sheet->cell( 0, 2 ).getFormula().valueType() == Excel::Formula::StringValue );
 		REQUIRE( sheet->cell( 0, 2 ).getFormula().getString() == L"str1str2" );
+
+		REQUIRE( sheet->cell( 1, 0 ).dataType() == Excel::Cell::DataType::String );
+		REQUIRE( sheet->cell( 1, 0 ).getString() == L"str1" );
+
+		REQUIRE( sheet->cell( 1, 1 ).dataType() == Excel::Cell::DataType::String );
+		REQUIRE( sheet->cell( 1, 1 ).getString() == L"str1" );
+
+		REQUIRE( sheet->cell( 1, 2 ).dataType() == Excel::Cell::DataType::Formula );
+		REQUIRE( sheet->cell( 1, 2 ).getFormula().valueType() == Excel::Formula::EmptyCell );
 	}
 }

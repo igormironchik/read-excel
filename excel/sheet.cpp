@@ -331,9 +331,6 @@ Sheet::handleFORMULA( Record & record, Stream & stream )
 	{
 		Record stringRecord( stream );
 
-		if( stringRecord.code() == 0x0221 )
-			stringRecord = Record( stream );
-
 		std::vector< int32_t > borders;
 
 		formula.setString( loadString( stringRecord.dataStream(), borders ) );

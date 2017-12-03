@@ -44,17 +44,6 @@ RecordSubstream::RecordSubstream( Stream::ByteOrder byteOrder )
 {
 }
 
-RecordSubstream &
-RecordSubstream::operator = ( const RecordSubstream & stream )
-{
-	Stream::operator = ( stream );
-
-	m_stream.clear();
-	m_stream << stream.m_stream.rdbuf();
-
-	return *this;
-}
-
 char
 RecordSubstream::getByte()
 {
@@ -112,17 +101,6 @@ Record::Record( Stream & stream )
 
 Record::~Record()
 {
-}
-
-Record &
-Record::operator = ( const Record & record )
-{
-	m_code = record.code();
-	m_length = record.length();
-	m_stream = record.m_stream;
-	m_borders = record.borders();
-
-	return *this;
 }
 
 void

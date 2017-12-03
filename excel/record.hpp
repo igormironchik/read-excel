@@ -55,8 +55,6 @@ class RecordSubstream
 public:
 	explicit RecordSubstream( Stream::ByteOrder byteOrder );
 
-	RecordSubstream & operator = ( const RecordSubstream & stream );
-
 	//! Read one byte from the stream.
 	char getByte();
 
@@ -122,8 +120,6 @@ class Record {
 public:
 	Record( Stream & stream );
 	~Record();
-
-	Record & operator = ( const Record & record );
 
 	//! \return Record's code.
 	int16_t code() const;

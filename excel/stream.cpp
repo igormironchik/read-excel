@@ -48,14 +48,6 @@ Stream::~Stream()
 {
 }
 
-Stream &
-Stream::operator = ( const Stream & stream )
-{
-	m_byteOrder = stream.byteOrder();
-
-	return *this;
-}
-
 Stream::ByteOrder
 Stream::byteOrder() const
 {

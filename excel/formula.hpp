@@ -63,7 +63,9 @@ public:
 		//! Error value.
 		ErrorValue,
 		//! String value.
-		StringValue
+		StringValue,
+		//! Empty cell.
+		EmptyCell
 	}; // enum ValueType
 
 	//! Error values.

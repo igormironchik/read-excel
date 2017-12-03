@@ -119,7 +119,7 @@ Formula::parse( Record & record )
 
 	union {
 		double m_double;
-		long long m_long;
+		int64_t m_long;
 	} doubleAsLongLong;
 
 	record.dataStream().read( doubleAsLongLong.m_long, 8 );
@@ -144,6 +144,15 @@ Formula::parse( Record & record )
 
 		m_errorValue = (ErrorValues) error;
 		m_valueType = ErrorValue;
+
+		return;
+	}
+
+	unsigned long long isEmpty = doubleAsLongLong.m_long & 0xFFFFFFFFFF00FFFF;
+
+	if( isEmpty == 0xFFFF000000000003 )
+	{
+		m_valueType = EmptyCell;
 
 		return;
 	}
