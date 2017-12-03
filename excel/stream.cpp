@@ -54,28 +54,4 @@ Stream::byteOrder() const
 	return m_byteOrder;
 }
 
-char
-Stream::getByte()
-{
-	return 0xFFu;
-}
-
-bool
-Stream::eof() const
-{
-	return true;
-}
-
-void
-Stream::seek( int32_t, SeekType )
-{
-	// Implementation needed?
-}
-
-int32_t
-Stream::pos()
-{
-	return -1;
-}
-
 } /* namespace Excel */

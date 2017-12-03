@@ -74,16 +74,16 @@ public:
 		std::istream & cstream );
 
 	//! Read one byte from the stream.
-	char getByte();
+	char getByte() override;
 
 	//! \return true if EOF reached.
-	bool eof() const;
+	bool eof() const override;
 
 	//! Seek stream to new position.
-	void seek( int32_t pos, SeekType type = FromBeginning );
+	void seek( int32_t pos, SeekType type = FromBeginning ) override;
 
 	//! \return Position in the stream.
-	int32_t pos();
+	int32_t pos() override;
 
 private:
 	//! Seek internal stream to the next sector.

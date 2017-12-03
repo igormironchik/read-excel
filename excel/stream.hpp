@@ -79,10 +79,10 @@ public:
 	ByteOrder byteOrder() const;
 
 	//! Read one byte from the stream.
-	virtual char getByte();
+	virtual char getByte() = 0;
 
 	//! \return true if EOF reached.
-	virtual bool eof() const;
+	virtual bool eof() const = 0;
 
 	//! Seek type.
 	enum SeekType {
@@ -95,10 +95,10 @@ public:
 	}; // enum SeekType
 
 	//! Seek stream to new position.
-	virtual void seek( int32_t pos, SeekType type = FromBeginning );
+	virtual void seek( int32_t pos, SeekType type = FromBeginning ) = 0;
 
 	//! \return Position in the stream.
-	virtual int32_t pos();
+	virtual int32_t pos() = 0;
 
 	//! Read data from the stream.
 	template< typename Type >
