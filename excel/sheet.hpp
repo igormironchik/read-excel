@@ -114,8 +114,6 @@ public:
 		Stream & stream );
 
 private:
-	//! Init cell's table.
-	void initCells( size_t rows, size_t columns );
 	//! Init cell's table with given cell.
 	void initCell( size_t row, size_t column );
 	//! Handle LABELSST record.

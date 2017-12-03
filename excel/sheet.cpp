@@ -100,18 +100,6 @@ Sheet::Sheet( const std::vector< std::wstring > & sst )
 }
 
 void
-Sheet::initCells( size_t rows, size_t columns )
-{
-	m_cells.resize( rows );
-
-	for( std::vector< std::vector< Cell > >::iterator it = m_cells.begin(),
-		last = m_cells.end(); it != last; ++it )
-	{
-		it->resize( columns );
-	}
-}
-
-void
 Sheet::initCell( size_t row, size_t column )
 {
 	if( m_cells.size() < row + 1 )
