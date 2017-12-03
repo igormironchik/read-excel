@@ -151,5 +151,13 @@ TEST_CASE( "test_complex" )
 		REQUIRE( sheet->cell( 1, 2 ).getFormula().valueType() == Excel::Formula::EmptyCell );
 	}
 
-	REQUIRE_THROWS_AS( Excel::Book( "nofile.xls" ), Excel::Exception );
+	try {
+		Excel::Book book( "nofile.xls" );
+
+		REQUIRE( false );
+	}
+	catch( const Excel::Exception & x )
+	{
+		REQUIRE( x.whatAsWString() == L"Unable to open file : nofile.xls" );
+	}
 }
