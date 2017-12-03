@@ -120,4 +120,25 @@ TEST_CASE( "test_complex" )
 
 		REQUIRE_THROWS_AS( book.sheet( 1 ), Excel::Exception );
 	}
+
+	{
+		Excel::Book book( "test/data/stringformula.xls" );
+
+		REQUIRE( book.sheetsCount() == 1 );
+
+		Excel::Sheet * sheet = book.sheet( 0 );
+
+		REQUIRE( sheet->rowsCount() == 1 );
+		REQUIRE( sheet->columnsCount() == 3 );
+
+		REQUIRE( sheet->cell( 0, 0 ).dataType() == Excel::Cell::DataType::String );
+		REQUIRE( sheet->cell( 0, 0 ).getString() == L"str1" );
+
+		REQUIRE( sheet->cell( 0, 1 ).dataType() == Excel::Cell::DataType::String );
+		REQUIRE( sheet->cell( 0, 1 ).getString() == L"str2" );
+
+		REQUIRE( sheet->cell( 0, 2 ).dataType() == Excel::Cell::DataType::Formula );
+		REQUIRE( sheet->cell( 0, 2 ).getFormula().valueType() == Excel::Formula::StringValue );
+		REQUIRE( sheet->cell( 0, 2 ).getFormula().getString() == L"str1str2" );
+	}
 }
