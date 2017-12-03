@@ -150,4 +150,6 @@ TEST_CASE( "test_complex" )
 		REQUIRE( sheet->cell( 1, 2 ).dataType() == Excel::Cell::DataType::Formula );
 		REQUIRE( sheet->cell( 1, 2 ).getFormula().valueType() == Excel::Formula::EmptyCell );
 	}
+
+	REQUIRE_THROWS_AS( Excel::Book( "nofile.xls" ), Excel::Exception );
 }
