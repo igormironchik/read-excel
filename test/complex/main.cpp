@@ -91,8 +91,28 @@ TEST_CASE( "test_complex" )
 		REQUIRE( sheet->rowsCount() == 7992 );
 		REQUIRE( sheet->columnsCount() == 26 );
 
+		REQUIRE( sheet->cell( 0, 0 ).dataType() == Excel::Cell::DataType::Double );
 		REQUIRE( std::fabs( sheet->cell( 0, 0 ).getDouble() - 1.0 ) < 1E-9 );
+		REQUIRE( sheet->cell( 998, 25 ).dataType() == Excel::Cell::DataType::Double );
 		REQUIRE( std::fabs( sheet->cell( 998, 25 ).getDouble() - 9.0 ) < 1E-9 );
+		REQUIRE( sheet->cell( 7991, 25 ).dataType() == Excel::Cell::DataType::Double );
 		REQUIRE( std::fabs( sheet->cell( 7991, 25 ).getDouble() - 9.0 ) < 1E-9 );
+	}
+
+	{
+		Excel::Book book( "test/data/verybig.xls" );
+
+		REQUIRE( book.sheetsCount() == 1 );
+
+		Excel::Sheet * sheet = book.sheet( 0 );
+
+		REQUIRE( sheet->rowsCount() == 10000 );
+		REQUIRE( sheet->columnsCount() == 26 );
+
+		REQUIRE( sheet->cell( 0, 0 ).dataType() == Excel::Cell::DataType::Double );
+		REQUIRE( std::fabs( sheet->cell( 0, 0 ).getDouble() - 1.0 ) < 1E-9 );
+		REQUIRE( sheet->cell( 9999, 25 ).dataType() == Excel::Cell::DataType::Formula );
+		REQUIRE( sheet->cell( 9999, 25 ).getFormula().valueType() == Excel::Formula::DoubleValue );
+		REQUIRE( std::fabs( sheet->cell( 9999, 25 ).getFormula().getDouble() - 260000.0 ) < 1E-9 );
 	}
 }
