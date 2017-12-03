@@ -29,6 +29,7 @@
 
 // Excel include.
 #include <excel/book.hpp>
+#include <excel/exceptions.hpp>
 
 // C++ include.
 #include <cmath>
@@ -116,5 +117,7 @@ TEST_CASE( "test_complex" )
 		REQUIRE( std::fabs( sheet->cell( 9999, 25 ).getFormula().getDouble() - 260000.0 ) < 1E-9 );
 
 		REQUIRE( sheet->cell( 10000, 26 ).isNull() );
+
+		REQUIRE_THROWS_AS( book.sheet( 1 ), Excel::Exception );
 	}
 }
