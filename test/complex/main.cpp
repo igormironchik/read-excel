@@ -40,42 +40,59 @@
 
 TEST_CASE( "test_complex" )
 {
-	Excel::Book book( "test/data/sample.xls" );
+	{
+		Excel::Book book( "test/data/sample.xls" );
 
-	REQUIRE( book.sheetsCount() == 1 );
+		REQUIRE( book.sheetsCount() == 1 );
 
-	Excel::Sheet * sheet = book.sheet( 0 );
+		Excel::Sheet * sheet = book.sheet( 0 );
 
-	REQUIRE( sheet->rowsCount() == 5 );
-	REQUIRE( sheet->columnsCount() == 2 );
+		REQUIRE( sheet->rowsCount() == 5 );
+		REQUIRE( sheet->columnsCount() == 2 );
 
-	REQUIRE( sheet->cell( 0, 0 ).dataType() == Excel::Cell::DataType::String );
-	REQUIRE( sheet->cell( 0, 0 ).getString() == L"This is a string." );
+		REQUIRE( sheet->cell( 0, 0 ).dataType() == Excel::Cell::DataType::String );
+		REQUIRE( sheet->cell( 0, 0 ).getString() == L"This is a string." );
 
-	REQUIRE( sheet->cell( 1, 0 ).dataType() == Excel::Cell::DataType::String );
-	REQUIRE( sheet->cell( 1, 0 ).getString() ==
-		L"There is a double in the next cell: (1,2345)." );
-	REQUIRE( sheet->cell( 1, 1 ).dataType() == Excel::Cell::DataType::Double );
-	REQUIRE( std::fabs( sheet->cell( 1, 1 ).getDouble() - 1.2345 ) < 1E-9 );
+		REQUIRE( sheet->cell( 1, 0 ).dataType() == Excel::Cell::DataType::String );
+		REQUIRE( sheet->cell( 1, 0 ).getString() ==
+			L"There is a double in the next cell: (1,2345)." );
+		REQUIRE( sheet->cell( 1, 1 ).dataType() == Excel::Cell::DataType::Double );
+		REQUIRE( std::fabs( sheet->cell( 1, 1 ).getDouble() - 1.2345 ) < 1E-9 );
 
-	REQUIRE( sheet->cell( 2, 0 ).dataType() == Excel::Cell::DataType::String );
-	REQUIRE( sheet->cell( 2, 0 ).getString() ==
-		L"There is a double in the next cell: (5,4321)." );
-	REQUIRE( sheet->cell( 2, 1 ).dataType() == Excel::Cell::DataType::Double );
-	REQUIRE( std::fabs( sheet->cell( 2, 1 ).getDouble() - 5.4321 ) < 1E-9 );
+		REQUIRE( sheet->cell( 2, 0 ).dataType() == Excel::Cell::DataType::String );
+		REQUIRE( sheet->cell( 2, 0 ).getString() ==
+			L"There is a double in the next cell: (5,4321)." );
+		REQUIRE( sheet->cell( 2, 1 ).dataType() == Excel::Cell::DataType::Double );
+		REQUIRE( std::fabs( sheet->cell( 2, 1 ).getDouble() - 5.4321 ) < 1E-9 );
 
-	REQUIRE( sheet->cell( 3, 0 ).dataType() == Excel::Cell::DataType::String );
-	REQUIRE( sheet->cell( 3, 0 ).getString() ==
-		L"There is a formula in the next cell: (=B2+B3 = 6,6666)" );
-	REQUIRE( sheet->cell( 3, 1 ).dataType() == Excel::Cell::DataType::Formula );
-	REQUIRE( sheet->cell( 3, 1 ).getFormula().valueType() ==
-		Excel::Formula::DoubleValue );
-	REQUIRE( std::fabs( sheet->cell( 3, 1 ).getFormula().getDouble() - 6.6666 ) < 1E-9 );
+		REQUIRE( sheet->cell( 3, 0 ).dataType() == Excel::Cell::DataType::String );
+		REQUIRE( sheet->cell( 3, 0 ).getString() ==
+			L"There is a formula in the next cell: (=B2+B3 = 6,6666)" );
+		REQUIRE( sheet->cell( 3, 1 ).dataType() == Excel::Cell::DataType::Formula );
+		REQUIRE( sheet->cell( 3, 1 ).getFormula().valueType() ==
+			Excel::Formula::DoubleValue );
+		REQUIRE( std::fabs( sheet->cell( 3, 1 ).getFormula().getDouble() - 6.6666 ) < 1E-9 );
 
-	REQUIRE( sheet->cell( 4, 0 ).dataType() == Excel::Cell::DataType::String );
-	REQUIRE( sheet->cell( 4, 0 ).getString() ==
-		L"There is a date and time in the next cell:" );
-	REQUIRE( book.dateMode() == Excel::Book::DateMode::Dec31_1899 );
-	REQUIRE( sheet->cell( 4, 1 ).dataType() == Excel::Cell::DataType::Double );
-	REQUIRE( std::fabs( sheet->cell( 4, 1 ).getDouble() - 43100.9999884259 ) < 1E-9 );
+		REQUIRE( sheet->cell( 4, 0 ).dataType() == Excel::Cell::DataType::String );
+		REQUIRE( sheet->cell( 4, 0 ).getString() ==
+			L"There is a date and time in the next cell:" );
+		REQUIRE( book.dateMode() == Excel::Book::DateMode::Dec31_1899 );
+		REQUIRE( sheet->cell( 4, 1 ).dataType() == Excel::Cell::DataType::Double );
+		REQUIRE( std::fabs( sheet->cell( 4, 1 ).getDouble() - 43100.9999884259 ) < 1E-9 );
+	}
+
+	{
+		Excel::Book book( "test/data/big.xls" );
+
+		REQUIRE( book.sheetsCount() == 1 );
+
+		Excel::Sheet * sheet = book.sheet( 0 );
+
+		REQUIRE( sheet->rowsCount() == 7992 );
+		REQUIRE( sheet->columnsCount() == 26 );
+
+		REQUIRE( std::fabs( sheet->cell( 0, 0 ).getDouble() - 1.0 ) < 1E-9 );
+		REQUIRE( std::fabs( sheet->cell( 998, 25 ).getDouble() - 9.0 ) < 1E-9 );
+		REQUIRE( std::fabs( sheet->cell( 7991, 25 ).getDouble() - 9.0 ) < 1E-9 );
+	}
 }
