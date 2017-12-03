@@ -178,10 +178,6 @@ Sheet::load( const BoundSheet & boundSheet,
 
 		switch( record.code() )
 		{
-			case XL_DIMENSION :
-				//handleDimensions( bof, record );
-				break;
-
 			case XL_LABELSST:
 				handleLabelSST( record );
 				break;
@@ -209,40 +205,6 @@ Sheet::load( const BoundSheet & boundSheet,
 			default:
 				break;
 		}
-	}
-}
-
-void
-Sheet::handleDimensions( const BOF & bof,
-	Record & record )
-{
-	if( bof.version() == BOF::BIFF8 )
-	{
-		int32_t firstRow = 0;
-		int32_t lastRow = 0;
-		int16_t firstColumn = 0;
-		int16_t lastColumn = 0;
-
-		record.dataStream().read( firstRow, 4 );
-		record.dataStream().read( lastRow, 4 );
-		record.dataStream().read( firstColumn, 2 );
-		record.dataStream().read( lastColumn, 2 );
-
-		initCells( lastRow - 1, lastColumn - 1 );
-	}
-	else
-	{
-		int16_t firstRow = 0;
-		int16_t lastRow = 0;
-		int16_t firstColumn = 0;
-		int16_t lastColumn = 0;
-
-		record.dataStream().read( firstRow, 2 );
-		record.dataStream().read( lastRow, 2 );
-		record.dataStream().read( firstColumn, 2 );
-		record.dataStream().read( lastColumn, 2 );
-
-		initCells( lastRow - 1, lastColumn - 1 );
 	}
 }
 

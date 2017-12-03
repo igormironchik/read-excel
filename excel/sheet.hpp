@@ -118,9 +118,6 @@ private:
 	void initCells( size_t rows, size_t columns );
 	//! Init cell's table with given cell.
 	void initCell( size_t row, size_t column );
-	//! Handle DIMENSIONS record.
-	void handleDimensions( const BOF & bof,
-		Record & record );
 	//! Handle LABELSST record.
 	void handleLabelSST( Record & record );
 	//! Handle RK record.

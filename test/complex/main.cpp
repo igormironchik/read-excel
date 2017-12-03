@@ -114,5 +114,7 @@ TEST_CASE( "test_complex" )
 		REQUIRE( sheet->cell( 9999, 25 ).dataType() == Excel::Cell::DataType::Formula );
 		REQUIRE( sheet->cell( 9999, 25 ).getFormula().valueType() == Excel::Formula::DoubleValue );
 		REQUIRE( std::fabs( sheet->cell( 9999, 25 ).getFormula().getDouble() - 260000.0 ) < 1E-9 );
+
+		REQUIRE( sheet->cell( 10000, 26 ).isNull() );
 	}
 }
