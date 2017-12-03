@@ -31,6 +31,8 @@
 #include <excel/compoundfile/header.hpp>
 #include <excel/compoundfile/sat.hpp>
 #include <excel/compoundfile/compoundfile_exceptions.hpp>
+#include <excel/compoundfile/sat.hpp>
+#include <excel/compoundfile/msat.hpp>
 
 // unit test helper.
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
@@ -60,6 +62,14 @@ TEST_CASE( "test_header" )
 		REQUIRE( header.sectorsInSSAT() == 0x01 );
 		REQUIRE( header.msatFirstSecID() == CompoundFile::SecID::EndOfChain );
 		REQUIRE( header.sectorsInMSAT() == 0x00 );
+
+		CompoundFile::MSAT msat( header, doc.stream() );
+		CompoundFile::SAT sat = msat.buildSAT();
+
+		REQUIRE( sat.sat().size() == 128 );
+		REQUIRE_THROWS_AS( sat.sectors( 129 ), CompoundFile::Exception );
+		REQUIRE_THROWS_AS( sat.indexOfTheSecID( 129, sat.sat() ),
+			CompoundFile::Exception );
 	}
 
 	{
