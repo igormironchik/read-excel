@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/igormironchik/read-excel.svg?branch=master)](https://travis-ci.org/igormironchik/read-excel)[![Coverage Status](https://coveralls.io/repos/github/igormironchik/read-excel/badge.svg?branch=master)](https://coveralls.io/github/igormironchik/read-excel?branch=master)[![Build status](https://ci.appveyor.com/api/projects/status/qp5re03oy20932ve/branch/master?svg=true)](https://ci.appveyor.com/project/igormironchik/read-excel/branch/master)[![Coverity Scan](https://scan.coverity.com/projects/14470/badge.svg)](https://scan.coverity.com/projects/igormironchik-read-excel)[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
+[![Donate](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/imironchik/donate)
+
 This is very simple implementation of the Excel 97-2003 format (BIFF8) written in C++.
 Supported reading only.
 
