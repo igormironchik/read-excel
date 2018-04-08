@@ -148,6 +148,144 @@ private:
 	std::vector< int32_t > m_borders;
 }; // class Record
 
+//
+// RecordSubstream
+//
+
+inline
+RecordSubstream::RecordSubstream( Stream::ByteOrder byteOrder )
+	:	Stream( byteOrder )
+{
+}
+
+inline char
+RecordSubstream::getByte()
+{
+	char ch;
+	m_stream.get( ch );
+
+	return ch;
+}
+
+inline bool
+RecordSubstream::eof() const
+{
+	return m_stream.eof();
+}
+
+inline void
+RecordSubstream::seek( int32_t pos, SeekType type )
+{
+	std::ios::seekdir dir;
+
+	if( type == Stream::FromBeginning )
+		dir = std::ios::beg;
+	else if( type == Stream::FromCurrent )
+		dir = std::ios::cur;
+	else
+		dir = std::ios::end;
+
+	m_stream.seekg( pos, dir );
+}
+
+inline int32_t
+RecordSubstream::pos()
+{
+	return static_cast< int32_t > ( m_stream.tellg() );
+}
+
+inline void
+RecordSubstream::write( const char * data, size_t size )
+{
+	m_stream.write( data, size );
+}
+
+
+//
+// Record
+//
+
+inline
+Record::Record( Stream & stream )
+	:	m_code( 0 )
+	,	m_length( 0 )
+	,	m_stream( stream.byteOrder() )
+{
+	read( stream );
+}
+
+inline
+Record::~Record()
+{
+}
+
+inline void
+Record::read( Stream & stream )
+{
+	stream.read( m_code, 2 );
+	stream.read( m_length, 2 );
+
+	uint16_t nextRecordCode = 0;
+	uint16_t nextRecordLength = 0;
+
+	std::vector< char > data;
+
+	if( m_length )
+	{
+		data.reserve( m_length );
+
+		for( size_t i = 0; i < m_length; ++i )
+			data.push_back( stream.getByte() );
+	}
+
+	stream.read( nextRecordCode, 2 );
+
+	while( nextRecordCode == XL_CONTINUE )
+	{
+		m_borders.push_back( m_length );
+
+		stream.read( nextRecordLength, 2 );
+
+		data.reserve( data.size() + nextRecordLength );
+		if( nextRecordLength )
+		{
+			for( uint16_t i = 0; i < nextRecordLength; ++i )
+				data.push_back( stream.getByte() );
+		}
+		m_length += nextRecordLength;
+		stream.read( nextRecordCode, 2 );
+	}
+
+	stream.seek( -2, Stream::FromCurrent );
+
+	if( data.size() )
+		m_stream.write( &data[ 0 ], data.size() );
+}
+
+inline int16_t
+Record::code() const
+{
+	return m_code;
+}
+
+inline int32_t
+Record::length() const
+{
+	return m_length;
+}
+
+inline Stream &
+Record::dataStream()
+{
+	return m_stream;
+}
+
+inline const std::vector< int32_t > &
+Record::borders() const
+{
+	return m_borders;
+}
+
 } /* namespace Excel */
 
 #endif // EXCEL__RECORD_HPP__INCLUDED

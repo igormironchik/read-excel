@@ -8,8 +8,6 @@ Mxx_ru::Cpp::exe_target {
 
 	rtti_mode( Mxx_ru::Cpp::RTTI_ENABLED )
 
-	required_prj( "excel/prj.rb" )
-
 	target( "test/book/test.book" )
 
 	cpp_source( "main.cpp" )

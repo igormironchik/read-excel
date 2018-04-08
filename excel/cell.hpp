@@ -37,6 +37,7 @@
 
 // C++ include
 #include <string>
+#include <sstream>
 
 
 namespace Excel {
@@ -98,6 +99,68 @@ private:
 	//! Type of the data.
 	DataType m_type;
 }; // class Cell
+
+inline
+Cell::Cell()
+	:	m_doubleData( 0.0 )
+	,	m_isNull( true )
+	,	m_type( DataType::Unknown )
+{
+}
+
+inline Cell::DataType
+Cell::dataType() const
+{
+	return m_type;
+}
+
+inline const std::wstring &
+Cell::getString() const
+{
+	return m_stringData;
+}
+
+inline const double &
+Cell::getDouble() const
+{
+	return m_doubleData;
+}
+
+inline const Formula &
+Cell::getFormula() const
+{
+	return m_formula;
+}
+
+inline void
+Cell::setData( const std::wstring & d )
+{
+	m_stringData = d;
+	m_isNull = false;
+	m_type = DataType::String;
+}
+
+inline void
+Cell::setData( const double & d )
+{
+	m_doubleData = d;
+	m_isNull = false;
+	m_type = DataType::Double;
+}
+
+inline void
+Cell::setData( const Formula & f )
+{
+	m_formula = f;
+	m_isNull = false;
+	m_type = DataType::Formula;
+}
+
+inline bool
+Cell::isNull() const
+{
+	return m_isNull;
+}
 
 } /* namespace Excel */
 

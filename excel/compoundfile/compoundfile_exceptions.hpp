@@ -60,6 +60,24 @@ private:
 	std::wstring m_what;
 }; // class Exception
 
+inline
+Exception::Exception( const std::wstring & what )
+	:	std::runtime_error( std::string( what.begin(), what.end() ) )
+	,	m_what( what )
+{
+}
+
+inline
+Exception::~Exception() noexcept
+{
+}
+
+inline const std::wstring &
+Exception::whatAsWString() const noexcept
+{
+	return m_what;
+}
+
 } /* namespace CompoundFile */
 
 #endif // COMPOUNDFILE__EXCEPTIONS_HPP__INCLUDED

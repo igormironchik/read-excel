@@ -35,6 +35,7 @@
 // CompoundFile include.
 #include "sat.hpp"
 #include "header.hpp"
+#include "utils.hpp"
 
 // C++ include.
 #include <iostream>
@@ -68,6 +69,99 @@ private:
 	//! MSAT.
 	std::vector< SecID > m_msat;
 }; // class MSAT
+
+inline
+MSAT::MSAT( const Header & header,
+	 std::istream & stream )
+	:	m_header( header )
+	,	m_stream( stream )
+{
+	loadMSAT();
+}
+
+inline SAT
+MSAT::buildSAT()
+{
+	std::vector< SecID > sat;
+
+	for( std::vector< SecID >::const_iterator it = m_msat.begin(),
+		last = m_msat.end(); it != last; ++it )
+	{
+		m_stream.seekg( calcFileOffset( *it, m_header.sectorSize() ) );
+
+		loadSATSector( m_stream, sat, m_header.sectorSize() );
+	}
+
+	return SAT( sat );
+}
+
+
+//
+// loadFirst109SecIDs
+//
+
+//! Load first 109 SecIDs.
+inline std::vector< SecID >
+loadFirst109SecIDs( std::istream & stream )
+{
+	std::vector< SecID > msat;
+
+	for( int32_t i = 0; i < 109; ++i )
+	{
+		int32_t secID = 0;
+
+		readData( stream, secID, 4 );
+
+		if( secID != SecID::FreeSecID )
+			msat.push_back( secID );
+	}
+
+	return msat;
+} // loadFirst109SecIDs
+
+
+//
+// loadMSATSector
+//
+
+inline void
+loadMSATSector( std::istream & stream, std::vector< SecID > & msat,
+	SecID & nextMSATSectorID, size_t sectorSize )
+{
+	const int32_t secIDCount = ( sectorSize - 4 ) / 4;
+
+	for( int32_t i = 0; i < secIDCount; ++i )
+	{
+		int32_t secID = 0;
+
+		readData( stream, secID, 4 );
+
+		msat.push_back( secID );
+	}
+
+	int32_t nextSecID = 0;
+
+	readData( stream, nextSecID, 4 );
+
+	nextMSATSectorID = nextSecID;
+}
+
+inline void
+MSAT::loadMSAT()
+{
+	m_msat = loadFirst109SecIDs( m_stream );
+
+	const size_t msatSectorsCount = m_header.sectorsInMSAT();
+
+	SecID id = m_header.msatFirstSecID();
+
+	for( size_t i = 0; i < msatSectorsCount; ++i )
+	{
+		m_stream.seekg( calcFileOffset( id, m_header.sectorSize() ) );
+
+		loadMSATSector( m_stream, m_msat, id, m_header.sectorSize() );
+	}
+}
 
 } /* namespace CompoundFile */
 

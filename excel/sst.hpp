@@ -36,11 +36,12 @@
 #include <vector>
 #include <string>
 
+// Excel include.
+#include "record.hpp"
+#include "string.hpp"
+
 
 namespace Excel {
-
-class Record;
-
 
 //
 // SharedStringTable.
@@ -52,6 +53,23 @@ public:
 	//! Parse Excel SST.
 	static std::vector< std::wstring > parse( Record & record );
 }; // class SharedStringTable
+
+inline std::vector< std::wstring >
+SharedStringTable::parse( Record & record )
+{
+	int32_t totalStrings = 0;
+	int32_t uniqueStrings = 0;
+
+	record.dataStream().read( totalStrings, 4 );
+	record.dataStream().read( uniqueStrings, 4 );
+
+	std::vector< std::wstring > sst( uniqueStrings );
+
+	for( int32_t i = 0; i < uniqueStrings; ++i )
+		sst[ i ] = loadString( record.dataStream(), record.borders() );
+
+	return sst;
+}
 
 } /* namespace Excel */
 

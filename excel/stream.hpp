@@ -123,6 +123,23 @@ private:
 	ByteOrder m_byteOrder;
 }; // class Stream
 
+inline
+Stream::Stream( ByteOrder byteOrder )
+	:	m_byteOrder( byteOrder )
+{
+}
+
+inline
+Stream::~Stream()
+{
+}
+
+inline Stream::ByteOrder
+Stream::byteOrder() const
+{
+	return m_byteOrder;
+}
+
 } /* namespace Excel */
 
 #endif // EXCEL__STREAM_HPP__INCLUDED

@@ -21,7 +21,6 @@ Mxx_ru::setup_target(
 #		global_compiler_option '-Zi'
 #		global_linker_option '/DEBUG'
 
-		required_prj( "excel/prj.rb" )
 		required_prj( "test/prj.rb" )
 		required_prj( "sample/prj.rb" )
 	}

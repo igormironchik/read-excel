@@ -36,11 +36,11 @@
 #include <string>
 #include <cstdint>
 
+// Excel include.
+#include "record.hpp"
+
 
 namespace Excel {
-
-class Record;
-
 
 //
 // Formula
@@ -132,6 +132,138 @@ private:
 	//! Column index.
 	int16_t m_column;
 }; // class Formula
+
+inline
+Formula::Formula()
+	:	m_valueType( UnknownValue )
+	,	m_doubleValue( 0.0 )
+	,	m_errorValue( UnknownError )
+	,	m_boolValue( false )
+	,	m_row( 0 )
+	,	m_column( 0 )
+{
+}
+
+inline
+Formula::Formula( Record & record )
+	:	m_valueType( UnknownValue )
+	,	m_doubleValue( 0.0 )
+	,	m_errorValue( UnknownError )
+	,	m_boolValue( false )
+	,	m_row( 0 )
+	,	m_column( 0 )
+{
+	parse( record );
+}
+
+inline Formula::ValueType
+Formula::valueType() const
+{
+	return m_valueType;
+}
+
+inline const double &
+Formula::getDouble() const
+{
+	return m_doubleValue;
+}
+
+inline Formula::ErrorValues
+Formula::getErrorValue() const
+{
+	return m_errorValue;
+}
+
+inline bool
+Formula::getBoolean() const
+{
+	return m_boolValue;
+}
+
+inline const std::wstring &
+Formula::getString() const
+{
+	return m_stringValue;
+}
+
+inline void
+Formula::setString( const std::wstring & str )
+{
+	m_stringValue = str;
+}
+
+inline int16_t
+Formula::getRow() const
+{
+	return m_row;
+}
+
+inline int16_t
+Formula::getColumn() const
+{
+	return m_column;
+}
+
+inline void
+Formula::parse( Record & record )
+{
+	record.dataStream().read( m_row, 2 );
+	record.dataStream().read( m_column, 2 );
+
+	record.dataStream().seek( 2, Stream::FromCurrent );
+
+	union {
+		double m_double;
+		int64_t m_long;
+	} doubleAsLongLong;
+
+	record.dataStream().read( doubleAsLongLong.m_long, 8 );
+
+	unsigned long long isBool = doubleAsLongLong.m_long & 0xFFFFFFFFFF00FFFF;
+
+	if( isBool == 0xFFFF000000000001 )
+	{
+		m_boolValue = ( doubleAsLongLong.m_long & 0x0000000000FF0000 ) >> 16;
+		m_valueType = BooleanValue;
+
+		return;
+	}
+
+	unsigned long long isError = doubleAsLongLong.m_long & 0xFFFFFFFFFF00FFFF;
+
+	if( isError == 0xFFFF000000000002 )
+	{
+		unsigned char error =
+			static_cast< unsigned char >
+				( ( doubleAsLongLong.m_long & 0x0000000000FF0000 ) >> 16 );
+
+		m_errorValue = (ErrorValues) error;
+		m_valueType = ErrorValue;
+
+		return;
+	}
+
+	unsigned long long isEmpty = doubleAsLongLong.m_long & 0xFFFFFFFFFF00FFFF;
+
+	if( isEmpty == 0xFFFF000000000003 )
+	{
+		m_valueType = EmptyCell;
+
+		return;
+	}
+
+	unsigned long long isString = doubleAsLongLong.m_long & 0xFFFFFFFFFFFFFFFF;
+
+	if( isString == 0xFFFF000000000000 )
+	{
+		m_valueType = StringValue;
+
+		return;
+	}
+
+	m_doubleValue = doubleAsLongLong.m_double;
+	m_valueType = DoubleValue;
+}
 
 } /* namespace Excel */
 

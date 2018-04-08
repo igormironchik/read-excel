@@ -35,11 +35,11 @@
 // C++ include.
 #include <cstdint>
 
+// Excel include.
+#include "record.hpp"
+
 
 namespace Excel {
-
-class Record;
-
 
 //
 // BOF
@@ -86,6 +86,81 @@ private:
 	//! Substream type.
 	SubstreamType m_type;
 }; // class BOF
+
+inline
+BOF::BOF()
+	:	m_version( UnknownVersion )
+	,	m_type( UnknownType )
+{
+}
+
+inline BOF::BiffVersion
+BOF::version() const
+{
+	return m_version;
+}
+
+inline BOF::SubstreamType
+BOF::type() const
+{
+	return m_type;
+}
+
+inline void
+BOF::parse( Record & record )
+{
+	int16_t version = 0;
+	int16_t type = 0;
+
+	record.dataStream().read( version, 2 );
+	record.dataStream().read( type, 2 );
+
+	switch( version )
+	{
+		case BIFF8 :
+			m_version = BIFF8;
+			break;
+
+		case BIFF7 :
+			m_version = BIFF7;
+			break;
+
+		default :
+			m_version = UnknownVersion;
+			break;
+	}
+
+	switch( type )
+	{
+		case WorkBookGlobals :
+			m_type = WorkBookGlobals;
+			break;
+
+		case VisualBasicModule :
+			m_type = VisualBasicModule;
+			break;
+
+		case WorkSheet :
+			m_type = WorkSheet;
+			break;
+
+		case Chart :
+			m_type = Chart;
+			break;
+
+		case MacroSheet :
+			m_type = MacroSheet;
+			break;
+
+		case WorkSpace :
+			m_type = WorkSpace;
+			break;
+
+		default :
+			m_type = UnknownType;
+			break;
+	}
+}
 
 } /* namespace Excel */
 

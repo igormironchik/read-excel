@@ -36,11 +36,72 @@
 #include <vector>
 #include <string>
 #include <cstdint>
+#include <algorithm>
+
+// Excel include.
+#include "stream.hpp"
 
 
 namespace Excel {
 
-class Stream;
+//! Is high byte present in character.
+static const char IsHighByte = 0x01;
+
+//! Is extended string follows.
+static const char IsExtString = 0x04;
+
+//! Is rich string follows.
+static const char IsRichString = 0x08;
+
+
+//
+// isHighByte
+//
+
+inline bool
+isHighByte( char options )
+{
+	return ( options & IsHighByte );
+} // isHighByte
+
+
+//
+// isExtString
+//
+
+inline bool
+isExtString( char options )
+{
+	return ( options & IsExtString );
+} // isExtString
+
+
+//
+// isRichString
+//
+
+inline bool
+isRichString( char options )
+{
+	return ( options & IsRichString );
+} // isRichString
+
+
+//
+// isSkipByte
+//
+
+/*!
+	If string spleated between two or more records
+	there is one byte on the border wich should be
+	skipped.
+*/
+
+inline bool
+isSkipByte( int32_t pos, const std::vector< int32_t > & borders )
+{
+	return( std::find( borders.begin(), borders.end(), pos ) != borders.end() );
+} // isSkipByte
 
 
 //
@@ -48,9 +109,63 @@ class Stream;
 //
 
 //! Load string from the stream.
-std::wstring loadString( Stream & stream,
+inline std::wstring
+loadString( Stream & stream,
 	const std::vector< int32_t > & borders,
-	size_t lengthFieldSize = 2 );
+	size_t lengthFieldSize = 2 )
+{
+	int16_t charactersCount = 0;
+	char options = 0;
+	int16_t formattingRuns = 0;
+	int32_t extStringLength = 0;
+
+	stream.read( charactersCount, lengthFieldSize );
+	stream.read( options, 1 );
+
+	if( isRichString( options ) )
+		stream.read( formattingRuns, 2 );
+
+	if( isExtString( options ) )
+		stream.read( extStringLength, 4 );
+
+	int16_t bytesPerChar = ( isHighByte( options ) ? 2 : 1 );
+
+	std::vector< uint16_t > stringData( charactersCount );
+
+	for( int16_t i = 0; i < charactersCount; ++i )
+	{
+		if( isSkipByte( stream.pos(), borders ) )
+		{
+			stream.read( options, 1 );
+			bytesPerChar = ( isHighByte( options ) ? 2 : 1 );
+		}
+
+		stream.read( stringData[ i ], bytesPerChar );
+	}
+
+	if( formattingRuns > 0 )
+	{
+		const size_t dummySize = formattingRuns * 4;
+		std::vector< char > dummy( dummySize );
+
+		for( size_t i = 0; i < dummySize; ++i )
+			stream.read( dummy[ i ], 1 );
+	}
+
+	if( extStringLength > 0 )
+	{
+		const size_t dummySize = extStringLength;
+		std::vector< char > dummy( dummySize );
+
+		for( size_t i = 0; i < dummySize; ++i )
+			stream.read( dummy[ i ], 1 );
+	}
+
+	std::wstring str;
+	str.assign( stringData.begin(), stringData.end() );
+
+	return str;
+}
 
 } /* namespace Excel */
 

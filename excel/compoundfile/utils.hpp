@@ -67,8 +67,11 @@ void readData( std::istream & stream, Type & data, size_t bytes = 0 )
 //
 
 //! Calculate file offset for the given sector.
-size_t
-calcFileOffset( const SecID & id, size_t sectorSize );
+inline size_t
+calcFileOffset( const SecID & id, size_t sectorSize )
+{
+	return ( 512 + id * sectorSize );
+}
 
 
 //
@@ -76,9 +79,21 @@ calcFileOffset( const SecID & id, size_t sectorSize );
 //
 
 //! Load SAT or SSAT sector.
-void
+inline void
 loadSATSector( std::istream & stream, std::vector< SecID > & sat,
-	size_t sectorSize );
+	size_t sectorSize )
+{
+	const int32_t secIDCount = sectorSize / 4;
+
+	for( int32_t i = 0; i < secIDCount; ++i )
+	{
+		int32_t secID = 0;
+
+		readData( stream, secID, 4 );
+
+		sat.push_back( secID );
+	}
+} // loadSATSector
 
 } /* namespace CompoundFile */
 
