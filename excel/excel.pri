@@ -8,7 +8,7 @@ HEADERS += $$PWD/compoundfile/compoundfile.hpp \
            $$PWD/compoundfile/header.hpp \
            $$PWD/compoundfile/msat.hpp \
            $$PWD/compoundfile/sat.hpp \
-           $$PWD/compoundfile/compoundfile_stream.hpp \
+           $$PWD/compoundfile/compoundfile_stream_and_dir.hpp \
            $$PWD/compoundfile/utils.hpp \
            $$PWD/bof.hpp \
            $$PWD/book.hpp \

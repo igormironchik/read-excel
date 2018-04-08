@@ -33,7 +33,7 @@
 #define COMPOUNDFILE__COMPOUNDFILE_HPP__INCLUDED
 
 // CompoundFile include.
-#include "compoundfile_stream.hpp"
+#include "compoundfile_stream_and_dir.hpp"
 #include "header.hpp"
 #include "sat.hpp"
 #include "msat.hpp"
