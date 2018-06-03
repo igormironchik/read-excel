@@ -21,7 +21,8 @@ addons:
       name: "igormironchik/read-excel"
       description: "Build submitted via Travis CI"
     notification_email: igor.mironchik@gmail.com
-    build_command: ruby build.rb
+    build_command_prepend: echo 'Starting prebuild step...'; mkdir build; cd build; cmake ..; echo 'Prebuild step finished...';
+    build_command: make
     branch_pattern: coverity_scan
 
 before_script:
@@ -30,6 +31,11 @@ before_script:
 script:
 - |
   if [ ${COVERITY_SCAN_BRANCH} != 1 ]; then \
-    ruby build.rb enable_coverage || { exit 1; }; \
-    coveralls --build-root . --gcov-options '\-lp' -e sample -e test -e lib || { exit 1; }; \
+    mkdir build || { exit 1; }; \
+    cd build || { exit 1; }; \
+    cmake -DENABLE_COVERAGE=ON .. || { exit 1; }; \
+    make || { exit 1; }; \
+    ctest --output-on-failure || { exit 1; }; \
+    cd .. || { exit 1; }; \
+    coveralls --build-root build --gcov-options '\-lp' -e sample -e test -e lib || { exit 1; }; \
     fi
