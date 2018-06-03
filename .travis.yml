@@ -14,8 +14,11 @@ before_install:
 
 addons:
   apt:
+    sources:
+      - ubuntu-toolchain-r-test
     packages:
       - ruby
+      - g++-4.9
   coverity_scan:
     project:
       name: "igormironchik/read-excel"
@@ -25,11 +28,12 @@ addons:
     branch_pattern: coverity_scan
 
 before_script:
-  - sudo gem install Mxx_ru -v 1.6.14.4
+  - sudo gem install Mxx_ru
 
 script:
 - |
   if [ ${COVERITY_SCAN_BRANCH} != 1 ]; then \
+    export CXX="g++-4.9" CC="gcc-4.9" || { exit 1; }; \
     ruby build.rb enable_coverage || { exit 1; }; \
     coveralls --build-root . --gcov-options '\-lp' -e sample -e test -e lib || { exit 1; }; \
     fi
