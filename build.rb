@@ -14,6 +14,7 @@ Mxx_ru::setup_target(
 		toolset.force_cpp11
 
 		if ARGV[ 0 ] == 'enable_coverage'
+			print "Coverage is enabled.\n"
 			global_compiler_option '-g -O0 -fprofile-arcs -ftest-coverage'
 			global_linker_option '--coverage'
 		end
