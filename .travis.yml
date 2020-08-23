@@ -9,7 +9,6 @@ compiler:
   - gcc
 
 before_install:
-  - pip install --user cpp-coveralls
   - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 
 addons:
@@ -24,19 +23,20 @@ addons:
     build_command_prepend: echo 'Starting prebuild step...'; mkdir build; cd build; cmake ..; echo 'Prebuild step finished...';
     build_command: make
     branch_pattern: coverity_scan
-
-before_script:
-  - sudo gem install Mxx_ru
+    
+after_success:
+  - cd ${TRAVIS_BUILD_DIR}
+  - lcov --directory . --capture --output-file coverage.info coverage info
+  - lcov --remove coverage.info '/usr/*' --output-file coverage.info
+  - lcov --list coverage.info
+  - bash <(curl -s https://codecov.io/bash)
 
 script:
 - |
   if [ ${COVERITY_SCAN_BRANCH} != 1 ]; then \
     mkdir build || { exit 1; }; \
     cd build || { exit 1; }; \
-    cmake -DENABLE_COVERAGE=ON .. || { exit 1; }; \
+    cmake -DENABLE_COVERAGE=ON -DCMAKE_BUILD_TYPE=Debug .. || { exit 1; }; \
     make || { exit 1; }; \
     ctest --output-on-failure || { exit 1; }; \
-    cd .. || { exit 1; }; \
-    coveralls --build-root build --gcov-options '\-lp' \
-    -e sample -e test -e lib -e build/CMakeFiles || { exit 1; }; \
     fi
