@@ -28,9 +28,9 @@
 */
 
 // Excel include.
-#include <excel/formula.hpp>
-#include <excel/record.hpp>
-#include <excel/string.hpp>
+#include <read-excel/formula.hpp>
+#include <read-excel/record.hpp>
+#include <read-excel/string.hpp>
 
 // unit test helper.
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN

@@ -31,9 +31,9 @@
 
 
 // Excel include.
-#include <excel/book.hpp>
-#include <excel/exceptions.hpp>
-#include <excel/compoundfile/compoundfile_exceptions.hpp>
+#include <read-excel/book.hpp>
+#include <read-excel/exceptions.hpp>
+#include <read-excel/compoundfile/compoundfile_exceptions.hpp>
 
 // C++ include.
 #include <iostream>

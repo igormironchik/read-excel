@@ -28,8 +28,8 @@
 */
 
 // Excel include.
-#include <excel/compoundfile/compoundfile.hpp>
-#include <excel/compoundfile/compoundfile_exceptions.hpp>
+#include <read-excel/compoundfile/compoundfile.hpp>
+#include <read-excel/compoundfile/compoundfile_exceptions.hpp>
 
 // unit test helper.
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN

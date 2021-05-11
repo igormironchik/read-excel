@@ -28,8 +28,8 @@
 */
 
 // Excel include.
-#include <excel/book.hpp>
-#include <excel/sheet.hpp>
+#include <read-excel/book.hpp>
+#include <read-excel/sheet.hpp>
 
 // unit test helper.
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN

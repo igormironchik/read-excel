@@ -28,7 +28,7 @@
 */
 
 // Excel include.
-#include <excel/cell.hpp>
+#include <read-excel/cell.hpp>
 
 // unit test helper.
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN

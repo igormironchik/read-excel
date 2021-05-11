@@ -28,7 +28,7 @@
 */
 
 // Excel include.
-#include <excel/stream.hpp>
+#include <read-excel/stream.hpp>
 
 // C++ include.
 #include <cstddef>

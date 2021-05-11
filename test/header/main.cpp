@@ -28,11 +28,11 @@
 */
 
 // Excel include.
-#include <excel/compoundfile/header.hpp>
-#include <excel/compoundfile/sat.hpp>
-#include <excel/compoundfile/compoundfile_exceptions.hpp>
-#include <excel/compoundfile/sat.hpp>
-#include <excel/compoundfile/msat.hpp>
+#include <read-excel/compoundfile/header.hpp>
+#include <read-excel/compoundfile/sat.hpp>
+#include <read-excel/compoundfile/compoundfile_exceptions.hpp>
+#include <read-excel/compoundfile/sat.hpp>
+#include <read-excel/compoundfile/msat.hpp>
 
 // unit test helper.
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN

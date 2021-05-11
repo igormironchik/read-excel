@@ -28,7 +28,7 @@
 */
 
 // Excel include.
-#include <excel/book.hpp>
+#include <read-excel/book.hpp>
 
 // C++ include.
 #include <cmath>

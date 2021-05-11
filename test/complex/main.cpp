@@ -28,8 +28,8 @@
 */
 
 // Excel include.
-#include <excel/book.hpp>
-#include <excel/exceptions.hpp>
+#include <read-excel/book.hpp>
+#include <read-excel/exceptions.hpp>
 
 // C++ include.
 #include <cmath>
