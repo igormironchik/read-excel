@@ -47,17 +47,17 @@ public:
 	virtual ~TestStream();
 
 	//! Read one byte from the stream.
-	virtual char getByte();
+	char getByte() override;
 
 	//! \return true if EOF reached.
-	virtual bool eof() const;
+	bool eof() const override;
 
 	//! Seek stream to new position.
-	virtual void seek( int32_t pos, Excel::Stream::SeekType type =
-		Excel::Stream::FromBeginning );
+	void seek( int32_t pos, Excel::Stream::SeekType type =
+		Excel::Stream::FromBeginning ) override;
 
 	//! \return Position in the stream.
-	virtual int32_t pos();
+	int32_t pos() override;
 
 private:
 	//! Data.
