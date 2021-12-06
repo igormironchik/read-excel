@@ -170,7 +170,7 @@ loadChildDirectories( std::vector< Directory > & dirs,
 
 inline
 File::File( std::istream & stream, const std::string & fileName )
-	: m_stream( stream )
+	:	m_stream( stream )
 {
 	initialize( fileName );
 }
