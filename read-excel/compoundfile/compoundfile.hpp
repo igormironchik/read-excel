@@ -67,7 +67,7 @@ public:
 	Directory directory( const std::wstring & name ) const;
 
 	//! \return is Directory entry exist by its name.
-	bool hasDirectory(const std::wstring & name ) const;
+	bool hasDirectory( const std::wstring & name ) const;
 
 	//! \return Stream in the directory.
 	std::unique_ptr< Excel::Stream > stream( const Directory & dir );
