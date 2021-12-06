@@ -152,13 +152,13 @@ TEST_CASE( "test_stream" )
 
 TEST_CASE( "test_stream_name" )
 {
-	std::ifstream fileStream( "./test/data/old.xls", std::ios::in | std::ios::binary );
+	std::ifstream fileStream( "./test/data/test.xls", std::ios::in | std::ios::binary );
 	CompoundFile::File file( fileStream );
 
 	std::unique_ptr< Excel::Stream > stream( file.stream(
-		file.directory( L"Book" ) ) );
+		file.directory( L"Workbook" ) ) );
 
 	stream->seek( 512, Excel::Stream::FromBeginning );
 
-	REQUIRE( stream->getByte() == (char) 0x00 );
+	REQUIRE( stream->getByte() == (char) 0x01 );
 }

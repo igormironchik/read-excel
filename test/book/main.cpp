@@ -69,8 +69,8 @@ TEST_CASE( "test_book" )
 
 TEST_CASE( "test_book_via_stream" )
 {
-	std::ifstream fileStream( "./test/data/old.xls", std::ios::in | std::ios::binary );
+	std::ifstream fileStream( "test/data/test.xls", std::ios::in | std::ios::binary );
 	Excel::Book book( fileStream );
 
-	REQUIRE( book.sheetsCount() == 3 );
+	REQUIRE( book.sheetsCount() == 1 );
 }
