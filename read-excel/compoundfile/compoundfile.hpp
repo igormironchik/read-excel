@@ -177,8 +177,8 @@ File::File( std::istream & stream, const std::string & fileName )
 
 inline
 File::File( const std::string & fileName )
-	: m_fileStream( fileName, std::ios::in | std::ios::binary )
-	, m_stream( m_fileStream )
+	:	m_fileStream( fileName, std::ios::in | std::ios::binary )
+	,	m_stream( m_fileStream )
 	
 {
 	initialize( fileName );
