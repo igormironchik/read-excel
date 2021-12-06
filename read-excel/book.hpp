@@ -192,7 +192,7 @@ Book::loadBook( std::istream & fileStream, const std::string & fileName )
 	try {
 		clear();
 
-		CompoundFile::File file( fileStream, fileName);
+		CompoundFile::File file( fileStream, fileName );
 		auto stream = file.stream( 
 			file.hasDirectory( L"Workbook" ) ? file.directory( L"Workbook" ) 
 			                                 : file.directory( L"Book") );
