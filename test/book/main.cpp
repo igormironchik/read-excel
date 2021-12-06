@@ -66,3 +66,11 @@ TEST_CASE( "test_book" )
 	REQUIRE( std::fabs( sheet->cell( 2, 3 ).getFormula().getDouble() - 3.3 ) < 1E-9 );
 
 }
+
+TEST_CASE( "test_book_via_stream" )
+{
+	std::ifstream fileStream( "./test/data/old.xls", std::ios::in | std::ios::binary );
+	Excel::Book book( fileStream );
+
+	REQUIRE( book.sheetsCount() == 3 );
+}

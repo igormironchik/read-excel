@@ -59,12 +59,15 @@ namespace CompoundFile {
 //! Compound file.
 class File {
 public:
-	explicit File( std::istream & stream );
+	explicit File( std::istream & stream, const std::string & fileName = "<custom-stream>" );
 	explicit File( const std::string & fileName );
 	~File();
 
 	//! \return Directory entry by its name.
 	Directory directory( const std::wstring & name ) const;
+
+	//! \return is Directory entry exist by its name.
+	bool hasDirectory(const std::wstring & name ) const;
 
 	//! \return Stream in the directory.
 	std::unique_ptr< Excel::Stream > stream( const Directory & dir );
@@ -166,10 +169,10 @@ loadChildDirectories( std::vector< Directory > & dirs,
 //
 
 inline
-File::File( std::istream & stream )
+File::File( std::istream & stream, const std::string & fileName )
 	: m_stream( stream )
 {
-	initialize( "<custom-stream>" );
+	initialize( fileName );
 }
 
 inline
@@ -198,6 +201,19 @@ File::directory( const std::wstring & name ) const
 	}
 
 	throw Exception( std::wstring( L"There is no such directory : " ) + name );
+}
+
+inline bool
+File::hasDirectory( const std::wstring & name ) const
+{
+	for( std::vector< Directory >::const_iterator it = m_dirs.begin(),
+		last = m_dirs.end(); it != last; ++it )
+	{
+		if ( it->name() == name )
+			return true;
+	}
+
+	return false;
 }
 
 inline std::unique_ptr< Excel::Stream >
