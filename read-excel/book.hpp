@@ -73,6 +73,7 @@ public:
 
 public:
 	Book();
+	explicit Book( std::istream & stream );
 	explicit Book( const std::string & fileName );
 	~Book();
 
@@ -87,7 +88,7 @@ public:
 	Sheet * sheet( size_t index ) const;
 
 	//! Load WorkBook from file.
-	void loadBook( const std::string & fileName );
+	void loadBook( std::istream & stream, const std::string & fileName );
 
 private:
 	//! Load sheets from file.
@@ -121,13 +122,24 @@ Book::Book()
 }
 
 inline
+Book::Book( std::istream & stream )
+	:	m_dateMode( DateMode::Unknown )
+{
+	static_assert( sizeof( double ) == 8,
+		"Unsupported platform: double has to be 8 bytes." );
+
+	loadBook( stream, "<custom-stream>" );
+}
+
+inline
 Book::Book( const std::string & fileName )
 	:	m_dateMode( DateMode::Unknown )
 {
 	static_assert( sizeof( double ) == 8,
 		"Unsupported platform: double has to be 8 bytes." );
 
-	loadBook( fileName );
+	std::ifstream fileStream( fileName, std::ios::in | std::ios::binary );
+	loadBook( fileStream, fileName );
 }
 
 inline void
@@ -175,13 +187,15 @@ Book::sheet( size_t index ) const
 }
 
 inline void
-Book::loadBook( const std::string & fileName )
+Book::loadBook( std::istream & fileStream, const std::string & fileName )
 {
 	try {
 		clear();
 
-		CompoundFile::File file( fileName );
-		auto stream = file.stream( file.directory( L"Workbook" ) );
+		CompoundFile::File file( fileStream, fileName );
+		auto stream = file.stream( 
+			file.hasDirectory( L"Workbook" ) ? file.directory( L"Workbook" ) 
+			                                 : file.directory( L"Book") );
 
 		std::vector< BoundSheet > boundSheets;
 

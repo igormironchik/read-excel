@@ -59,18 +59,28 @@ namespace CompoundFile {
 //! Compound file.
 class File {
 public:
+	explicit File( std::istream & stream, const std::string & fileName = "<custom-stream>" );
 	explicit File( const std::string & fileName );
 	~File();
 
 	//! \return Directory entry by its name.
 	Directory directory( const std::wstring & name ) const;
 
+	//! \return is Directory entry exist by its name.
+	bool hasDirectory( const std::wstring & name ) const;
+
 	//! \return Stream in the directory.
 	std::unique_ptr< Excel::Stream > stream( const Directory & dir );
 
 private:
+	//! Read stream and initialize m_dirs.
+    void initialize( const std::string& fileName );
+
+private:
+	//! Inner file stream.
+	std::ifstream m_fileStream;
 	//! Stream.
-	std::ifstream m_stream;
+	std::istream & m_stream;
 	//! Header of the compound file.
 	Header m_header;
 	//! SAT.
@@ -159,10 +169,63 @@ loadChildDirectories( std::vector< Directory > & dirs,
 //
 
 inline
-File::File( const std::string & fileName )
+File::File( std::istream & stream, const std::string & fileName )
+	:	m_stream( stream )
 {
-	m_stream.open( fileName, std::ios::in | std::ios::binary );
+	initialize( fileName );
+}
 
+inline
+File::File( const std::string & fileName )
+	:	m_fileStream( fileName, std::ios::in | std::ios::binary )
+	,	m_stream( m_fileStream )
+	
+{
+	initialize( fileName );
+}
+
+inline
+File::~File()
+{
+	m_fileStream.close();
+}
+
+inline Directory
+File::directory( const std::wstring & name ) const
+{
+	for( std::vector< Directory >::const_iterator it = m_dirs.begin(),
+		last = m_dirs.end(); it != last; ++it )
+	{
+		if( it->name() == name )
+			return *it;
+	}
+
+	throw Exception( std::wstring( L"There is no such directory : " ) + name );
+}
+
+inline bool
+File::hasDirectory( const std::wstring & name ) const
+{
+	for( std::vector< Directory >::const_iterator it = m_dirs.begin(),
+		last = m_dirs.end(); it != last; ++it )
+	{
+		if ( it->name() == name )
+			return true;
+	}
+
+	return false;
+}
+
+inline std::unique_ptr< Excel::Stream >
+File::stream( const Directory & dir )
+{
+	return std::unique_ptr< Excel::Stream > ( new Stream( m_header,
+		m_sat, m_ssat, dir, m_shortStreamFirstSector, m_stream ) );
+}
+
+inline void
+File::initialize( const std::string & fileName )
+{
 	if( m_stream.good() )
 	{
 		m_header.load( m_stream );
@@ -190,32 +253,6 @@ File::File( const std::string & fileName )
 	else
 		throw Exception( std::wstring( L"Unable to open file : " ) +
 			std::wstring( fileName.cbegin(), fileName.cend() ) );
-}
-
-inline
-File::~File()
-{
-	m_stream.close();
-}
-
-inline Directory
-File::directory( const std::wstring & name ) const
-{
-	for( std::vector< Directory >::const_iterator it = m_dirs.begin(),
-		last = m_dirs.end(); it != last; ++it )
-	{
-		if( it->name() == name )
-			return *it;
-	}
-
-	throw Exception( std::wstring( L"There is no such directory : " ) + name );
-}
-
-inline std::unique_ptr< Excel::Stream >
-File::stream( const Directory & dir )
-{
-	return std::unique_ptr< Excel::Stream > ( new Stream( m_header,
-		m_sat, m_ssat, dir, m_shortStreamFirstSector, m_stream ) );
 }
 
 } /* namespace CompoundFile */
