@@ -187,7 +187,7 @@ Book::sheet( size_t index ) const
 }
 
 inline void
-Book::loadBook( std::istream & fileStream, const std::string& fileName )
+Book::loadBook( std::istream & fileStream, const std::string & fileName )
 {
 	try {
 		clear();
