@@ -116,6 +116,8 @@ public:
 private:
 	//! Init cell's table with given cell.
 	void initCell( size_t row, size_t column );
+	//! Handle LABEL record.
+	void handleLabel( Record & record );
 	//! Handle LABELSST record.
 	void handleLabelSST( Record & record );
 	//! Handle RK record.
@@ -270,6 +272,10 @@ Sheet::load( const BoundSheet & boundSheet,
 				handleLabelSST( record );
 				break;
 
+			case XL_LABEL:
+				handleLabel( record );
+				break;
+
 			case XL_RK:
 			case XL_RK2:
 				handleRK( record );
@@ -314,6 +320,21 @@ Sheet::handleLabelSST( Record & record )
 	m_cells[ row ][ column ].setData( m_sst[ sstIndex ] );
 }
 
+inline void
+Sheet::handleLabel( Record & record )
+{
+	int16_t row = 0;
+	int16_t column = 0;
+
+	record.dataStream().read( row, 2 );
+	record.dataStream().read( column, 2 );
+	record.dataStream().seek( 2, Excel::Stream::FromCurrent );
+	std::wstring data = loadString( record.dataStream(), record.borders(), 1 );
+
+	initCell( row, column );
+
+	m_cells[ row ][ column ].setData( data );
+}
 
 //
 // doubleFromRK
