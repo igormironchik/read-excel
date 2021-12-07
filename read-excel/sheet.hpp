@@ -329,7 +329,7 @@ Sheet::handleLabel( Record & record )
 	record.dataStream().read( row, 2 );
 	record.dataStream().read( column, 2 );
 	record.dataStream().seek( 2, Excel::Stream::FromCurrent );
-	std::wstring data = loadString( record.dataStream(), record.borders(), 1 );
+	const auto data = loadString( record.dataStream(), record.borders(), 1 );
 
 	initCell( row, column );
 
