@@ -75,6 +75,6 @@ TEST_CASE( "test_book_via_stream" )
 	REQUIRE( book.sheetsCount() == 3 );
 
 	Excel::Sheet * sheet = book.sheet( 0 );
-	auto text = sheet->cell( 0, 0 ).getString();
+	const auto text = sheet->cell( 0, 0 ).getString();
 	REQUIRE( text.find( L"Somefile" ) != std::wstring::npos );
 }
