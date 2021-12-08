@@ -13,6 +13,8 @@ file( COPY data/test.xls
 	DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/data )
 file( COPY data/verybig.xls
 	DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/data )
+file( COPY data/strange.xls
+	DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/data )
 
 if(NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
 	add_subdirectory( testdocument )

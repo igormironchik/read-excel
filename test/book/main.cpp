@@ -69,8 +69,12 @@ TEST_CASE( "test_book" )
 
 TEST_CASE( "test_book_via_stream" )
 {
-	std::ifstream fileStream( "test/data/test.xls", std::ios::in | std::ios::binary );
+	std::ifstream fileStream( "test/data/strange.xls", std::ios::in | std::ios::binary );
 	Excel::Book book( fileStream );
 
-	REQUIRE( book.sheetsCount() == 1 );
+	REQUIRE( book.sheetsCount() == 3 );
+
+	Excel::Sheet * sheet = book.sheet( 0 );
+	const auto text = sheet->cell( 0, 0 ).getString();
+	REQUIRE( text.find( L"Somefile" ) != std::wstring::npos );
 }
