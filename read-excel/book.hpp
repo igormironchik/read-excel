@@ -40,6 +40,7 @@
 #include "bof.hpp"
 #include "exceptions.hpp"
 #include "stream.hpp"
+#include "storage.hpp"
 
 #include "compoundfile/compoundfile.hpp"
 #include "compoundfile/compoundfile_exceptions.hpp"
@@ -58,7 +59,7 @@ namespace Excel {
 //
 
 //! Excel WorkBook.
-class Book {
+class Book : public IStorage {
 public:
 	//! Mode of the day. The base date for displaying date values.
 	//! All dates are stored as count of days past this base date.
@@ -77,6 +78,15 @@ public:
 	explicit Book( const std::string & fileName );
 	~Book();
 
+	//! IStorage implementation.
+	void onSharedString( size_t sstSize, size_t idx, const std::wstring & value );
+	void onDateMode( uint16_t mode );
+	void onSheet( size_t idx );
+	void onCellSharedString( size_t sheetIdx, size_t row, size_t column, size_t sstIndex );
+	void onCell( size_t sheetIdx, size_t row, size_t column, const std::wstring & value );
+	void onCell( size_t sheetIdx, size_t row, size_t column, double value );
+	void onCell( size_t sheetIdx, const Formula & value );
+
 	//! \return Date mode.
 	DateMode dateMode() const;
 
@@ -87,22 +97,9 @@ public:
 	//! or NULL if there is no sheet with such index.
 	Sheet * sheet( size_t index ) const;
 
-	//! Load WorkBook from file.
-	void loadBook( std::istream & stream, const std::string & fileName );
-
 private:
-	//! Load sheets from file.
-	void loadGlobals( std::vector< BoundSheet > & boundSheets,
-		Stream & stream );
-	//! Load boundsheet.
-	BoundSheet parseBoundSheet( Record & record );
-	//! Load WorkSheets.
-	void loadWorkSheets( const std::vector< BoundSheet > & boundSheets,
-		Stream & stream );
 	//! Clear book.
 	void clear();
-	//! Handle date mode.
-	void handleDateMode( Record & r );
 
 private:
 	//! Parsed WorkSheets.
@@ -112,6 +109,11 @@ private:
 	//! Date mode.
 	DateMode m_dateMode;
 }; // class Book
+
+//! Load WorkBook from file.
+inline void
+loadBook( std::istream & fileStream, IStorage & storage,
+	const std::string & fileName = "<custom-stream>" );
 
 inline
 Book::Book()
@@ -128,7 +130,7 @@ Book::Book( std::istream & stream )
 	static_assert( sizeof( double ) == 8,
 		"Unsupported platform: double has to be 8 bytes." );
 
-	loadBook( stream, "<custom-stream>" );
+	loadBook( stream, *this );
 }
 
 inline
@@ -139,7 +141,7 @@ Book::Book( const std::string & fileName )
 		"Unsupported platform: double has to be 8 bytes." );
 
 	std::ifstream fileStream( fileName, std::ios::in | std::ios::binary );
-	loadBook( fileStream, fileName );
+	loadBook( fileStream, *this, fileName );
 }
 
 inline void
@@ -168,6 +170,55 @@ Book::dateMode() const
 	return m_dateMode;
 }
 
+inline void
+Book::onSharedString( size_t sstSize, size_t idx, const std::wstring & value )
+{
+	m_sst.resize( sstSize );
+	m_sst[ idx ] = value;
+}
+
+inline void
+Book::onDateMode( uint16_t mode )
+{
+	if( mode )
+		m_dateMode = DateMode::Jan01_1904;
+	else
+		m_dateMode = DateMode::Dec31_1899;
+}
+
+inline void
+Book::onSheet( size_t idx )
+{
+	std::unique_ptr< Sheet > sheet( new Sheet() );
+	if( m_sheets.size() <= idx )
+		m_sheets.resize( idx + 1 );
+	m_sheets[ idx ] = sheet.release();
+}
+
+inline void
+Book::onCellSharedString( size_t sheetIdx, size_t row, size_t column, size_t sstIndex )
+{
+	onCell( sheetIdx, row, column, m_sst[ sstIndex ] );
+}
+
+inline void
+Book::onCell( size_t sheetIdx, size_t row, size_t column, const std::wstring & value )
+{
+	sheet( sheetIdx )->setCell( row, column, value );
+}
+
+inline void
+Book::onCell( size_t sheetIdx, size_t row, size_t column, double value )
+{
+	sheet( sheetIdx )->setCell( row, column, value );
+}
+
+inline void
+Book::onCell( size_t sheetIdx, const Formula & formula )
+{
+	sheet( sheetIdx )->setCell( formula.getRow(), formula.getColumn(), formula );
+}
+
 inline size_t
 Book::sheetsCount() const
 {
@@ -186,12 +237,23 @@ Book::sheet( size_t index ) const
 	throw Exception( stream.str() );
 }
 
+//! Load sheets from file.
 inline void
-Book::loadBook( std::istream & fileStream, const std::string & fileName )
+loadGlobals( std::vector< BoundSheet > & boundSheets, 
+	Stream & stream, IStorage & storage );
+
+//! Load WorkSheets.
+inline void
+loadWorkSheets( const std::vector< BoundSheet > & boundSheets,
+	Stream & stream, IStorage& storage );
+
+//! Load boundsheet.
+BoundSheet parseBoundSheet( Record & record );
+
+inline void
+loadBook( std::istream & fileStream, IStorage & storage, const std::string & fileName )
 {
 	try {
-		clear();
-
 		CompoundFile::File file( fileStream, fileName );
 		auto stream = file.stream( 
 			file.hasDirectory( L"Workbook" ) ? file.directory( L"Workbook" ) 
@@ -199,9 +261,9 @@ Book::loadBook( std::istream & fileStream, const std::string & fileName )
 
 		std::vector< BoundSheet > boundSheets;
 
-		loadGlobals( boundSheets, *stream );
+		loadGlobals( boundSheets, *stream, storage );
 
-		loadWorkSheets( boundSheets, *stream );
+		loadWorkSheets( boundSheets, *stream, storage );
 	}
 	catch( const CompoundFile::Exception & x )
 	{
@@ -210,21 +272,18 @@ Book::loadBook( std::istream & fileStream, const std::string & fileName )
 }
 
 inline void
-Book::handleDateMode( Record & r )
+handleDateMode( Record & r, IStorage & storage )
 {
 	uint16_t mode = 0;
 
 	r.dataStream().read( mode, 2 );
 
-	if( mode )
-		m_dateMode = DateMode::Jan01_1904;
-	else
-		m_dateMode = DateMode::Dec31_1899;
+	storage.onDateMode( mode );
 }
 
 inline void
-Book::loadGlobals( std::vector< BoundSheet > & boundSheets,
-	Stream & stream )
+loadGlobals( std::vector< BoundSheet > & boundSheets, 
+	Stream & stream, IStorage & storage )
 {
 	while( true )
 	{
@@ -233,7 +292,7 @@ Book::loadGlobals( std::vector< BoundSheet > & boundSheets,
 		switch( r.code() )
 		{
 			case XL_SST :
-				m_sst = SharedStringTable::parse( r );
+				SharedStringTable::parse( r, storage );
 				break;
 
 			case XL_BOUNDSHEET :
@@ -241,7 +300,7 @@ Book::loadGlobals( std::vector< BoundSheet > & boundSheets,
 				break;
 
 			case XL_DATEMODE :
-				handleDateMode( r );
+				handleDateMode( r, storage );
 				break;
 
 			case XL_EOF :
@@ -254,7 +313,7 @@ Book::loadGlobals( std::vector< BoundSheet > & boundSheets,
 }
 
 inline BoundSheet
-Book::parseBoundSheet( Record & record )
+parseBoundSheet( Record & record )
 {
 	int32_t pos = 0;
 	int16_t sheetType = 0;
@@ -272,17 +331,15 @@ Book::parseBoundSheet( Record & record )
 }
 
 inline void
-Book::loadWorkSheets( const std::vector< BoundSheet > & boundSheets,
-	Stream & stream )
+loadWorkSheets( const std::vector< BoundSheet > & boundSheets,
+	Stream & stream, IStorage& storage )
 {
-	for( std::vector< BoundSheet >::const_iterator it = boundSheets.begin(),
-		last = boundSheets.end(); it != last; ++it )
+	for( size_t i = 0; i < boundSheets.size(); ++i )
 	{
-		if( it->sheetType() == BoundSheet::WorkSheet )
+		if( boundSheets[i].sheetType() == BoundSheet::WorkSheet )
 		{
-			std::unique_ptr< Sheet > sheet( new Sheet( m_sst ) );
-			sheet->load( *it, stream );
-			m_sheets.push_back( sheet.release() );
+			storage.onSheet( i );
+			loadSheet( i, boundSheets[i], stream, storage );
 		}
 	}
 }

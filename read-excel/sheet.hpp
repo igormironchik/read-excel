@@ -39,6 +39,7 @@
 #include "formula.hpp"
 #include "string.hpp"
 #include "exceptions.hpp"
+#include "storage.hpp"
 
 // C++ include.
 #include <vector>
@@ -98,7 +99,7 @@ private:
 //! Excel's sheet.
 class Sheet {
 public:
-	explicit Sheet( const std::vector< std::wstring > & sst );
+	explicit Sheet();
 
 	//! \return Cell.
 	const Cell & cell( size_t row, size_t column ) const;
@@ -109,33 +110,19 @@ public:
 	//! \return Column's count.
 	size_t columnsCount() const;
 
-	//! Load sheet.
-	void load( const BoundSheet & boundSheet,
-		Stream & stream );
+	//! Set cell.
+	template<typename Value>
+	void setCell( size_t row, size_t column, Value value );
 
 private:
 	//! Init cell's table with given cell.
 	void initCell( size_t row, size_t column );
-	//! Handle LABEL record.
-	void handleLabel( Record & record );
-	//! Handle LABELSST record.
-	void handleLabelSST( Record & record );
-	//! Handle RK record.
-	void handleRK( Record & record );
-	//! Handle MULRK record.
-	void handleMULRK( Record & record );
-	//! Handle NUMBER record.
-	void handleNUMBER( Record & record );
-	//! Handle FORMULA record.
-	void handleFORMULA( Record & record, Stream & stream );
 
 private:
 	//! Cells.
 	std::vector< std::vector< Cell > > m_cells;
 	//! Dummy cell.
 	Cell m_dummyCell;
-	//! Shared String Table.
-	const std::vector< std::wstring > & m_sst;
 	//! Column's count;
 	size_t m_columnsCount;
 }; // class Sheet
@@ -195,10 +182,17 @@ BoundSheet::convertSheetType( int16_t type )
 //
 
 inline
-Sheet::Sheet( const std::vector< std::wstring > & sst )
-	:	m_sst( sst )
-	,	m_columnsCount( 0 )
+Sheet::Sheet()
+	:	m_columnsCount( 0 )
 {
+}
+
+template<typename Value>
+void
+Sheet::setCell( size_t row, size_t column, Value value )
+{
+	initCell( row, column );
+	m_cells[ row ][ column ].setData( value );
 }
 
 inline void
@@ -247,8 +241,8 @@ Sheet::columnsCount() const
 }
 
 inline void
-Sheet::load( const BoundSheet & boundSheet,
-	Stream & stream )
+loadSheet( size_t sheetIdx, const BoundSheet & boundSheet, Stream & stream,
+	IStorage & storage )
 {
 	stream.seek( boundSheet.BOFPosition(), Stream::FromBeginning );
 	BOF bof;
@@ -269,28 +263,28 @@ Sheet::load( const BoundSheet & boundSheet,
 		switch( record.code() )
 		{
 			case XL_LABELSST:
-				handleLabelSST( record );
+				handleLabelSST( record, sheetIdx, storage );
 				break;
 
 			case XL_LABEL:
-				handleLabel( record );
+				handleLabel( record, sheetIdx, storage );
 				break;
 
 			case XL_RK:
 			case XL_RK2:
-				handleRK( record );
+				handleRK( record, sheetIdx, storage );
 				break;
 
 			case XL_MULRK:
-				handleMULRK( record );
+				handleMULRK( record, sheetIdx, storage );
 				break;
 
 			case XL_NUMBER:
-				handleNUMBER( record );
+				handleNUMBER( record, sheetIdx, storage );
 				break;
 
 			case XL_FORMULA:
-				handleFORMULA( record, stream );
+				handleFORMULA( record, stream, sheetIdx, storage );
 				break;
 
 			case XL_EOF:
@@ -302,8 +296,9 @@ Sheet::load( const BoundSheet & boundSheet,
 	}
 }
 
+//! Handle LABELSST record.
 inline void
-Sheet::handleLabelSST( Record & record )
+handleLabelSST( Record & record, size_t sheetIdx, IStorage & storage )
 {
 	int16_t row = 0;
 	int16_t column = 0;
@@ -315,13 +310,12 @@ Sheet::handleLabelSST( Record & record )
 	record.dataStream().read( xfIndex, 2 );
 	record.dataStream().read( sstIndex, 4 );
 
-	initCell( row, column );
-
-	m_cells[ row ][ column ].setData( m_sst[ sstIndex ] );
+	storage.onCellSharedString( sheetIdx, row, column, sstIndex );
 }
 
+//! Handle LABEL record.
 inline void
-Sheet::handleLabel( Record & record )
+handleLabel( Record & record, size_t sheetIdx, IStorage & storage )
 {
 	int16_t row = 0;
 	int16_t column = 0;
@@ -331,9 +325,7 @@ Sheet::handleLabel( Record & record )
 	record.dataStream().seek( 2, Excel::Stream::FromCurrent );
 	const auto data = loadString( record.dataStream(), record.borders(), 1 );
 
-	initCell( row, column );
-
-	m_cells[ row ][ column ].setData( data );
+	storage.onCell( sheetIdx, row, column, data );
 }
 
 //
@@ -364,9 +356,9 @@ doubleFromRK( uint32_t rk )
 	return num;
 } // doubleFromRK
 
-
+//! Handle RK record.
 inline void
-Sheet::handleRK( Record & record )
+handleRK( Record & record, size_t sheetIdx, IStorage & storage )
 {
 	int16_t row = 0;
 	int16_t column = 0;
@@ -378,13 +370,12 @@ Sheet::handleRK( Record & record )
 	record.dataStream().seek( 2, Stream::FromCurrent );
 	record.dataStream().read( rk, 4 );
 
-	initCell( row, column );
-
-	m_cells[ row ][ column ].setData( doubleFromRK( rk ) );
+	storage.onCell( sheetIdx, row, column, doubleFromRK( rk ) );
 }
 
+//! Handle MULRK record.
 inline void
-Sheet::handleMULRK( Record & record )
+handleMULRK( Record & record, size_t sheetIdx, IStorage & storage )
 {
 	int16_t row = 0;
 	int16_t colFirst = 0;
@@ -403,8 +394,6 @@ Sheet::handleMULRK( Record & record )
 
 	const int16_t rkCount = colLast - colFirst + 1;
 
-	initCell( row, colLast );
-
 	for( int16_t i = 0; i < rkCount; ++i )
 	{
 		uint32_t rk = 0;
@@ -413,12 +402,12 @@ Sheet::handleMULRK( Record & record )
 
 		record.dataStream().read( rk, 4 );
 
-		m_cells[ row ][ colFirst + i ].setData( doubleFromRK( rk ) );
+		storage.onCell( sheetIdx, row, colFirst + i, doubleFromRK( rk ) );
 	}
 }
 
 inline void
-Sheet::handleNUMBER( Record & record )
+handleNUMBER( Record & record, size_t sheetIdx, IStorage & storage )
 {
 	int16_t row = 0;
 	int16_t column = 0;
@@ -435,13 +424,12 @@ Sheet::handleNUMBER( Record & record )
 
 	record.dataStream().read( doubleAndLongLong.m_asLongLong, 8 );
 
-	initCell( row, column );
-
-	m_cells[ row ][ column ].setData( doubleAndLongLong.m_asDouble );
+	storage.onCell( sheetIdx, row, column, doubleAndLongLong.m_asDouble );
 }
 
+//! Handle FORMULA record.
 inline void
-Sheet::handleFORMULA( Record & record, Stream & stream )
+handleFORMULA( Record & record, Stream & stream, size_t sheetIdx, IStorage & storage )
 {
 	Formula formula( record );
 
@@ -454,9 +442,7 @@ Sheet::handleFORMULA( Record & record, Stream & stream )
 		formula.setString( loadString( stringRecord.dataStream(), borders ) );
 	}
 
-	initCell( formula.getRow(), formula.getColumn() );
-
-	m_cells[ formula.getRow() ][ formula.getColumn() ].setData( formula );
+	storage.onCell( sheetIdx, formula );
 }
 
 } /* namespace Excel */
