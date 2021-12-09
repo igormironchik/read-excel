@@ -81,7 +81,7 @@ public:
 	//! IStorage implementation.
 	void onSharedString( size_t sstSize, size_t idx, const std::wstring & value );
 	void onDateMode( uint16_t mode );
-	void onSheet( size_t idx );
+	void onSheet( size_t idx, const std::wstring & value );
 	void onCellSharedString( size_t sheetIdx, size_t row, size_t column, size_t sstIndex );
 	void onCell( size_t sheetIdx, size_t row, size_t column, const std::wstring & value );
 	void onCell( size_t sheetIdx, size_t row, size_t column, double value );
@@ -187,7 +187,7 @@ Book::onDateMode( uint16_t mode )
 }
 
 inline void
-Book::onSheet( size_t idx )
+Book::onSheet( size_t idx, const std::wstring & )
 {
 	std::unique_ptr< Sheet > sheet( new Sheet() );
 	if( m_sheets.size() <= idx )
@@ -338,7 +338,7 @@ loadWorkSheets( const std::vector< BoundSheet > & boundSheets,
 	{
 		if( boundSheets[i].sheetType() == BoundSheet::WorkSheet )
 		{
-			storage.onSheet( i );
+			storage.onSheet( i, boundSheets[i].sheetName() );
 			loadSheet( i, boundSheets[i], stream, storage );
 		}
 	}

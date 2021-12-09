@@ -78,3 +78,32 @@ TEST_CASE( "test_book_via_stream" )
 	const auto text = sheet->cell( 0, 0 ).getString();
 	REQUIRE( text.find( L"Somefile" ) != std::wstring::npos );
 }
+
+struct CustomStorage : public Excel::EmptyStorage {
+	std::wstring m_text;
+	std::wstring m_sheetName;
+	void onSharedString( size_t sstSize, size_t idx, const std::wstring & value );
+	void onSheet( size_t idx, const std::wstring & value );
+}; // struct CustomStorage
+
+inline void
+CustomStorage::onSharedString( size_t , size_t , const std::wstring & value )
+{
+	m_text += value;
+}
+
+inline void
+CustomStorage::onSheet( size_t , const std::wstring & value )
+{
+	m_sheetName = value;
+}
+
+TEST_CASE("test_book_custom_storage")
+{
+	std::ifstream fileStream( "test/data/test.xls", std::ios::in | std::ios::binary );
+	CustomStorage storage;
+	Excel::loadBook( fileStream, storage );
+
+	REQUIRE( storage.m_text.find(L"String #1") != std::wstring::npos );
+	REQUIRE( storage.m_sheetName == L"Sheet" );
+}

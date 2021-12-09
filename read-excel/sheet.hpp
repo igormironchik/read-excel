@@ -240,6 +240,30 @@ Sheet::columnsCount() const
 	return m_columnsCount;
 }
 
+//! Handle LABELSST record.
+inline void
+handleLabelSST( Record & record, size_t sheetIdx, IStorage & storage );
+
+//! Handle LABEL record.
+inline void
+handleLabel( Record & record, size_t sheetIdx, IStorage & storage );
+
+//! Handle RK record.
+inline void
+handleRK( Record & record, size_t sheetIdx, IStorage & storage );
+
+//! Handle MULRK record.
+inline void
+handleMULRK( Record & record, size_t sheetIdx, IStorage & storage );
+
+//! Handle NUMBER record.
+inline void
+handleNUMBER( Record & record, size_t sheetIdx, IStorage & storage );
+
+//! Handle FORMULA record.
+inline void
+handleFORMULA( Record & record, Stream & stream, size_t sheetIdx, IStorage & storage );
+
 inline void
 loadSheet( size_t sheetIdx, const BoundSheet & boundSheet, Stream & stream,
 	IStorage & storage )
@@ -296,7 +320,6 @@ loadSheet( size_t sheetIdx, const BoundSheet & boundSheet, Stream & stream,
 	}
 }
 
-//! Handle LABELSST record.
 inline void
 handleLabelSST( Record & record, size_t sheetIdx, IStorage & storage )
 {
@@ -313,7 +336,6 @@ handleLabelSST( Record & record, size_t sheetIdx, IStorage & storage )
 	storage.onCellSharedString( sheetIdx, row, column, sstIndex );
 }
 
-//! Handle LABEL record.
 inline void
 handleLabel( Record & record, size_t sheetIdx, IStorage & storage )
 {
@@ -356,7 +378,6 @@ doubleFromRK( uint32_t rk )
 	return num;
 } // doubleFromRK
 
-//! Handle RK record.
 inline void
 handleRK( Record & record, size_t sheetIdx, IStorage & storage )
 {
@@ -373,7 +394,6 @@ handleRK( Record & record, size_t sheetIdx, IStorage & storage )
 	storage.onCell( sheetIdx, row, column, doubleFromRK( rk ) );
 }
 
-//! Handle MULRK record.
 inline void
 handleMULRK( Record & record, size_t sheetIdx, IStorage & storage )
 {
@@ -427,7 +447,6 @@ handleNUMBER( Record & record, size_t sheetIdx, IStorage & storage )
 	storage.onCell( sheetIdx, row, column, doubleAndLongLong.m_asDouble );
 }
 
-//! Handle FORMULA record.
 inline void
 handleFORMULA( Record & record, Stream & stream, size_t sheetIdx, IStorage & storage )
 {
