@@ -1,3 +1,4 @@
+
 /*!
 	\file
 	\brief Excel storage interface.
@@ -44,7 +45,8 @@ namespace Excel {
 
 //! Excel storage interface.
 struct IStorage {
-	~IStorage() {}
+	virtual ~IStorage() {}
+
 protected:
 	friend class Parser;
 

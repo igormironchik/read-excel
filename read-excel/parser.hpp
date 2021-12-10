@@ -1,3 +1,4 @@
+
 /*!
 	\file
 	\brief Excel parser.
@@ -92,7 +93,6 @@ public:
 	//! Handle FORMULA.
 	static void handleFORMULA( Record & record, Stream & stream, size_t sheetIdx,
 		IStorage & storage );
-
 }; // class Parser
 
 inline void
@@ -190,7 +190,6 @@ Parser::loadWorkSheets( const std::vector< BoundSheet > & boundSheets,
 	}
 }
 
-//! Parse shared string table in the Excel file.
 inline void
 Parser::parseSST( Record & record, IStorage & storage )
 {

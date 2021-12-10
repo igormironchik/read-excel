@@ -99,7 +99,7 @@ private:
 //! Excel's sheet.
 class Sheet {
 public:
-	explicit Sheet();
+	Sheet();
 
 	//! \return Cell.
 	const Cell & cell( size_t row, size_t column ) const;
@@ -111,7 +111,7 @@ public:
 	size_t columnsCount() const;
 
 	//! Set cell.
-	template<typename Value>
+	template< typename Value >
 	void setCell( size_t row, size_t column, Value value );
 
 private:
@@ -187,8 +187,8 @@ Sheet::Sheet()
 {
 }
 
-template<typename Value>
-void
+template< typename Value >
+inline void
 Sheet::setCell( size_t row, size_t column, Value value )
 {
 	initCell( row, column );
