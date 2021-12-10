@@ -104,7 +104,7 @@ TEST_CASE( "test_book_custom_storage" )
 	CustomStorage storage;
 	Excel::Parser::loadBook( fileStream, storage );
 
-	REQUIRE( storage.m_text.find(L"String #1") != std::wstring::npos );
+	REQUIRE( storage.m_text.find( L"String #1" ) != std::wstring::npos );
 	REQUIRE( storage.m_sheetName == L"Sheet" );
 }
 
