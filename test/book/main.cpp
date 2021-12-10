@@ -98,7 +98,7 @@ CustomStorage::onSheet( size_t , const std::wstring & value )
 	m_sheetName = value;
 }
 
-TEST_CASE("test_book_custom_storage")
+TEST_CASE( "test_book_custom_storage" )
 {
 	std::ifstream fileStream( "test/data/test.xls", std::ios::in | std::ios::binary );
 	CustomStorage storage;
