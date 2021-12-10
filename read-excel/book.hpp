@@ -78,7 +78,6 @@ public:
 	~Book();
 
 protected:
-	//! IStorage implementation.
 	void onSharedString( size_t sstSize, size_t idx, const std::wstring & value ) override;
 	void onDateMode( uint16_t mode ) override;
 	void onSheet( size_t idx, const std::wstring & value ) override;
