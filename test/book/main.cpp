@@ -82,8 +82,8 @@ TEST_CASE( "test_book_via_stream" )
 struct CustomStorage : public Excel::EmptyStorage {
 	std::wstring m_text;
 	std::wstring m_sheetName;
-	void onSharedString( size_t sstSize, size_t idx, const std::wstring & value );
-	void onSheet( size_t idx, const std::wstring & value );
+	void onSharedString( size_t sstSize, size_t idx, const std::wstring & value ) override;
+	void onSheet( size_t idx, const std::wstring & value ) override;
 }; // struct CustomStorage
 
 inline void
@@ -102,7 +102,7 @@ TEST_CASE("test_book_custom_storage")
 {
 	std::ifstream fileStream( "test/data/test.xls", std::ios::in | std::ios::binary );
 	CustomStorage storage;
-	Excel::loadBook( fileStream, storage );
+	Excel::Parser::loadBook( fileStream, storage );
 
 	REQUIRE( storage.m_text.find(L"String #1") != std::wstring::npos );
 	REQUIRE( storage.m_sheetName == L"Sheet" );
@@ -112,5 +112,5 @@ TEST_CASE("test_book_empty_storage")
 {
 	std::ifstream fileStream( "test/data/test.xls", std::ios::in | std::ios::binary );
 	Excel::EmptyStorage emptyStorage;
-	Excel::loadBook( fileStream, emptyStorage );
+	Excel::Parser::loadBook( fileStream, emptyStorage );
 }

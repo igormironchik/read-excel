@@ -28,8 +28,7 @@
 */
 
 // Excel include.
-#include <read-excel/sst.hpp>
-#include <read-excel/record.hpp>
+#include <read-excel/parser.hpp>
 
 // unit test helper.
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
@@ -65,7 +64,7 @@ const auto data = make_data(
 
 struct TestSstStorage : public Excel::EmptyStorage {
 	std::vector<std::wstring> m_sst;
-	void onSharedString( size_t sstSize, size_t idx, const std::wstring & value );
+	void onSharedString( size_t sstSize, size_t idx, const std::wstring & value ) override;
 }; // struct TestSstStorage
 
 inline void
@@ -85,7 +84,7 @@ TEST_CASE( "test_sst" )
 	Excel::Record record( testStream );
 
 	TestSstStorage sst;
-	Excel::SharedStringTable::parse( record, sst );
+	Excel::Parser::parseSST( record, sst );
 
 	REQUIRE( sst.m_sst.size() == 3 );
 
