@@ -108,7 +108,7 @@ TEST_CASE( "test_book_custom_storage" )
 	REQUIRE( storage.m_sheetName == L"Sheet" );
 }
 
-TEST_CASE("test_book_empty_storage")
+TEST_CASE( "test_book_empty_storage" )
 {
 	std::ifstream fileStream( "test/data/test.xls", std::ios::in | std::ios::binary );
 	Excel::EmptyStorage emptyStorage;
