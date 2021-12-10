@@ -65,6 +65,9 @@ TEST_CASE( "test_book" )
 	REQUIRE( std::fabs( sheet->cell( 1, 3 ).getFormula().getDouble() - 2.2 ) < 1E-9 );
 	REQUIRE( std::fabs( sheet->cell( 2, 3 ).getFormula().getDouble() - 3.3 ) < 1E-9 );
 
+	book.clear();
+
+	REQUIRE( book.sheetsCount() == 0 );
 }
 
 TEST_CASE( "test_book_via_stream" )
