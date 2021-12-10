@@ -97,13 +97,12 @@ public:
 	//! or NULL if there is no sheet with such index.
 	Sheet * sheet( size_t index ) const;
 
-private:
 	//! Clear book.
 	void clear();
 
 private:
 	//! Parsed WorkSheets.
-	std::vector< Sheet* > m_sheets;
+	std::vector< std::unique_ptr< Sheet > > m_sheets;
 	//! Shared string table.
 	std::vector< std::wstring > m_sst;
 	//! Date mode.
@@ -142,13 +141,6 @@ Book::Book( const std::string & fileName )
 inline void
 Book::clear()
 {
-	for( std::vector< Sheet* >::iterator it = m_sheets.begin(),
-		last = m_sheets.end(); it != last; ++it )
-	{
-		delete *it;
-		*it = 0;
-	}
-
 	m_sheets.clear();
 	m_sst.clear();
 }
@@ -156,7 +148,6 @@ Book::clear()
 inline
 Book::~Book()
 {
-	clear();
 }
 
 inline Book::DateMode
@@ -187,7 +178,7 @@ Book::onSheet( size_t idx, const std::wstring & )
 	auto sheet = std::make_unique< Sheet > ();
 	if( m_sheets.size() <= idx )
 		m_sheets.resize( idx + 1 );
-	m_sheets[ idx ] = sheet.release();
+	m_sheets[ idx ] = std::move( sheet );
 }
 
 inline void
@@ -224,7 +215,7 @@ inline Sheet *
 Book::sheet( size_t index ) const
 {
 	if( index < m_sheets.size() )
-		return m_sheets[ index ];
+		return m_sheets[ index ].get();
 
 	std::wstringstream stream;
 	stream << L"There is no such sheet with index : " << index;
