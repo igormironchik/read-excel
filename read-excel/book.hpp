@@ -184,7 +184,7 @@ Book::onDateMode( uint16_t mode )
 inline void
 Book::onSheet( size_t idx, const std::wstring & )
 {
-	std::unique_ptr< Sheet > sheet( new Sheet() );
+	auto sheet = std::make_unique< Sheet > ();
 	if( m_sheets.size() <= idx )
 		m_sheets.resize( idx + 1 );
 	m_sheets[ idx ] = sheet.release();
