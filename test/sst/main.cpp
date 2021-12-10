@@ -28,8 +28,7 @@
 */
 
 // Excel include.
-#include <read-excel/sst.hpp>
-#include <read-excel/record.hpp>
+#include <read-excel/parser.hpp>
 
 // unit test helper.
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
@@ -63,6 +62,17 @@ const auto data = make_data(
 ); // data
 
 
+struct TestSstStorage : public Excel::EmptyStorage {
+	std::vector< std::wstring > m_sst;
+	void onSharedString( size_t sstSize, size_t idx, const std::wstring & value ) override;
+}; // struct TestSstStorage
+
+inline void
+TestSstStorage::onSharedString( size_t sstSize, size_t idx, const std::wstring & value )
+{
+	m_sst.push_back( value );
+}
+
 //
 // test_sst
 //
@@ -73,12 +83,12 @@ TEST_CASE( "test_sst" )
 
 	Excel::Record record( testStream );
 
-	std::vector< std::wstring > strings =
-		Excel::SharedStringTable::parse( record );
+	TestSstStorage sst;
+	Excel::Parser::parseSST( record, sst );
 
-	REQUIRE( strings.size() == 3 );
+	REQUIRE( sst.m_sst.size() == 3 );
 
-	REQUIRE( strings[ 0 ] == L"STSTSTSTSTSTSTST" );
-	REQUIRE( strings[ 1 ] == L"QRQRQRQRQRQRQRQR" );
-	REQUIRE( strings[ 2 ] == L"QRQRQRQRQRQRQRQR" );
+	REQUIRE( sst.m_sst[ 0 ] == L"STSTSTSTSTSTSTST" );
+	REQUIRE( sst.m_sst[ 1 ] == L"QRQRQRQRQRQRQRQR" );
+	REQUIRE( sst.m_sst[ 2 ] == L"QRQRQRQRQRQRQRQR" );
 }

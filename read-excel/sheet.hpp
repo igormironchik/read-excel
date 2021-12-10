@@ -39,6 +39,7 @@
 #include "formula.hpp"
 #include "string.hpp"
 #include "exceptions.hpp"
+#include "storage.hpp"
 
 // C++ include.
 #include <vector>
@@ -98,7 +99,7 @@ private:
 //! Excel's sheet.
 class Sheet {
 public:
-	explicit Sheet( const std::vector< std::wstring > & sst );
+	explicit Sheet();
 
 	//! \return Cell.
 	const Cell & cell( size_t row, size_t column ) const;
@@ -109,33 +110,19 @@ public:
 	//! \return Column's count.
 	size_t columnsCount() const;
 
-	//! Load sheet.
-	void load( const BoundSheet & boundSheet,
-		Stream & stream );
+	//! Set cell.
+	template<typename Value>
+	void setCell( size_t row, size_t column, Value value );
 
 private:
 	//! Init cell's table with given cell.
 	void initCell( size_t row, size_t column );
-	//! Handle LABEL record.
-	void handleLabel( Record & record );
-	//! Handle LABELSST record.
-	void handleLabelSST( Record & record );
-	//! Handle RK record.
-	void handleRK( Record & record );
-	//! Handle MULRK record.
-	void handleMULRK( Record & record );
-	//! Handle NUMBER record.
-	void handleNUMBER( Record & record );
-	//! Handle FORMULA record.
-	void handleFORMULA( Record & record, Stream & stream );
 
 private:
 	//! Cells.
 	std::vector< std::vector< Cell > > m_cells;
 	//! Dummy cell.
 	Cell m_dummyCell;
-	//! Shared String Table.
-	const std::vector< std::wstring > & m_sst;
 	//! Column's count;
 	size_t m_columnsCount;
 }; // class Sheet
@@ -195,10 +182,17 @@ BoundSheet::convertSheetType( int16_t type )
 //
 
 inline
-Sheet::Sheet( const std::vector< std::wstring > & sst )
-	:	m_sst( sst )
-	,	m_columnsCount( 0 )
+Sheet::Sheet()
+	:	m_columnsCount( 0 )
 {
+}
+
+template<typename Value>
+void
+Sheet::setCell( size_t row, size_t column, Value value )
+{
+	initCell( row, column );
+	m_cells[ row ][ column ].setData( value );
 }
 
 inline void
@@ -244,219 +238,6 @@ inline size_t
 Sheet::columnsCount() const
 {
 	return m_columnsCount;
-}
-
-inline void
-Sheet::load( const BoundSheet & boundSheet,
-	Stream & stream )
-{
-	stream.seek( boundSheet.BOFPosition(), Stream::FromBeginning );
-	BOF bof;
-
-	{
-		Record record( stream );
-
-		bof.parse( record );
-	}
-
-	if( bof.version() != BOF::BIFF8 )
-		throw Exception( L"Unsupported BIFF version. BIFF8 is supported only." );
-
-	while( true )
-	{
-		Record record( stream );
-
-		switch( record.code() )
-		{
-			case XL_LABELSST:
-				handleLabelSST( record );
-				break;
-
-			case XL_LABEL:
-				handleLabel( record );
-				break;
-
-			case XL_RK:
-			case XL_RK2:
-				handleRK( record );
-				break;
-
-			case XL_MULRK:
-				handleMULRK( record );
-				break;
-
-			case XL_NUMBER:
-				handleNUMBER( record );
-				break;
-
-			case XL_FORMULA:
-				handleFORMULA( record, stream );
-				break;
-
-			case XL_EOF:
-				return;
-
-			default:
-				break;
-		}
-	}
-}
-
-inline void
-Sheet::handleLabelSST( Record & record )
-{
-	int16_t row = 0;
-	int16_t column = 0;
-	int16_t xfIndex = 0;
-	int32_t sstIndex = 0;
-
-	record.dataStream().read( row, 2 );
-	record.dataStream().read( column, 2 );
-	record.dataStream().read( xfIndex, 2 );
-	record.dataStream().read( sstIndex, 4 );
-
-	initCell( row, column );
-
-	m_cells[ row ][ column ].setData( m_sst[ sstIndex ] );
-}
-
-inline void
-Sheet::handleLabel( Record & record )
-{
-	int16_t row = 0;
-	int16_t column = 0;
-
-	record.dataStream().read( row, 2 );
-	record.dataStream().read( column, 2 );
-	record.dataStream().seek( 2, Excel::Stream::FromCurrent );
-	const auto data = loadString( record.dataStream(), record.borders(), 1 );
-
-	initCell( row, column );
-
-	m_cells[ row ][ column ].setData( data );
-}
-
-//
-// doubleFromRK
-//
-
-inline double
-doubleFromRK( uint32_t rk )
-{
-	double num = 0;
-
-	if( rk & 0x02 )
-	{
-		// int32_t
-		num = (double) (rk >> 2);
-	}
-	else
-	{
-		// hi words of IEEE num
-		*((uint32_t *)&num+1) = rk & 0xFFFFFFFC;
-		*((uint32_t *)&num) = 0;
-	}
-
-	if( rk & 0x01 )
-		// divide by 100
-		num /= 100;
-
-	return num;
-} // doubleFromRK
-
-
-inline void
-Sheet::handleRK( Record & record )
-{
-	int16_t row = 0;
-	int16_t column = 0;
-	uint32_t rk = 0;
-
-	record.dataStream().read( row, 2 );
-	record.dataStream().read( column, 2 );
-
-	record.dataStream().seek( 2, Stream::FromCurrent );
-	record.dataStream().read( rk, 4 );
-
-	initCell( row, column );
-
-	m_cells[ row ][ column ].setData( doubleFromRK( rk ) );
-}
-
-inline void
-Sheet::handleMULRK( Record & record )
-{
-	int16_t row = 0;
-	int16_t colFirst = 0;
-	int16_t colLast = 0;
-
-	record.dataStream().read( row, 2 );
-	record.dataStream().read( colFirst, 2 );
-
-	int32_t pos = record.dataStream().pos();
-
-	record.dataStream().seek( -2, Stream::FromEnd );
-
-	record.dataStream().read( colLast, 2 );
-
-	record.dataStream().seek( pos, Stream::FromBeginning );
-
-	const int16_t rkCount = colLast - colFirst + 1;
-
-	initCell( row, colLast );
-
-	for( int16_t i = 0; i < rkCount; ++i )
-	{
-		uint32_t rk = 0;
-
-		record.dataStream().seek( 2, Stream::FromCurrent );
-
-		record.dataStream().read( rk, 4 );
-
-		m_cells[ row ][ colFirst + i ].setData( doubleFromRK( rk ) );
-	}
-}
-
-inline void
-Sheet::handleNUMBER( Record & record )
-{
-	int16_t row = 0;
-	int16_t column = 0;
-
-	record.dataStream().read( row, 2 );
-	record.dataStream().read( column, 2 );
-
-	record.dataStream().seek( 2, Stream::FromCurrent );
-
-	union {
-		double m_asDouble;
-		uint64_t m_asLongLong;
-	} doubleAndLongLong;
-
-	record.dataStream().read( doubleAndLongLong.m_asLongLong, 8 );
-
-	initCell( row, column );
-
-	m_cells[ row ][ column ].setData( doubleAndLongLong.m_asDouble );
-}
-
-inline void
-Sheet::handleFORMULA( Record & record, Stream & stream )
-{
-	Formula formula( record );
-
-	if( formula.valueType() == Formula::StringValue )
-	{
-		Record stringRecord( stream );
-
-		std::vector< int32_t > borders;
-
-		formula.setString( loadString( stringRecord.dataStream(), borders ) );
-	}
-
-	initCell( formula.getRow(), formula.getColumn() );
-
-	m_cells[ formula.getRow() ][ formula.getColumn() ].setData( formula );
 }
 
 } /* namespace Excel */
