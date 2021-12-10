@@ -35,11 +35,6 @@ jobs:
       if: ${{ github.event_name == 'pull_request' }}
       
     - run: git submodule update --init --recursive
-          
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v2
-      with:
-        version: '5.15.1'
         
     - run: sudo apt install cmake wget curl
     
