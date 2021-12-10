@@ -41,6 +41,11 @@
 
 namespace Excel {
 
+//
+// Parser
+//
+
+//! Parser of XLS file.
 class Parser final {
 public:
 	//! Load WorkBook from stream.
