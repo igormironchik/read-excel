@@ -29,6 +29,7 @@
 */
 
 #pragma once
+
 // C++ include.
 #include <string>
 
