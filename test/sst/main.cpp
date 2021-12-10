@@ -63,7 +63,7 @@ const auto data = make_data(
 
 
 struct TestSstStorage : public Excel::EmptyStorage {
-	std::vector<std::wstring> m_sst;
+	std::vector< std::wstring > m_sst;
 	void onSharedString( size_t sstSize, size_t idx, const std::wstring & value ) override;
 }; // struct TestSstStorage
 
