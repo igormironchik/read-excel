@@ -1,7 +1,7 @@
 
 cmake_minimum_required( VERSION 3.1 )
 
-set( EXCEL_VERSION "1.1.6" )
+set( EXCEL_VERSION "1.2.0" )
 
 option( BUILD_EXAMPLES "Build examples? Default ON." ON )
 option( BUILD_TESTS "Build tests? Default ON." ON )
