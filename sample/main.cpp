@@ -73,13 +73,9 @@ int main()
 	{
 		std::wcout << x.whatAsWString() << std::endl;
 	}
-	catch( const CompoundFile::Exception & x )
-	{
-		std::wcout << x.whatAsWString() << std::endl;
-	}
 	catch( const std::exception & )
 	{
-		std::wcout << L"Can't open file. Possible wrong format." << std::endl;
+		std::wcout << L"Can't open file." << std::endl;
 	}
 
 	return 0;

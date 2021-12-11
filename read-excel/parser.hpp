@@ -99,6 +99,9 @@ inline void
 Parser::loadBook( std::istream & fileStream, IStorage & storage,
 	const std::string & fileName )
 {
+	static_assert( sizeof( double ) == 8,
+		"Unsupported platform: double has to be 8 bytes." );
+
 	try {
 		CompoundFile::File file( fileStream, fileName );
 		auto stream = file.stream( 
@@ -138,7 +141,7 @@ Parser::loadGlobals( std::vector< BoundSheet > & boundSheets,
 		switch( r.code() )
 		{
 			case XL_SST :
-				Parser::parseSST( r, storage );
+				parseSST( r, storage );
 				break;
 
 			case XL_BOUNDSHEET :

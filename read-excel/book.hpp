@@ -113,17 +113,12 @@ inline
 Book::Book()
 	:	m_dateMode( DateMode::Unknown )
 {
-	static_assert( sizeof( double ) == 8,
-		"Unsupported platform: double has to be 8 bytes." );
 }
 
 inline
 Book::Book( std::istream & stream )
 	:	m_dateMode( DateMode::Unknown )
 {
-	static_assert( sizeof( double ) == 8,
-		"Unsupported platform: double has to be 8 bytes." );
-
 	Parser::loadBook( stream, *this );
 }
 
@@ -131,9 +126,6 @@ inline
 Book::Book( const std::string & fileName )
 	:	m_dateMode( DateMode::Unknown )
 {
-	static_assert( sizeof( double ) == 8,
-		"Unsupported platform: double has to be 8 bytes." );
-
 	std::ifstream fileStream( fileName, std::ios::in | std::ios::binary );
 	Parser::loadBook( fileStream, *this, fileName );
 }
