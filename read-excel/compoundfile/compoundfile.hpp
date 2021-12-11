@@ -40,9 +40,6 @@
 #include "utils.hpp"
 #include "compoundfile_exceptions.hpp"
 
-// Excel include.
-#include "../stream.hpp"
-
 // C++ include.
 #include <string>
 #include <vector>
@@ -219,8 +216,8 @@ File::hasDirectory( const std::wstring & name ) const
 inline std::unique_ptr< Excel::Stream >
 File::stream( const Directory & dir )
 {
-	return std::unique_ptr< Excel::Stream > ( new Stream( m_header,
-		m_sat, m_ssat, dir, m_shortStreamFirstSector, m_stream ) );
+	return std::make_unique< CompoundFile::Stream > ( m_header,
+		m_sat, m_ssat, dir, m_shortStreamFirstSector, m_stream );
 }
 
 inline void
