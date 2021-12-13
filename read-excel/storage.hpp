@@ -4,7 +4,9 @@
 	\brief Excel storage interface.
 
 	\author Gennadii Marianychenko (argent dot genesis at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
+	Copyright (c) 2021 Igor Mironchik
 	Copyright (c) 2021 Gennadii Marianychenko
 
 	Permission is hereby granted, free of charge, to any person
