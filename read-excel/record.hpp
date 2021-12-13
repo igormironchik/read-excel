@@ -122,10 +122,10 @@ public:
 	~Record();
 
 	//! \return Record's code.
-	int16_t code() const;
+	uint16_t code() const;
 
 	//! \return Record's length.
-	int32_t length() const;
+	uint32_t length() const;
 
 	//! \return Stream with record's data.
 	Stream & dataStream();
@@ -141,7 +141,7 @@ private:
 	//! Record's code.
 	uint16_t m_code;
 	//! Record's length.
-	size_t m_length;
+	uint32_t m_length;
 	//! Record's substream.
 	RecordSubstream m_stream;
 	//! Borders indexes of the continue records.
@@ -256,19 +256,20 @@ Record::read( Stream & stream )
 		stream.read( nextRecordCode, 2 );
 	}
 
-	stream.seek( -2, Stream::FromCurrent );
+	if( !stream.eof() )
+		stream.seek( -2, Stream::FromCurrent );
 
 	if( data.size() )
 		m_stream.write( &data[ 0 ], data.size() );
 }
 
-inline int16_t
+inline uint16_t
 Record::code() const
 {
 	return m_code;
 }
 
-inline int32_t
+inline uint32_t
 Record::length() const
 {
 	return m_length;

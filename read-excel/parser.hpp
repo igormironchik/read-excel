@@ -155,6 +155,7 @@ Parser::loadGlobals( std::vector< BoundSheet > & boundSheets,
 				break;
 
 			case XL_EOF :
+			case XL_UNKNOWN :
 				return;
 
 			default:
@@ -233,32 +234,33 @@ Parser::loadSheet( size_t sheetIdx, const BoundSheet & boundSheet,
 
 		switch( record.code() )
 		{
-			case XL_LABELSST:
+			case XL_LABELSST :
 				handleLabelSST( record, sheetIdx, storage );
 				break;
 
-			case XL_LABEL:
+			case XL_LABEL :
 				handleLabel( record, sheetIdx, storage );
 				break;
 
-			case XL_RK:
-			case XL_RK2:
+			case XL_RK :
+			case XL_RK2 :
 				handleRK( record, sheetIdx, storage );
 				break;
 
-			case XL_MULRK:
+			case XL_MULRK :
 				handleMULRK( record, sheetIdx, storage );
 				break;
 
-			case XL_NUMBER:
+			case XL_NUMBER :
 				handleNUMBER( record, sheetIdx, storage );
 				break;
 
-			case XL_FORMULA:
+			case XL_FORMULA :
 				handleFORMULA( record, stream, sheetIdx, storage );
 				break;
 
-			case XL_EOF:
+			case XL_EOF :
+			case XL_UNKNOWN :
 				return;
 
 			default:
