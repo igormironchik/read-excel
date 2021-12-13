@@ -110,7 +110,7 @@ Parser::loadBook( std::istream & fileStream, IStorage & storage,
 
 		std::vector< BoundSheet > boundSheets;
 
-		Parser::loadGlobals( boundSheets, *stream, storage );
+		loadGlobals( boundSheets, *stream, storage );
 
 		loadWorkSheets( boundSheets, *stream, storage );
 	}
