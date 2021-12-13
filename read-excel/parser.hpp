@@ -155,8 +155,10 @@ Parser::loadGlobals( std::vector< BoundSheet > & boundSheets,
 				break;
 
 			case XL_EOF :
-			case XL_UNKNOWN :
 				return;
+
+			case XL_UNKNOWN :
+				throw Exception( L"Wrong format." );
 
 			default:
 				break;
@@ -260,8 +262,10 @@ Parser::loadSheet( size_t sheetIdx, const BoundSheet & boundSheet,
 				break;
 
 			case XL_EOF :
-			case XL_UNKNOWN :
 				return;
+
+			case XL_UNKNOWN :
+				throw Exception( L"Wrong format." );
 
 			default:
 				break;
