@@ -33,7 +33,6 @@
 // Excel include.
 #include <read-excel/book.hpp>
 #include <read-excel/exceptions.hpp>
-#include <read-excel/compoundfile/compoundfile_exceptions.hpp>
 
 // C++ include.
 #include <iostream>
