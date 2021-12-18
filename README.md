@@ -2,7 +2,3 @@
 
 This is very simple implementation of the Excel 97-2003 format (BIFF8) written in C++.
 Supported reading only.
-
-# Donate
-
-[![](bitcoin-btc-logo-full.png)](https://github.com/igormironchik)
