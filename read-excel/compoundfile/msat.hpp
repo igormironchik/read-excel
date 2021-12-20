@@ -126,7 +126,7 @@ loadFirst109SecIDs( std::istream & stream )
 
 inline void
 loadMSATSector( std::istream & stream, std::vector< SecID > & msat,
-	SecID & nextMSATSectorID, size_t sectorSize )
+	SecID & nextMSATSectorID, int32_t sectorSize )
 {
 	const int32_t secIDCount = ( sectorSize - 4 ) / 4;
 
@@ -151,11 +151,11 @@ MSAT::loadMSAT()
 {
 	m_msat = loadFirst109SecIDs( m_stream );
 
-	const size_t msatSectorsCount = m_header.sectorsInMSAT();
+	const int32_t msatSectorsCount = m_header.sectorsInMSAT();
 
 	SecID id = m_header.msatFirstSecID();
 
-	for( size_t i = 0; i < msatSectorsCount; ++i )
+	for( int32_t i = 0; i < msatSectorsCount; ++i )
 	{
 		m_stream.seekg( calcFileOffset( id, m_header.sectorSize() ) );
 

@@ -62,7 +62,7 @@ private:
 
 inline
 Exception::Exception( const std::wstring & what )
-	:	std::runtime_error( std::string( what.begin(), what.end() ) )
+	:	std::runtime_error( "Use whatAsWString() method." )
 	,	m_what( what )
 {
 }

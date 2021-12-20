@@ -64,31 +64,31 @@ public:
 	Excel::Stream::ByteOrder byteOrder() const;
 
 	//! \return Size of a sector.
-	std::size_t sectorSize() const;
+	int32_t sectorSize() const;
 
 	//! \return Size of a short-sector.
-	std::size_t shortSectorSize() const;
+	int32_t shortSectorSize() const;
 
 	//! \return Total number of sectors used for the sector allocation table.
-	std::size_t sectorsInSAT() const;
+	int32_t sectorsInSAT() const;
 
 	//! \return SecID of first sector of the directory stream.
 	SecID dirStreamSecID() const;
 
 	//! \return Minimum size of a standard stream.
-	std::size_t streamMinSize() const;
+	int32_t streamMinSize() const;
 
 	//! \return SecID of first sector of the short-sector allocation table.
 	SecID ssatFirstSecID() const;
 
 	//! \return Total number of sectors used for the short-sector allocation table.
-	std::size_t sectorsInSSAT() const;
+	int32_t sectorsInSSAT() const;
 
 	//! \return SecID of first sector of the master sector allocation table.
 	SecID msatFirstSecID() const;
 
 	//! \return Total number of sectors used for the master sector allocation table.
-	std::size_t sectorsInMSAT() const;
+	int32_t sectorsInMSAT() const;
 
 protected:
 	//! Load header from the file.
@@ -98,23 +98,23 @@ private:
 	//! Byte order.
 	Excel::Stream::ByteOrder m_byteOrder;
 	//! Size of a sector.
-	std::size_t m_sectorSize;
+	int32_t m_sectorSize;
 	//! Size of a short-sector.
-	std::size_t m_shortSectorSize;
+	int32_t m_shortSectorSize;
 	//! Total number of sectors used for the sector allocation table.
-	std::size_t m_sectorsInSAT;
+	int32_t m_sectorsInSAT;
 	//! SecID of first sector of the directory stream.
 	SecID m_dirStreamSecID;
 	//! Minimum size of a standard stream.
-	std::size_t m_streamMinSize;
+	int32_t m_streamMinSize;
 	//! SecID of first sector of the short-sector allocation table.
 	SecID m_ssatFirstSecID;
 	//! Total number of sectors used for the short-sector allocation table.
-	std::size_t m_sectorsInSSAT;
+	int32_t m_sectorsInSSAT;
 	//! SecID of first sector of the master sector allocation table.
 	SecID m_msatFirstSecID;
 	//! Total number of sectors used for the master sector allocation table.
-	std::size_t m_sectorsInMSAT;
+	int32_t m_sectorsInMSAT;
 }; // class Header
 
 inline
@@ -154,19 +154,19 @@ Header::byteOrder() const
 	return m_byteOrder;
 }
 
-inline size_t
+inline int32_t
 Header::sectorSize() const
 {
 	return m_sectorSize;
 }
 
-inline size_t
+inline int32_t
 Header::shortSectorSize() const
 {
 	return m_shortSectorSize;
 }
 
-inline size_t
+inline int32_t
 Header::sectorsInSAT() const
 {
 	return m_sectorsInSAT;
@@ -178,7 +178,7 @@ Header::dirStreamSecID() const
 	return m_dirStreamSecID;
 }
 
-inline size_t
+inline int32_t
 Header::streamMinSize() const
 {
 	return m_streamMinSize;
@@ -190,7 +190,7 @@ Header::ssatFirstSecID() const
 	return m_ssatFirstSecID;
 }
 
-inline size_t
+inline int32_t
 Header::sectorsInSSAT() const
 {
 	return m_sectorsInSSAT;
@@ -202,7 +202,7 @@ Header::msatFirstSecID() const
 	return m_msatFirstSecID;
 }
 
-inline size_t
+inline int32_t
 Header::sectorsInMSAT() const
 {
 	return m_sectorsInMSAT;

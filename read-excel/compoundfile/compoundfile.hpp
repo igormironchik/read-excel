@@ -152,7 +152,7 @@ loadChildDir( std::vector< Directory > & dirs,
 
 inline void
 loadChildDirectories( std::vector< Directory > & dirs,
-	const Directory & parentDir, Stream & stream )
+	const Directory parentDir, Stream & stream )
 {
 	if( loadChildDir( dirs, parentDir.leftChild(), stream ) )
 		loadChildDirectories( dirs, dirs.back(), stream );

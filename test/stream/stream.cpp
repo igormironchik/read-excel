@@ -39,7 +39,7 @@
 //
 
 
-TestStream::TestStream( const char * data, size_t size )
+TestStream::TestStream( const char * data, int32_t size )
 	:	Excel::Stream( Excel::Stream::LittleEndian )
 	,	m_data( data )
 	,	m_pos( 0 )

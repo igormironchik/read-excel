@@ -43,7 +43,7 @@ class TestStream
 	:	public Excel::Stream
 {
 public:
-	TestStream( const char * data, std::size_t size );
+	TestStream( const char * data, int32_t size );
 	virtual ~TestStream();
 
 	//! Read one byte from the stream.
@@ -63,7 +63,7 @@ private:
 	//! Data.
 	const char * m_data;
 	//! Position in the stream.
-	std::size_t m_pos;
+	int32_t m_pos;
 	//! Size of the stream;
-	std::size_t m_size;
+	int32_t m_size;
 }; // class TestStream

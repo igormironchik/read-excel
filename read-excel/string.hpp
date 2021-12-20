@@ -113,7 +113,7 @@ isSkipByte( int32_t pos, const std::vector< int32_t > & borders )
 inline std::wstring
 loadString( Stream & stream,
 	const std::vector< int32_t > & borders,
-	size_t lengthFieldSize = 2,
+	int32_t lengthFieldSize = 2,
 	BOF::BiffVersion biffVer = BOF::BIFF8 )
 {
 	int16_t charactersCount = 0;

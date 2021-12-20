@@ -92,7 +92,7 @@ public:
 	std::vector< SecID > sectors( const SecID & firstSector ) const;
 
 	//! \return Index for the given SecID in the chain.
-	static std::size_t indexOfTheSecID( const SecID & id,
+	static int32_t indexOfTheSecID( const SecID & id,
 		const std::vector< SecID > & chain );
 
 private:
@@ -176,12 +176,12 @@ SAT::sectors( const SecID & firstSector ) const
 	}
 }
 
-inline size_t
+inline int32_t
 SAT::indexOfTheSecID( const SecID & id, const std::vector< SecID > & chain )
 {
-	const size_t chainSize = chain.size();
+	const int32_t chainSize = static_cast< int32_t > ( chain.size() );
 
-	for( size_t i = 0; i < chainSize; ++i )
+	for( int32_t i = 0; i < chainSize; ++i )
 		if( id == chain[ i ] )
 			return i;
 

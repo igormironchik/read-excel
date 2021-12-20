@@ -217,7 +217,7 @@ Stream::Stream( const Header & header,
 	m_stream.seekg( calcFileOffset( m_largeStreamChain.front(),
 		m_sectorSize ) );
 
-	m_streamSize = m_largeStreamChain.size() * m_sectorSize;
+	m_streamSize = static_cast< int32_t > ( m_largeStreamChain.size() ) * m_sectorSize;
 }
 
 inline
@@ -231,11 +231,10 @@ Stream::Stream( const Header & header,
 	,	m_header( header )
 	,	m_stream( cstream )
 	,	m_mode(
-		( static_cast< size_t > ( dir.streamSize() ) < m_header.streamMinSize() ?
-			ShortStream : LargeStream ) )
+		( dir.streamSize() < m_header.streamMinSize() ? ShortStream : LargeStream ) )
 	,	m_bytesReaded( 0 )
 	,	m_sectorSize(
-		( static_cast< size_t > ( dir.streamSize() ) < m_header.streamMinSize() ?
+		( dir.streamSize() < m_header.streamMinSize() ?
 			m_header.shortSectorSize() : m_header.sectorSize() ) )
 	,	m_sectorBytesReaded( 0 )
 	,	m_shortSecIDIdx( 0 )

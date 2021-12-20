@@ -81,7 +81,7 @@ calcFileOffset( const SecID & id, size_t sectorSize )
 //! Load SAT or SSAT sector.
 inline void
 loadSATSector( std::istream & stream, std::vector< SecID > & sat,
-	size_t sectorSize )
+	int32_t sectorSize )
 {
 	const int32_t secIDCount = sectorSize / 4;
 
