@@ -1,7 +1,7 @@
 
 cmake_minimum_required( VERSION 3.1 )
 
-set( EXCEL_VERSION "1.2.0" )
+set( EXCEL_VERSION "1.2.2" )
 
 option( BUILD_EXAMPLES "Build examples? Default ON." ON )
 option( BUILD_TESTS "Build tests? Default ON." ON )
@@ -31,8 +31,10 @@ if( ${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME} )
 
 		add_subdirectory( test )
 	endif()
+
+	file( GLOB_RECURSE SRC read-excel/* )
 	
-	add_library( read-excel INTERFACE )
+	add_library( read-excel INTERFACE ${SRC} )
 	add_library( read-excel::read-excel ALIAS read-excel )
 	
     target_include_directories( read-excel INTERFACE
