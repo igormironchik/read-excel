@@ -304,7 +304,7 @@ Parser::handleLabel( Record & record, size_t sheetIdx, IStorage & storage )
 	record.dataStream().read( row, 2 );
 	record.dataStream().read( column, 2 );
 	record.dataStream().seek( 2, Excel::Stream::FromCurrent );
-	const auto data = loadString( record.dataStream(), record.borders(), 1, BOF::BIFF7 );
+	const auto data = loadString( record.dataStream(), record.borders(), 2, BOF::BIFF7 );
 
 	storage.onCell( sheetIdx, row, column, data );
 }

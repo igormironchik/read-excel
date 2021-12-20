@@ -123,6 +123,9 @@ loadString( Stream & stream,
 
 	stream.read( charactersCount, lengthFieldSize );
 
+	if( biffVer == BOF::BIFF7 && charactersCount > 255 )
+		throw Exception( L"Wrong format of XLS file." );
+
 	if( biffVer == BOF::BIFF8 )
 	{
 		stream.read( options, 1 );
