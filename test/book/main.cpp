@@ -80,6 +80,8 @@ TEST_CASE( "test_book_via_stream" )
 	Excel::Sheet * sheet = book.sheet( 0 );
 	const auto text = sheet->cell( 0, 0 ).getString();
 	REQUIRE( text.find( L"Somefile" ) != std::wstring::npos );
+	REQUIRE( text.find( L"abcd" ) == 0 );
+	REQUIRE( text.length() == 255 );
 }
 
 struct CustomStorage : public Excel::EmptyStorage {
