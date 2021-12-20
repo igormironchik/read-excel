@@ -63,7 +63,7 @@ TestStream::getByte()
 bool
 TestStream::eof() const
 {
-	return ( m_pos == m_size );
+	return ( m_pos > m_size );
 }
 
 void

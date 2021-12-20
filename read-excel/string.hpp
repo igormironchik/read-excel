@@ -40,6 +40,7 @@
 
 // Excel include.
 #include "stream.hpp"
+#include "bof.hpp"
 
 
 namespace Excel {
@@ -112,7 +113,8 @@ isSkipByte( int32_t pos, const std::vector< int32_t > & borders )
 inline std::wstring
 loadString( Stream & stream,
 	const std::vector< int32_t > & borders,
-	size_t lengthFieldSize = 2 )
+	size_t lengthFieldSize = 2,
+	BOF::BiffVersion biffVer = BOF::BIFF8 )
 {
 	int16_t charactersCount = 0;
 	char options = 0;
@@ -120,15 +122,19 @@ loadString( Stream & stream,
 	int32_t extStringLength = 0;
 
 	stream.read( charactersCount, lengthFieldSize );
-	stream.read( options, 1 );
 
-	if( isRichString( options ) )
-		stream.read( formattingRuns, 2 );
+	if( biffVer == BOF::BIFF8 )
+	{
+		stream.read( options, 1 );
 
-	if( isExtString( options ) )
-		stream.read( extStringLength, 4 );
+		if( isRichString( options ) )
+			stream.read( formattingRuns, 2 );
 
-	int16_t bytesPerChar = ( isHighByte( options ) ? 2 : 1 );
+		if( isExtString( options ) )
+			stream.read( extStringLength, 4 );
+	}
+
+	int16_t bytesPerChar = ( biffVer == BOF::BIFF8 ? ( isHighByte( options ) ? 2 : 1 ) : 1 );
 
 	std::vector< uint16_t > stringData( charactersCount );
 
@@ -137,7 +143,7 @@ loadString( Stream & stream,
 		if( isSkipByte( stream.pos(), borders ) )
 		{
 			stream.read( options, 1 );
-			bytesPerChar = ( isHighByte( options ) ? 2 : 1 );
+			bytesPerChar = ( biffVer == BOF::BIFF8 ? ( isHighByte( options ) ? 2 : 1 ) : 1 );
 		}
 
 		stream.read( stringData[ i ], bytesPerChar );

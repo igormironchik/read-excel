@@ -34,6 +34,7 @@
 
 // Excel include.
 #include "stream.hpp"
+#include "exceptions.hpp"
 
 // C++ include.
 #include <vector>
@@ -235,10 +236,21 @@ Record::read( Stream & stream )
 		data.reserve( m_length );
 
 		for( size_t i = 0; i < m_length; ++i )
+		{
 			data.push_back( stream.getByte() );
+
+			if( stream.eof() )
+				throw Exception( L"Unexpected end of file." );
+		}
 	}
 
-	stream.read( nextRecordCode, 2 );
+	try {
+		stream.read( nextRecordCode, 2 );
+	}
+	catch( const Exception & )
+	{
+		nextRecordCode = XL_UNKNOWN;
+	}
 
 	while( nextRecordCode == XL_CONTINUE )
 	{
@@ -247,13 +259,27 @@ Record::read( Stream & stream )
 		stream.read( nextRecordLength, 2 );
 
 		data.reserve( data.size() + nextRecordLength );
+
 		if( nextRecordLength )
 		{
 			for( uint16_t i = 0; i < nextRecordLength; ++i )
+			{
 				data.push_back( stream.getByte() );
+
+				if( stream.eof() )
+					throw Exception( L"Unexpected end of file." );
+			}
 		}
+
 		m_length += nextRecordLength;
-		stream.read( nextRecordCode, 2 );
+
+		try {
+			stream.read( nextRecordCode, 2 );
+		}
+		catch( const Exception & )
+		{
+			nextRecordCode = XL_UNKNOWN;
+		}
 	}
 
 	if( !stream.eof() )

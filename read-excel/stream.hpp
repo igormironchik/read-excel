@@ -35,6 +35,9 @@
 // C++ include.
 #include <cstdint>
 
+// read-excel include.
+#include "exceptions.hpp"
+
 namespace Excel {
 
 //
@@ -110,6 +113,9 @@ public:
 		for( int32_t i = 0; i < bytes; ++i )
 		{
 			Type c = (Type)(unsigned char) getByte();
+
+			if( eof() )
+				throw Exception( L"Unexpected end of file." );
 
 			if( SystemByteOrder::byteOrder() != m_byteOrder )
 				retVal |= ( c << 8 * ( bytes - i - 1 ) );

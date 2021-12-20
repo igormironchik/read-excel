@@ -64,7 +64,7 @@ public:
 		Stream & stream, IStorage & storage );
 
 	//! Load boundsheet.
-	static BoundSheet parseBoundSheet( Record & record );
+	static BoundSheet parseBoundSheet( Record & record, BOF::BiffVersion ver );
 
 	//! Load WorkSheets.
 	static void loadWorkSheets( const std::vector< BoundSheet > & boundSheets,
@@ -136,18 +136,24 @@ inline void
 Parser::loadGlobals( std::vector< BoundSheet > & boundSheets, 
 	Stream & stream, IStorage & storage )
 {
+	BOF bof;
+
 	while( true )
 	{
 		Record r( stream );
 
 		switch( r.code() )
 		{
+			case XL_BOF :
+				bof.parse( r );
+				break;
+
 			case XL_SST :
 				parseSST( r, storage );
 				break;
 
 			case XL_BOUNDSHEET :
-				boundSheets.push_back( parseBoundSheet( r ) );
+				boundSheets.push_back( parseBoundSheet( r, bof.version() ) );
 				break;
 
 			case XL_DATEMODE :
@@ -167,7 +173,7 @@ Parser::loadGlobals( std::vector< BoundSheet > & boundSheets,
 }
 
 inline BoundSheet
-Parser::parseBoundSheet( Record & record )
+Parser::parseBoundSheet( Record & record, BOF::BiffVersion ver )
 {
 	int32_t pos = 0;
 	int16_t sheetType = 0;
@@ -177,7 +183,7 @@ Parser::parseBoundSheet( Record & record )
 
 	record.dataStream().read( sheetType, 2 );
 
-	sheetName = loadString( record.dataStream(), record.borders(), 1 );
+	sheetName = loadString( record.dataStream(), record.borders(), 1, ver );
 
 	return BoundSheet( pos,
 		BoundSheet::convertSheetType( sheetType ),

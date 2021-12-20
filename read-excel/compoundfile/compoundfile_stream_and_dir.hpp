@@ -268,7 +268,7 @@ Stream::Stream( const Header & header,
 inline bool
 Stream::eof() const
 {
-	return ( m_bytesReaded == m_streamSize );
+	return ( m_bytesReaded > m_streamSize );
 }
 
 inline void
@@ -384,7 +384,7 @@ Stream::seekToNextSector()
 inline char
 Stream::getByte()
 {
-	if( eof() )
+	if( m_bytesReaded > m_streamSize )
 		return 0xFFu;
 
 	if( m_sectorBytesReaded == m_sectorSize )
@@ -491,6 +491,10 @@ Directory::load( Stream & stream )
 
 	stream.seek( 2, Stream::FromCurrent );
 	m_type = (Type)(int32_t) stream.getByte();
+
+	if( stream.eof() )
+		throw Exception( L"Unexpected end of file." );
+
 	stream.seek( 1, Stream::FromCurrent );
 	stream.read( m_leftChild, 4 );
 	stream.read( m_rightChild, 4 );
