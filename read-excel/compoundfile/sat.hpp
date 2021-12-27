@@ -91,10 +91,6 @@ public:
 	//! \return Chain of sectors for the given stream in the right order.
 	std::vector< SecID > sectors( const SecID & firstSector ) const;
 
-	//! \return Index for the given SecID in the chain.
-	static int32_t indexOfTheSecID( const SecID & id,
-		const std::vector< SecID > & chain );
-
 private:
 	//! SAT.
 	std::vector< SecID > m_sat;
@@ -174,21 +170,6 @@ SAT::sectors( const SecID & firstSector ) const
 
 		throw Exception( stream.str() );
 	}
-}
-
-inline int32_t
-SAT::indexOfTheSecID( const SecID & id, const std::vector< SecID > & chain )
-{
-	const int32_t chainSize = static_cast< int32_t > ( chain.size() );
-
-	for( int32_t i = 0; i < chainSize; ++i )
-		if( id == chain[ i ] )
-			return i;
-
-	std::wstringstream stream;
-	stream << L"There is no such sector with id : " << id;
-
-	throw Exception( stream.str() );
 }
 
 } /* namespace CompoundFile */

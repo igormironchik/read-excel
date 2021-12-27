@@ -119,3 +119,10 @@ TEST_CASE( "test_book_empty_storage" )
 	Excel::EmptyStorage emptyStorage;
 	Excel::Parser::loadBook( fileStream, emptyStorage );
 }
+
+TEST_CASE( "test_very_small_book" )
+{
+	Excel::Book book( "test/data/MiscOperatorTests.xls" );
+
+	REQUIRE( book.sheetsCount() == 3 );
+}

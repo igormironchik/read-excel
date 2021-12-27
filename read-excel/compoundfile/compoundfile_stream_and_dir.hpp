@@ -341,12 +341,9 @@ Stream::whereIsShortSector( const SecID & shortSector,
 	const int32_t shortSectorsInLarge =
 		m_header.sectorSize() / m_header.shortSectorSize();
 
-	const int32_t idxOfTheShortSector =
-		SAT::indexOfTheSecID( shortSector, m_shortStreamChain );
+	const int32_t offset = shortSector % shortSectorsInLarge;
 
-	const int32_t offset = idxOfTheShortSector % shortSectorsInLarge;
-
-	const int32_t largeSectorIdx = idxOfTheShortSector / shortSectorsInLarge;
+	const int32_t largeSectorIdx = shortSector / shortSectorsInLarge;
 
 	largeSector = m_largeStreamChain.at( largeSectorIdx );
 

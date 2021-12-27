@@ -68,8 +68,6 @@ TEST_CASE( "test_header" )
 
 		REQUIRE( sat.sat().size() == 128 );
 		REQUIRE_THROWS_AS( sat.sectors( 129 ), CompoundFile::Exception );
-		REQUIRE_THROWS_AS( sat.indexOfTheSecID( 129, sat.sat() ),
-			CompoundFile::Exception );
 	}
 
 	{
