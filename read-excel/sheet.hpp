@@ -99,7 +99,7 @@ private:
 //! Excel's sheet.
 class Sheet {
 public:
-	Sheet();
+	explicit Sheet( const std::wstring & name );
 
 	//! \return Cell.
 	const Cell & cell( size_t row, size_t column ) const;
@@ -114,6 +114,9 @@ public:
 	template< typename Value >
 	void setCell( size_t row, size_t column, Value value );
 
+	//! \return Name of the sheet.
+	const std::wstring & sheetName() const;
+
 private:
 	//! Init cell's table with given cell.
 	void initCell( size_t row, size_t column );
@@ -125,6 +128,8 @@ private:
 	Cell m_dummyCell;
 	//! Column's count;
 	size_t m_columnsCount;
+	//! Name of the sheet.
+	std::wstring m_name;
 }; // class Sheet
 
 //
@@ -182,8 +187,9 @@ BoundSheet::convertSheetType( int16_t type )
 //
 
 inline
-Sheet::Sheet()
+Sheet::Sheet( const std::wstring & name )
 	:	m_columnsCount( 0 )
+	,	m_name( name )
 {
 }
 
@@ -193,6 +199,12 @@ Sheet::setCell( size_t row, size_t column, Value value )
 {
 	initCell( row, column );
 	m_cells[ row ][ column ].setData( value );
+}
+
+inline const std::wstring &
+Sheet::sheetName() const
+{
+	return m_name;
 }
 
 inline void

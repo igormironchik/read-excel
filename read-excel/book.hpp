@@ -80,7 +80,7 @@ public:
 protected:
 	void onSharedString( size_t sstSize, size_t idx, const std::wstring & value ) override;
 	void onDateMode( uint16_t mode ) override;
-	void onSheet( size_t idx, const std::wstring & value ) override;
+	void onSheet( size_t idx, const std::wstring & name ) override;
 	void onCellSharedString( size_t sheetIdx, size_t row, size_t column, size_t sstIndex ) override;
 	void onCell( size_t sheetIdx, size_t row, size_t column, const std::wstring & value ) override;
 	void onCell( size_t sheetIdx, size_t row, size_t column, double value ) override;
@@ -165,9 +165,9 @@ Book::onDateMode( uint16_t mode )
 }
 
 inline void
-Book::onSheet( size_t idx, const std::wstring & )
+Book::onSheet( size_t idx, const std::wstring & name )
 {
-	auto sheet = std::make_unique< Sheet > ();
+	auto sheet = std::make_unique< Sheet > ( name );
 	if( m_sheets.size() <= idx )
 		m_sheets.resize( idx + 1 );
 	m_sheets[ idx ] = std::move( sheet );

@@ -125,4 +125,5 @@ TEST_CASE( "test_very_small_book" )
 	Excel::Book book( "test/data/MiscOperatorTests.xls" );
 
 	REQUIRE( book.sheetsCount() == 3 );
+	REQUIRE( book.sheet( 0 )->sheetName() == L"Sheet1" );
 }
