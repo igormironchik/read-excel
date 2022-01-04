@@ -8,6 +8,6 @@ will be set BIFF8, as in `test/data/strange.xls`, then such file will be loaded.
 of all, so if you will find an issue, please commit a new issue. For BIFF7 support implemented reading of
 `LABEL` records, cell with non-unicode string. I found difference between the documentation that I have and
 actual record in XLS file, so I implemented by experimenting with real file, that opens with Libre Office,
-MS Office and Google Sheets, so I believe that there is and issue in the documentation of `LABEL` record.
+MS Office and Google Sheets, so I believe that there is an issue in the documentation of `LABEL` record.
 
 Thanks for using this library.
