@@ -148,6 +148,9 @@ Parser::loadGlobals( std::vector< BoundSheet > & boundSheets,
 				bof.parse( r );
 				break;
 
+			case XL_FILEPASS :
+				throw Exception( L"This file is protected. Decryption is not implemented yet." );
+
 			case XL_SST :
 				parseSST( r, storage );
 				break;
