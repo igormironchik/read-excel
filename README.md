@@ -11,3 +11,12 @@ actual record in XLS file, so I implemented by experimenting with real file, tha
 MS Office and Google Sheets, so I believe that there is an issue in the documentation of `LABEL` record.
 
 Thanks for using this library.
+
+# Comparison
+
+I found on GitHub pure C [libxls](https://github.com/libxls/libxls) librarys with almost identical
+functionality. Dry numbers say that `test/complex` test with `read-excel` runs by 1029 ms,
+whereas this test with `libxls` runs by 304 ms, what less more than in 3 times. This is
+comparison of C vs C++ in my opinion, like light speed and bullet, as I always say about C/C++
+comparison. But C++ this is higher abstraction, that allows to use `read-excel` more developer
+friendly. But if for your project performance is very important, then `libxls` is for you.
