@@ -215,14 +215,24 @@ Sheet::initCell( size_t row, size_t column )
 
 	if( m_cells[ row ].size() < column + 1 )
 	{
-		if( column + 1 > m_columnsCount )
-			m_columnsCount = column + 1;
+		bool all = false;
 
-		for( std::vector< std::vector< Cell > >::iterator it = m_cells.begin(),
-			last = m_cells.end(); it != last; ++it )
+		if( column + 1 > m_columnsCount )
 		{
-			it->resize( m_columnsCount );
+			m_columnsCount = column + 1;
+			all = true;
 		}
+
+		if( all )
+		{
+			for( std::vector< std::vector< Cell > >::iterator it = m_cells.begin(),
+				last = m_cells.end(); it != last; ++it )
+			{
+				it->resize( m_columnsCount );
+			}
+		}
+		else
+			m_cells.back().resize( m_columnsCount );
 	}
 }
 

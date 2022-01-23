@@ -33,14 +33,19 @@
 
 // C++ include.
 #include <cmath>
+#include <chrono>
 
 // unit test helper.
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <test/doctest/doctest.h>
 
+using namespace std::chrono;
+
 
 TEST_CASE( "test_complex" )
 {
+	const auto start = high_resolution_clock::now();
+
 	{
 		Excel::Book book( "test/data/sample.xls" );
 
@@ -160,4 +165,10 @@ TEST_CASE( "test_complex" )
 	{
 		REQUIRE( x.whatAsWString() == L"Unable to open file : nofile.xls" );
 	}
+
+	const auto stop = high_resolution_clock::now();
+
+	const auto duration = duration_cast< milliseconds > ( stop - start );
+
+	std::cout << "Execution time is " << duration.count() << " ms." << std::endl;
 }
