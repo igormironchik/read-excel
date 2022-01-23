@@ -17,3 +17,8 @@ add_executable( test.complex ${SRC} )
 add_test( NAME test.complex
 	COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test.complex
 	WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../.. )
+
+if( BUILD_BENCHMARK )
+	add_executable( test.complex.benchmark benchmark.cpp )
+	target_link_libraries( test.complex.benchmark PRIVATE xlsreader )
+endif( BUILD_BENCHMARK )

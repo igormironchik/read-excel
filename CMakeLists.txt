@@ -5,6 +5,7 @@ set( EXCEL_VERSION "1.2.5" )
 
 option( BUILD_EXAMPLES "Build examples? Default ON." ON )
 option( BUILD_TESTS "Build tests? Default ON." ON )
+option( BUILD_BENCHMARK "Build benchmark with libxls? Default OFF." OFF )
 
 if( NOT CMAKE_BUILD_TYPE )
 	set( CMAKE_BUILD_TYPE "Release"
