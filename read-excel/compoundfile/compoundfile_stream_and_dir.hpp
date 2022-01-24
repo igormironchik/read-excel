@@ -194,6 +194,13 @@ private:
 	int32_t m_largeSecIDIdx;
 	//! Size of the stream.
 	int32_t m_streamSize;
+
+	//! Buffer.
+	std::vector< char > m_buf;
+	//! Posiztion in buffer.
+	int32_t m_pos;
+	//! Current large sector ID.
+	SecID m_currentLargeSectorID;
 }; // class Stream
 
 inline
@@ -211,13 +218,20 @@ Stream::Stream( const Header & header,
 	,	m_shortSecIDIdx( 0 )
 	,	m_largeSecIDIdx( 0 )
 	,	m_streamSize( 0 )
+	,	m_pos( 0 )
 {
 	m_largeStreamChain = sat.sectors( secID );
 
 	m_stream.seekg( calcFileOffset( m_largeStreamChain.front(),
 		m_sectorSize ) );
 
+	m_currentLargeSectorID = m_largeStreamChain.front();
+
 	m_streamSize = static_cast< int32_t > ( m_largeStreamChain.size() ) * m_sectorSize;
+
+	m_buf.resize( m_sectorSize );
+
+	m_stream.read( &m_buf[ 0 ], m_sectorSize );
 }
 
 inline
@@ -240,12 +254,18 @@ Stream::Stream( const Header & header,
 	,	m_shortSecIDIdx( 0 )
 	,	m_largeSecIDIdx( 0 )
 	,	m_streamSize( dir.streamSize() )
+	,	m_pos( 0 )
 {
+	m_buf.resize( m_header.sectorSize() );
+
 	if( m_mode == LargeStream )
 	{
 		m_largeStreamChain = sat.sectors( dir.streamSecID() );
 		m_stream.seekg( calcFileOffset( m_largeStreamChain.front(),
 			m_header.sectorSize() ) );
+		m_currentLargeSectorID = m_largeStreamChain.front();
+
+		m_stream.read( &m_buf[ 0 ], m_sectorSize );
 	}
 	else
 	{
@@ -256,11 +276,16 @@ Stream::Stream( const Header & header,
 		const int32_t offset = whereIsShortSector( dir.streamSecID(),
 			largeSector );
 
+		m_currentLargeSectorID = largeSector;
+
 		std::streampos pos = calcFileOffset( largeSector,
 			m_header.sectorSize() );
-		pos += offset * m_header.shortSectorSize();
 
 		m_stream.seekg( pos );
+
+		m_stream.read( &m_buf[ 0 ], m_header.sectorSize() );
+
+		m_pos = offset * m_header.shortSectorSize();
 	}
 }
 
@@ -303,8 +328,17 @@ Stream::seek( int32_t pos, SeekType type )
 	{
 		m_largeSecIDIdx = sectorIdx;
 
-		m_stream.seekg( calcFileOffset( m_largeStreamChain.at( m_largeSecIDIdx ),
-			m_sectorSize ) + offset, std::ios::beg );
+		if( m_currentLargeSectorID != m_largeStreamChain.at( m_largeSecIDIdx ) )
+		{
+			m_currentLargeSectorID = m_largeStreamChain.at( m_largeSecIDIdx );
+
+			m_stream.seekg( calcFileOffset( m_largeStreamChain.at( m_largeSecIDIdx ),
+				m_sectorSize ), std::ios::beg );
+
+			m_stream.read( &m_buf[ 0 ], m_sectorSize );
+		}
+
+		m_pos = offset;
 	}
 	else
 	{
@@ -316,12 +350,20 @@ Stream::seek( int32_t pos, SeekType type )
 
 		m_shortSecIDIdx = sectorIdx;
 
-		std::streampos pos = calcFileOffset( largeSector,
-			m_header.sectorSize() );
-		pos += offsetInLargeSector * m_header.shortSectorSize();
-		pos += offset;
+		if( m_currentLargeSectorID != largeSector )
+		{
+			m_currentLargeSectorID = largeSector;
 
-		m_stream.seekg( pos, std::ios::beg );
+			std::streampos pos = calcFileOffset( largeSector,
+				m_header.sectorSize() );
+
+			m_stream.seekg( pos, std::ios::beg );
+
+			m_stream.read( &m_buf[ 0 ], m_header.sectorSize() );
+		}
+
+		m_pos = offsetInLargeSector * m_header.shortSectorSize();
+		m_pos += offset;
 	}
 }
 
@@ -359,6 +401,12 @@ Stream::seekToNextSector()
 
 		m_stream.seekg( calcFileOffset( m_largeStreamChain.at( m_largeSecIDIdx ),
 			m_sectorSize ), std::ios::beg );
+
+		m_currentLargeSectorID = m_largeStreamChain.at( m_largeSecIDIdx );
+
+		m_stream.read( &m_buf[ 0 ], m_sectorSize );
+
+		m_pos = 0;
 	}
 	else
 	{
@@ -369,11 +417,19 @@ Stream::seekToNextSector()
 			whereIsShortSector( m_shortStreamChain.at( m_shortSecIDIdx ),
 				largeSector );
 
-		std::streampos pos = calcFileOffset( largeSector,
-			m_header.sectorSize() );
-		pos += offset * m_header.shortSectorSize();
+		if( m_currentLargeSectorID != largeSector )
+		{
+			m_currentLargeSectorID = largeSector;
 
-		m_stream.seekg( pos, std::ios::beg );
+			std::streampos pos = calcFileOffset( largeSector,
+				m_header.sectorSize() );
+
+			m_stream.seekg( pos, std::ios::beg );
+
+			m_stream.read( &m_buf[ 0 ], m_header.sectorSize() );
+		}
+
+		m_pos = offset * m_header.shortSectorSize();
 	}
 }
 
@@ -390,11 +446,11 @@ Stream::getByte()
 		seekToNextSector();
 	}
 
-	char ch;
-	m_stream.get( ch );
+	const auto ch = m_buf.at( m_pos );
 
 	++m_sectorBytesReaded;
 	++m_bytesReaded;
+	++m_pos;
 
 	return ch;
 }
