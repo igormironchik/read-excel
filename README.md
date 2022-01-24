@@ -15,10 +15,7 @@ Thanks for using this library.
 # Comparison
 
 I found on GitHub pure C [libxls](https://github.com/libxls/libxls) library with almost identical
-functionality. Dry numbers say that `test/complex` test with `read-excel` runs by 899 ms,
-whereas this test with `libxls` runs by 313 ms, what less in ~3 times. This is
-comparison of C vs C++ in my opinion, like light speed and bullet, as I always say about C/C++
-comparison. But C++ this is higher abstraction, that allows to use `read-excel` more developer
-friendly. But if for your project performance is very important, then `libxls` is for you.
-
-But `read-excel` is cross-platform out of the box.
+functionality. Dry numbers say that `test/complex` test with `read-excel` runs by 350 ms,
+whereas this test with `libxls` runs by 310 ms, what is almost identical.
+But C++ this is higher abstraction, that allows to use `read-excel` more developer
+friendly, and `read-excel` is cross-platform out of the box.
