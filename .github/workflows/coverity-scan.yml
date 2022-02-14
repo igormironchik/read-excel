@@ -36,7 +36,7 @@ jobs:
       
     - run: git submodule update --init --recursive
         
-    - run: sudo apt install cmake wget curl
+    - run: sudo apt install wget curl
     
     - name: Download Coverity Build Tool
       run: |
