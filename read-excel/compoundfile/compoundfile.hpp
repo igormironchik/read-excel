@@ -155,9 +155,9 @@ loadChildDirectories( std::map< int32_t, Directory > & dirs,
 	const Directory parentDir, Stream & stream )
 {
 	Directory * childDir = nullptr;
-	if ( childDir = loadChildDir( dirs, parentDir.leftChild(), stream ) )
+	if ( ( childDir = loadChildDir( dirs, parentDir.leftChild(), stream ) ) )
 		loadChildDirectories( dirs, *childDir, stream );
-	if ( childDir = loadChildDir( dirs, parentDir.rightChild(), stream ) )
+	if ( ( childDir = loadChildDir( dirs, parentDir.rightChild(), stream ) ) )
 		loadChildDirectories( dirs, *childDir, stream );
 } // loadChildDirectories
 
