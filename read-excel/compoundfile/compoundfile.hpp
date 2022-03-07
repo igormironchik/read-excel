@@ -126,20 +126,20 @@ static const int32_t dirRecordSize = 128;
 // loadChildDir
 //
 
-inline Directory*
+inline Directory *
 loadChildDir( std::map< int32_t, Directory > & dirs,
 	int32_t dirID, Stream & stream )
 {
-	if( dirID != -1 && dirs.count(dirID) == 0)
+	if( dirID != -1 && dirs.count(dirID) == 0 )
 	{
 		stream.seek( dirID * dirRecordSize, Stream::FromBeginning );
 
 		Directory dir;
 		dir.load( stream );
 
-		dirs[dirID] = dir;
+		dirs[ dirID ] = dir;
 
-		return &dirs[dirID];
+		return &dirs[ dirID ];
 	}
 
 	return nullptr;
@@ -154,7 +154,7 @@ inline void
 loadChildDirectories( std::map< int32_t, Directory > & dirs,
 	const Directory parentDir, Stream & stream )
 {
-	Directory *childDir = nullptr;
+	Directory * childDir = nullptr;
 	if ( childDir = loadChildDir( dirs, parentDir.leftChild(), stream ) )
 		loadChildDirectories( dirs, *childDir, stream );
 	if ( childDir = loadChildDir( dirs, parentDir.rightChild(), stream ) )
@@ -245,7 +245,7 @@ File::initialize( const std::string & fileName )
 		Directory rootEntry;
 		rootEntry.load( stream );
 
-		m_dirs[root.rootNode()] = rootEntry;
+		m_dirs[ root.rootNode() ] = rootEntry;
 
 		loadChildDirectories( m_dirs, rootEntry, stream );
 	}
