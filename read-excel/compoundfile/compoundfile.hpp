@@ -42,9 +42,9 @@
 
 // C++ include.
 #include <string>
-#include <vector>
 #include <fstream>
 #include <memory>
+#include <map>
 
 
 namespace CompoundFile {
@@ -87,7 +87,7 @@ private:
 	//! SecID of the first sector of the short-sector stream.
 	SecID m_shortStreamFirstSector;
 	//! All directories defined in the compound file.
-	std::vector< Directory > m_dirs;
+	std::map< int32_t, Directory > m_dirs;
 }; // class File
 
 
@@ -126,23 +126,23 @@ static const int32_t dirRecordSize = 128;
 // loadChildDir
 //
 
-inline bool
-loadChildDir( std::vector< Directory > & dirs,
+inline Directory*
+loadChildDir( std::map< int32_t, Directory > & dirs,
 	int32_t dirID, Stream & stream )
 {
-	if( dirID != -1 )
+	if( dirID != -1 && dirs.count(dirID) == 0)
 	{
 		stream.seek( dirID * dirRecordSize, Stream::FromBeginning );
 
 		Directory dir;
 		dir.load( stream );
 
-		dirs.push_back( dir );
+		dirs[dirID] = dir;
 
-		return true;
+		return &dirs[dirID];
 	}
 
-	return false;
+	return nullptr;
 } // loadChildDir
 
 
@@ -151,13 +151,14 @@ loadChildDir( std::vector< Directory > & dirs,
 //
 
 inline void
-loadChildDirectories( std::vector< Directory > & dirs,
+loadChildDirectories( std::map< int32_t, Directory > & dirs,
 	const Directory parentDir, Stream & stream )
 {
-	if( loadChildDir( dirs, parentDir.leftChild(), stream ) )
-		loadChildDirectories( dirs, dirs.back(), stream );
-	if( loadChildDir( dirs, parentDir.rightChild(), stream ) )
-		loadChildDirectories( dirs, dirs.back(), stream );
+	Directory *childDir = nullptr;
+	if ( childDir = loadChildDir( dirs, parentDir.leftChild(), stream ) )
+		loadChildDirectories( dirs, *childDir, stream );
+	if ( childDir = loadChildDir( dirs, parentDir.rightChild(), stream ) )
+		loadChildDirectories( dirs, *childDir, stream );
 } // loadChildDirectories
 
 
@@ -190,11 +191,11 @@ File::~File()
 inline Directory
 File::directory( const std::wstring & name ) const
 {
-	for( std::vector< Directory >::const_iterator it = m_dirs.begin(),
+	for( std::map< int32_t, Directory >::const_iterator it = m_dirs.begin(),
 		last = m_dirs.end(); it != last; ++it )
 	{
-		if( it->name() == name )
-			return *it;
+		if( it->second.name() == name )
+			return it->second;
 	}
 
 	throw Exception( std::wstring( L"There is no such directory : " ) + name );
@@ -203,10 +204,10 @@ File::directory( const std::wstring & name ) const
 inline bool
 File::hasDirectory( const std::wstring & name ) const
 {
-	for( std::vector< Directory >::const_iterator it = m_dirs.begin(),
+	for( std::map< int32_t, Directory >::const_iterator it = m_dirs.begin(),
 		last = m_dirs.end(); it != last; ++it )
 	{
-		if ( it->name() == name )
+		if ( it->second.name() == name )
 			return true;
 	}
 
@@ -243,7 +244,8 @@ File::initialize( const std::string & fileName )
 
 		Directory rootEntry;
 		rootEntry.load( stream );
-		m_dirs.push_back( rootEntry );
+
+		m_dirs[root.rootNode()] = rootEntry;
 
 		loadChildDirectories( m_dirs, rootEntry, stream );
 	}
