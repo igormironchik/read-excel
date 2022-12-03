@@ -83,7 +83,7 @@ TestStream::seek( int32_t pos, Excel::Stream::SeekType type )
 	else if( type == Excel::Stream::FromBeginning && pos < 0 )
 		pos = m_size - pos;
 
-	if( static_cast< std::size_t > ( pos ) >= m_size )
+	if( pos >= m_size )
 	{
 		m_pos = m_size;
 		return;
