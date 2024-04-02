@@ -1,0 +1,12 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: read-excel
+Upstream-Contact: Igor Mironchik <igor.mironchik@gmail.com>
+Source: https://github.com/igormironchik/read-excel
+
+Files: .github/* .gitignore codecov.yml README.md */*.txt CMakeLists.txt read-excel-config.cmake.in
+Copyright: 2011-2024 Igor Mironchik <igor.mironchik@gmail.com>
+License: MIT
+
+Files: test/doctest/*
+Copyright: 2016-2021 Viktor Kirilov
+License: MIT
