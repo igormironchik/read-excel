@@ -3,10 +3,14 @@ Upstream-Name: read-excel
 Upstream-Contact: Igor Mironchik <igor.mironchik@gmail.com>
 Source: https://github.com/igormironchik/read-excel
 
-Files: .github/* .gitignore codecov.yml README.md */*.txt CMakeLists.txt read-excel-config.cmake.in
+Files: .github/* .gitignore codecov.yml README.md */*.txt CMakeLists.txt read-excel-config.cmake.in sample/sample.xls test/data/big.xls test/data/datetime.xls test/data/sample.xls test/data/stringformula.xls test/data/test.xls test/data/verybig.xls
 Copyright: 2011-2024 Igor Mironchik <igor.mironchik@gmail.com>
 License: MIT
 
 Files: test/doctest/*
 Copyright: 2016-2021 Viktor Kirilov
 License: MIT
+
+Files: doc/compdocfileformat.pdf doc/excelfileformat.pdf
+Copyright: Daniel Rentz <dr@openoffice.org>
+License: CC0-1.0
