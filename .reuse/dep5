@@ -14,3 +14,7 @@ License: MIT
 Files: doc/compdocfileformat.pdf doc/excelfileformat.pdf
 Copyright: Daniel Rentz <dr@openoffice.org>
 License: CC0-1.0
+
+Files: test/data/MiscOperatorTests.xls test/data/strange.xls
+Copyright: none
+License: CC0-1.0
