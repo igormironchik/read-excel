@@ -1,5 +1,11 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
+> [!IMPORTANT]
+>
+> This project is not supported anymore. But can be reopened if interest will
+> be in it. Please, let me know if you need something. Just write me email to
+> `igor.mironchik at gmail.com`.
+
 This is very simple implementation of the Excel 97-2003 format (BIFF8) written in C++.
 Supported reading only.
 
